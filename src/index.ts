@@ -106,7 +106,8 @@ document.querySelector('form')
             from: 'ws-client',
             message: message
         }
-        renderMessage(ircMessage)
+        // only render when we get the res from server
+        // renderMessage(ircMessage)
         socket.emit('message', ircMessage)
     })
 
@@ -114,6 +115,8 @@ fetch(`${backendUrl}/messages`)
     .then(data => data.json())
     .then((messages: IrcMessage[]) => {
         console.log(messages)
+        // clears the loading message
+        messagesContainer.innerHTML = ""
         messages.forEach((message: IrcMessage) => {
             renderMessage(message)
         })
