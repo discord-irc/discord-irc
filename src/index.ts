@@ -24,6 +24,14 @@ const xssSanitize = (userinput: string) => {
     return DOMPurify.sanitize(userinput)
 }
 
+const enrichText = (userinput: string) => {
+    userinput = userinput.replaceAll(
+        new RegExp('https?://[a-zA-Z0-9_\\[\\]\\?\\#\\:\\&\\$\\+\\*\\%/\\.]+\\.(png|jpg|jpeg|webp)', 'ig'),
+        (m) => `<img class="embed-img" src="${m}">`
+    )
+    return userinput
+}
+
 const renderMessage = (message: IrcMessage) => {
     messagesContainer.insertAdjacentHTML(
         'beforeend',
@@ -34,11 +42,17 @@ const renderMessage = (message: IrcMessage) => {
                     ${xssSanitize(message.from)}
                 </div>
                 <div class="message-text">
-                    ${xssSanitize(message.message)}
+                    ${
+                        enrichText(
+                            xssSanitize(message.message)
+                        )
+                    }
                 </div>
             </div> <!-- message-content -->
         </div>`
     )
+    // autoscroll
+    messagesContainer.scrollTop = messagesContainer.scrollHeight
 }
 
 socket.on('message', (message: IrcMessage) => {
@@ -51,6 +65,9 @@ document.querySelector('form')
         event.preventDefault()
         const messageInp: HTMLInputElement = document.querySelector('#message-input')
         const message = messageInp.value
+        if (!message) {
+            return
+        }
         messageInp.value = ""
         const ircMessage = {
             from: 'ws-client',

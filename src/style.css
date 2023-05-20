@@ -49,6 +49,7 @@ html, body {
 
 .messages {
     height: calc(100vh - 80px);
+    overflow: scroll;
 }
 
 input {
@@ -59,4 +60,8 @@ input {
     padding-left: 5px;
     margin: 8px;
     border-radius: 5px;
+}
+
+.embed-img {
+    max-height: 500px;
 }
