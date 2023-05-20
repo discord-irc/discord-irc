@@ -19,5 +19,8 @@
     "typescript": "^5.0.4",
     "webpack": "^5.83.1",
     "webpack-cli": "^5.1.1"
+  },
+  "dependencies": {
+    "socket.io-client": "^4.6.1"
   }
 }
