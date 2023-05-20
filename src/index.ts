@@ -6,7 +6,7 @@ import './style.css'
 const foo: string = "hello world from ts"
 console.log(foo)
 
-const backendUrl = 'https://ws-irc.zillyhuhn.com'
+const backendUrl = process.env.BACKEND_URL
 
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(backendUrl)
 

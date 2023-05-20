@@ -21,6 +21,7 @@
     "webpack-cli": "^5.1.1"
   },
   "dependencies": {
+    "dotenv": "^16.0.3",
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.6.1"
   }
