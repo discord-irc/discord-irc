@@ -15,11 +15,6 @@ hljs.registerLanguage('c', c);
 hljs.registerLanguage('cpp', cpp);
 hljs.registerLanguage('rust', rust);
 
-const html = hljs.highlightAuto('<h1>Hello World!</h1>').value
-console.log(html)
-let htmllo = hljs.highlight("int a = 2;", {language: 'c'}).value
-console.log(htmllo)
-
 import './style.css'
 import 'highlight.js/styles/github.css';
 
@@ -28,7 +23,7 @@ const backendUrl = process.env.BACKEND_URL
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(backendUrl)
 
 socket.on('connect', () => {
-    console.log("connected")
+    console.log(`connected to ${backendUrl}`)
 })
 
 const messagesContainer = document.querySelector('.messages')
@@ -113,4 +108,13 @@ document.querySelector('form')
         }
         renderMessage(ircMessage)
         socket.emit('message', ircMessage)
+    })
+
+fetch(`${backendUrl}/messages`)
+    .then(data => data.json())
+    .then((messages: IrcMessage[]) => {
+        console.log(messages)
+        messages.forEach((message: IrcMessage) => {
+            renderMessage(message)
+        })
     })
