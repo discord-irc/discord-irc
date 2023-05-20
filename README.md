@@ -4,10 +4,10 @@
 
 **IT IS NOT BATTLE TESTED OR SECURITY AUDITED !!!**
 
-Discord themed irc web Front-end for irc.
+Discord themed irc web front-end for irc.
 Uses [irc-websockets](https://github.com/ChillerDragon/irc-websockets) as backend.
 Which is a websocket wrapper around a single irc client.
-This Front-end then does use the backend to send and receive messages.
+This front-end then does use the backend to send and receive messages.
 And replaces image links with actual image tags. And syntax highlights code snippets.
 
 
