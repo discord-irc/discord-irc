@@ -14,14 +14,39 @@ socket.on('connect', () => {
     console.log("connected")
 })
 
+const messagesContainer = document.querySelector('.messages')
+
+const renderMessage = (message: IrcMessage) => {
+    messagesContainer.insertAdjacentHTML(
+        'beforeend',
+        `
+        <div class="message">
+            <div class="message-author">
+                ${message.from}
+            </div>
+            <div class="message-text">
+                ${message.message}
+            </div>
+        </div>
+        `
+    )
+}
+
 socket.on('message', (message: IrcMessage) => {
     console.log(message)
+    renderMessage(message)
 })
 
 document.querySelector('form')
     .addEventListener('submit', (event) => {
         event.preventDefault()
-        const messageInp: HTMLInputElement = document.querySelector('#message')
+        const messageInp: HTMLInputElement = document.querySelector('#message-input')
         const message = messageInp.value
-        socket.emit('message', { from: 'web', message: message })
+        messageInp.value = ""
+        const ircMessage = {
+            from: 'ws-client',
+            message: message
+        }
+        renderMessage(ircMessage)
+        socket.emit('message', ircMessage)
     })
