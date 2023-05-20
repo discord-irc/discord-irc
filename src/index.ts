@@ -1,6 +1,8 @@
 import { io, Socket } from 'socket.io-client'
 import { ClientToServerEvents, ServerToClientEvents, IrcMessage } from './socket.io'
 
+import DOMPurify from 'dompurify'
+
 import './style.css'
 
 const foo: string = "hello world from ts"
@@ -16,6 +18,12 @@ socket.on('connect', () => {
 
 const messagesContainer = document.querySelector('.messages')
 
+const xssSanitize = (userinput: string) => {
+    userinput = userinput.replaceAll('<', '&lt;')
+    userinput = userinput.replaceAll('>', '&gt;')
+    return DOMPurify.sanitize(userinput)
+}
+
 const renderMessage = (message: IrcMessage) => {
     messagesContainer.insertAdjacentHTML(
         'beforeend',
@@ -23,10 +31,10 @@ const renderMessage = (message: IrcMessage) => {
             <div class="message-img"></div>
             <div class="message-content">
                 <div class="message-author">
-                    ${message.from}
+                    ${xssSanitize(message.from)}
                 </div>
                 <div class="message-text">
-                    ${message.message}
+                    ${xssSanitize(message.message)}
                 </div>
             </div> <!-- message-content -->
         </div>`
