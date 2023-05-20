@@ -2,11 +2,26 @@ import { io, Socket } from 'socket.io-client'
 import { ClientToServerEvents, ServerToClientEvents, IrcMessage } from './socket.io'
 
 import DOMPurify from 'dompurify'
+// import hljs from 'highlight.js' // works but is slow because it bloats in too many langs
+import hljs from 'highlight.js/lib/core'
+import javascript from 'highlight.js/lib/languages/javascript';
+import python from 'highlight.js/lib/languages/python';
+import c from 'highlight.js/lib/languages/c';
+import cpp from 'highlight.js/lib/languages/cpp';
+import rust from 'highlight.js/lib/languages/rust';
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('python', python);
+hljs.registerLanguage('c', c);
+hljs.registerLanguage('cpp', cpp);
+hljs.registerLanguage('rust', rust);
+
+const html = hljs.highlightAuto('<h1>Hello World!</h1>').value
+console.log(html)
+let htmllo = hljs.highlight("int a = 2;", {language: 'c'}).value
+console.log(htmllo)
 
 import './style.css'
-
-const foo: string = "hello world from ts"
-console.log(foo)
+import 'highlight.js/styles/github.css';
 
 const backendUrl = process.env.BACKEND_URL
 
@@ -30,9 +45,21 @@ const enrichText = (userinput: string) => {
         (m) => `<img class="embed-img" src="${m}">`
     )
     userinput = userinput.replaceAll(
+        new RegExp('```(.*)```', 'ig'),
+        (m, $1) => `<div class="single-line-code-snippet">${hljs.highlightAuto($1).value}</div>`
+    )
+    userinput = userinput.replaceAll(
+        new RegExp('``(.*)``', 'ig'),
+        (m, $1) => `<div class="single-line-code-snippet">${$1}</div>`
+    )
+    userinput = userinput.replaceAll(
         new RegExp('`(.*)`', 'ig'),
         (m, $1) => `<div class="single-line-code-snippet">${$1}</div>`
     )
+    // userinput = userinput.replaceAll(
+    //     new RegExp('`(.*)`', 'ig'),
+    //     (m, $1) => hljs.highlight($1, {language: 'c'}).value
+    // )
     return userinput
 }
 
