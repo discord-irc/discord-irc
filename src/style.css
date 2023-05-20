@@ -65,3 +65,12 @@ input {
 .embed-img {
     max-height: 500px;
 }
+
+.single-line-code-snippet {
+    background-color: #333439;
+    border-radius: 3px;
+    font-feature-settings:"liga" 0, "dlig" 0;
+    width: fit-content;
+    padding: 3px;
+    font-family: 'Courier New', Courier, monospace;
+}

@@ -29,6 +29,10 @@ const enrichText = (userinput: string) => {
         new RegExp('https?://[a-zA-Z0-9_\\[\\]\\?\\#\\:\\&\\$\\+\\*\\%/\\.]+\\.(png|jpg|jpeg|webp)', 'ig'),
         (m) => `<img class="embed-img" src="${m}">`
     )
+    userinput = userinput.replaceAll(
+        new RegExp('`(.*)`', 'ig'),
+        (m, $1) => `<div class="single-line-code-snippet">${$1}</div>`
+    )
     return userinput
 }
 
