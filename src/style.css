@@ -1,3 +1,62 @@
-h1 {
-    border: 20px solid rgb(183, 50, 50);
+html, body {
+    background-color: #393c42;
+    color: #ccccc7;
+    font-family: sans-serif;
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+.message-img {
+    background-image: url("teecord.png");
+    background-size: cover;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+}
+
+.message {
+    margin: 5px;
+    margin-top: 20px;
+    display: flex;
+}
+
+.message-author {
+    color: #59767f;
+}
+
+.message-content {
+    margin-left: 20px;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+}
+
+.menu-servers {
+    height: 100vh;
+    background-color: #26272a;
+}
+
+.ddnet-server {
+    height: 64px;
+    width: 64px;
+    background-image: url("ddnet-logo.png");
+    background-size: cover;
+    margin: auto;
+}
+
+.messages {
+    height: calc(100vh - 80px);
+}
+
+input {
+    all: unset;
+    background-color: #43464c;
+    width: 100%;
+    height: 40px;
+    padding-left: 5px;
+    margin: 8px;
+    border-radius: 5px;
 }

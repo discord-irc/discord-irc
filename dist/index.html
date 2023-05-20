@@ -8,11 +8,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="messages"></div>
-    <form action="">
-        <input type="text" name="message" id="message-input">
-        <input type="submit" value="send">
-    </form>
+    <div class="layout">
+        <div class="menu-servers">
+            <div class="ddnet-server"></div>
+        </div>
+        <div class="message-pane">
+            <div class="messages">
+            </div> <!-- message -->
+            <form action="">
+                <input type="text" name="message" id="message-input" placeholder="Message #developer">
+            </form>
+        </div> <!-- message-pane -->
+    </div> <!-- layout -->
     <script src="main.js"></script>
 </body>
 </html>

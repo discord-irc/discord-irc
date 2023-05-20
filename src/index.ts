@@ -19,16 +19,17 @@ const messagesContainer = document.querySelector('.messages')
 const renderMessage = (message: IrcMessage) => {
     messagesContainer.insertAdjacentHTML(
         'beforeend',
-        `
-        <div class="message">
-            <div class="message-author">
-                ${message.from}
-            </div>
-            <div class="message-text">
-                ${message.message}
-            </div>
-        </div>
-        `
+        `<div class="message">
+            <div class="message-img"></div>
+            <div class="message-content">
+                <div class="message-author">
+                    ${message.from}
+                </div>
+                <div class="message-text">
+                    ${message.message}
+                </div>
+            </div> <!-- message-content -->
+        </div>`
     )
 }
 
