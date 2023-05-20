@@ -63,10 +63,10 @@ const enrichText = (userinput: string) => {
     return userinput
 }
 
-const renderMessage = (message: IrcMessage) => {
+const renderMessage = (message: IrcMessage, isBridge = false) => {
     messagesContainer.insertAdjacentHTML(
         'beforeend',
-        `<div class="message">
+        `<div class="message ${isBridge ? "bridge" : ""}">
             <div class="message-img"></div>
             <div class="message-content">
                 <div class="message-author">
@@ -88,7 +88,14 @@ const renderMessage = (message: IrcMessage) => {
 
 socket.on('message', (message: IrcMessage) => {
     console.log(message)
-    renderMessage(message)
+    let isBridge = false
+    if (message.from === 'bridge') {
+        const slibbers = message.message.split('>')
+		message.from = slibbers[0].substring(1)
+		message.message = slibbers.slice(1).join('>').substring(1)
+		isBridge = true
+    }
+    renderMessage(message, isBridge)
 })
 
 document.querySelector('form')

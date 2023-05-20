@@ -15,6 +15,10 @@ html, body {
     border-radius: 50%;
 }
 
+.message-img .bridge {
+    background-image: url("teecord_bot.png");
+}
+
 .message {
     margin: 5px;
     margin-top: 20px;
