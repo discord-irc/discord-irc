@@ -7,6 +7,9 @@ discord themed irc web front end for ddnet#developer channel
 **IT IS UNSAFE AND BUGGY !!!**
 
 ```
+cp env.example .env
+vim .env
+
 npm install
 npm run start
 ```
