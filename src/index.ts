@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client'
-import { ClientToServerEvents, ServerToClientEvents, IrcMessage, AuthResponse } from './socket.io'
+import { ClientToServerEvents, ServerToClientEvents, IrcMessage, AuthResponse, LogoutMessage } from './socket.io'
 
 import DOMPurify from 'dompurify'
 // import hljs from 'highlight.js' // works but is slow because it bloats in too many langs
@@ -142,8 +142,23 @@ socket.on('authResponse', (auth: AuthResponse) => {
     onLogin(auth.username)
 })
 
+socket.on('logout', (data: LogoutMessage) => {
+    if (!account.loggedIn) {
+        return
+    }
+    onLogout()
+    addLoginAlert(data.message)
+})
+
+const onLogout = (): void => {
+    const overlay: HTMLElement = document.querySelector('.overlay')
+    overlay.style.display = 'block'
+    loginPopup.style.display = 'block'
+}
+
 const onLogin = (username: string): void => {
     account.username = username
+    account.loggedIn = true
     const overlay: HTMLElement = document.querySelector('.overlay')
     overlay.style.display = 'none'
     loginPopup.style.display = 'none'

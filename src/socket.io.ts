@@ -18,10 +18,15 @@ export interface AuthResponse {
     success: boolean,
 }
 
+export interface LogoutMessage {
+    message: string
+}
+
 export interface ServerToClientEvents {
     // irc-websockets
     message: (message: IrcMessage) => void
     authResponse: (auth: AuthResponse) => void
+    logout: (data: LogoutMessage) => void
 }
 
 export interface ClientToServerEvents {
