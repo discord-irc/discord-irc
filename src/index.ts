@@ -18,7 +18,25 @@ hljs.registerLanguage('rust', rust);
 import './style.css'
 import 'highlight.js/styles/github.css';
 
-const backendUrl = process.env.BACKEND_URL
+let unreadMessages: number = 0
+
+const channelName = 'developer'
+
+const addMessageNotification = () => {
+    unreadMessages++
+    document.title = `#${channelName} (${unreadMessages})`
+}
+
+const clearNotifications = () => {
+    unreadMessages = 0
+    document.title = `#${channelName}`
+}
+
+window.addEventListener('focus', () => {
+    clearNotifications()
+})
+
+const backendUrl: string = process.env.BACKEND_URL
 
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(backendUrl)
 
@@ -77,6 +95,9 @@ const renderMessage = (message: IrcMessage, isBridge = false) => {
             </div> <!-- message-content -->
         </div>`
     )
+    if (document.hidden) {
+        addMessageNotification()
+    }
     // autoscroll
     messagesContainer.scrollTop = messagesContainer.scrollHeight
 }
@@ -110,6 +131,8 @@ document.querySelector('form')
         // renderMessage(ircMessage)
         socket.emit('message', ircMessage)
     })
+
+clearNotifications()
 
 fetch(`${backendUrl}/messages`)
     .then(data => data.json())
