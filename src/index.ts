@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client'
-import { ClientToServerEvents, ServerToClientEvents, IrcMessage } from './socket.io'
+import { ClientToServerEvents, ServerToClientEvents, IrcMessage, AuthResponse } from './socket.io'
 
 import DOMPurify from 'dompurify'
 // import hljs from 'highlight.js' // works but is slow because it bloats in too many langs
@@ -18,8 +18,16 @@ hljs.registerLanguage('rust', rust);
 import './style.css'
 import 'highlight.js/styles/github.css';
 
-let unreadMessages: number = 0
+interface Account {
+    username: string,
+    loggedIn: boolean
+}
 
+const account = {
+    username: 'nameless tee',
+    loggedIn: false
+}
+let unreadMessages: number = 0
 const channelName = 'developer'
 
 const addMessageNotification = () => {
@@ -114,7 +122,56 @@ socket.on('message', (message: IrcMessage) => {
     renderMessage(message, isBridge)
 })
 
-document.querySelector('form')
+const loginPopup: HTMLElement = document.querySelector('.login-popup')
+const loginPopupAlerts: HTMLElement = loginPopup.querySelector('.alerts')
+
+const addLoginAlert = (message: string): void => {
+    loginPopupAlerts.insertAdjacentHTML(
+        'beforeend',
+        `<div class="alert">
+            ${message}
+        </div>`
+    )
+}
+
+socket.on('authResponse', (auth: AuthResponse) => {
+    if (!auth.success) {
+        addLoginAlert(auth.message)
+        return
+    }
+    onLogin(auth.username)
+})
+
+const onLogin = (username: string): void => {
+    account.username = username
+    const overlay: HTMLElement = document.querySelector('.overlay')
+    overlay.style.display = 'none'
+    loginPopup.style.display = 'none'
+}
+
+loginPopup.querySelector('form')
+    .addEventListener('submit', (event) => {
+        event.preventDefault()
+        const usernameInp: HTMLInputElement = document.querySelector('#username-input')
+        const passwordInp: HTMLInputElement = document.querySelector('#password-input')
+        const username = usernameInp.value
+        const password = passwordInp.value
+        if (!username) {
+            return
+        }
+        if (!password) {
+            return
+        }
+        socket.emit(
+            'authRequest',
+            {
+                username: username,
+                password: password
+            }
+        )
+    })
+
+document.querySelector('.message-pane form')
     .addEventListener('submit', (event) => {
         event.preventDefault()
         const messageInp: HTMLInputElement = document.querySelector('#message-input')
@@ -124,7 +181,7 @@ document.querySelector('form')
         }
         messageInp.value = ""
         const ircMessage = {
-            from: 'ws-client',
+            from: account.username,
             message: message
         }
         // only render when we get the res from server
