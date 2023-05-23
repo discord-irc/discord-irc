@@ -62,7 +62,7 @@ const xssSanitize = (userinput: string) => {
 
 const enrichText = (userinput: string) => {
     userinput = userinput.replaceAll(
-        new RegExp('https?://[a-zA-Z0-9_\\[\\]\\?\\#\\:\\&\\$\\+\\*\\%/\\.]+\\.(png|jpg|jpeg|webp)', 'ig'),
+        new RegExp('https?://[a-zA-Z0-9\\-_\\[\\]\\?\\#\\:\\&\\$\\+\\*\\%/\\.]+\\.(png|jpg|jpeg|webp)', 'ig'),
         (m) => `<img class="embed-img" src="${m}">`
     )
     userinput = userinput.replaceAll(
