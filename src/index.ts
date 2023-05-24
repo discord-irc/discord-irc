@@ -81,7 +81,7 @@ const enrichText = (userinput: string) => {
                 url.startsWith("https://zillyhuhn.com/cs") ||
                 url.startsWith("https://raw.githubusercontent.com/") ||
                 url.startsWith("https://cdn.discordapp.com/attachments/")
-            const isImageUrl: boolean = new RegExp('\\.(png|jpg|jpeg|webp|svg)').test(url)
+            const isImageUrl: boolean = new RegExp('\\.(png|jpg|jpeg|webp|svg)', 'i').test(url)
             if (isWhitelistedCdn && isImageUrl) {
                 return `<img class="embed-img" src="${url}">`
             }
