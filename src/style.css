@@ -15,7 +15,31 @@ html, body {
     border-radius: 50%;
 }
 
-.message-img .bridge {
+.message-img.profile1 {
+    background-image: url("img/teecord/teecord_grenade.png");
+}
+
+.message-img.profile2 {
+    background-image: url("img/teecord/teecord_hammer.png");
+}
+
+.message-img.profile3 {
+    background-image: url("img/teecord/teecord_ninja.png");
+}
+
+.message-img.profile4 {
+    background-image: url("img/teecord/teecord_pistol.png");
+}
+
+.message-img.profile5 {
+    background-image: url("img/teecord/teecord_rifle.png");
+}
+
+.message-img.profile6 {
+    background-image: url("img/teecord/teecord_shotgun.png");
+}
+
+.message-img.bridge {
     background-image: url("teecord_bot.png");
 }
 

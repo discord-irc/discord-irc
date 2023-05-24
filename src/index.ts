@@ -85,10 +85,28 @@ const enrichText = (userinput: string) => {
 }
 
 const renderMessage = (message: IrcMessage, isBridge = false) => {
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charCodeAt
+    // can return 0-65535
+    // but should be in the ascii range for most names
+    const code = message.from.charCodeAt(0)
+    let profileId = 1
+    if (code > 512) {
+        profileId = 1
+    } else if (code > 200) {
+        profileId = 2
+    } else if (code > 100) {
+        profileId = 3
+    } else if (code > 95) {
+        profileId = 4
+    } else if (code > 90) {
+        profileId = 5
+    } else if (code > 80) {
+        profileId = 6
+    }
     messagesContainer.insertAdjacentHTML(
         'beforeend',
-        `<div class="message ${isBridge ? "bridge" : ""}">
-            <div class="message-img"></div>
+        `<div class="message">
+            <div class="message-img profile${profileId}${isBridge ? " bridge" : ""}"></div>
             <div class="message-content">
                 <div class="message-author">
                     ${xssSanitize(message.from)}
@@ -119,6 +137,7 @@ socket.on('message', (message: IrcMessage) => {
 		message.message = slibbers.slice(1).join('>').substring(1)
 		isBridge = true
     }
+    console.log(`'${message.from}'`)
     renderMessage(message, isBridge)
 })
 
