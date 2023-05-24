@@ -75,8 +75,18 @@ const replaceEmotes = (message: string): string => {
 
 const enrichText = (userinput: string) => {
     userinput = userinput.replaceAll(
-        new RegExp('https?://[a-zA-Z0-9\\-_\\[\\]\\?\\#\\:\\&\\$\\+\\*\\%/\\.]+\\.(png|jpg|jpeg|webp)', 'ig'),
-        (m) => `<img class="embed-img" src="${m}">`
+        new RegExp('https?://[a-zA-Z0-9\\-_\\[\\]\\?\\#\\:\\&\\$\\+\\*\\%/\\.\\=]+', 'ig'),
+        (url) => {
+            const isWhitelistedCdn: boolean =
+                url.startsWith("https://zillyhuhn.com/cs") ||
+                url.startsWith("https://raw.githubusercontent.com/") ||
+                url.startsWith("https://cdn.discordapp.com/attachments/")
+            const isImageUrl: boolean = new RegExp('\\.(png|jpg|jpeg|webp|svg)').test(url)
+            if (isWhitelistedCdn && isImageUrl) {
+                return `<img class="embed-img" src="${url}">`
+            }
+            return `<a href="${url}">${url}</a>`
+        }
     )
     userinput = userinput.replaceAll(
         new RegExp('```(.*)```', 'ig'),

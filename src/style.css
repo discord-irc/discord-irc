@@ -173,3 +173,12 @@ input {
     justify-content: center;
     text-align: center;
 }
+
+a, a:visited {
+    color: #5084ac;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
