@@ -72,7 +72,9 @@ html, body {
 .emote.pepeH {
     background-image: url("img/emotes/pepeH.webp");
 }
-
+.emote.rocket {
+    background-image: url("img/emotes/rocket.svg");
+}
 
 .layout {
     display: grid;
