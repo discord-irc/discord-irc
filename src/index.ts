@@ -27,6 +27,7 @@ const account = {
     username: 'nameless tee',
     loggedIn: false
 }
+let autoScroll = true
 let unreadMessages: number = 0
 const channelName = 'developer'
 
@@ -52,7 +53,7 @@ socket.on('connect', () => {
     console.log(`connected to ${backendUrl}`)
 })
 
-const messagesContainer = document.querySelector('.messages')
+const messagesContainer: HTMLElement = document.querySelector('.messages')
 
 const xssSanitize = (userinput: string) => {
     userinput = userinput.replaceAll('<', '&lt;')
@@ -137,9 +138,16 @@ const renderMessage = (message: IrcMessage, isBridge = false) => {
     if (document.hidden) {
         addMessageNotification()
     }
-    // autoscroll
-    messagesContainer.scrollTop = messagesContainer.scrollHeight
+    if (autoScroll) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight
+    }
 }
+
+messagesContainer.addEventListener('scroll', () => {
+    const scroll: number = messagesContainer.scrollTop + messagesContainer.offsetHeight
+    const maxScroll: number = messagesContainer.scrollHeight
+    autoScroll = scroll > maxScroll - 5
+})
 
 socket.on('message', (message: IrcMessage) => {
     console.log(message)
