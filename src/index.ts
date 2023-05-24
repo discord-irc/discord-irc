@@ -60,6 +60,18 @@ const xssSanitize = (userinput: string) => {
     return DOMPurify.sanitize(userinput)
 }
 
+const replaceEmotes = (message: string): string => {
+    return message.replaceAll(
+        new RegExp(':([a-zA-Z0-9]+):', 'ig'),
+        (m, $1) => {
+            if (['fuckyousnail', 'justatest', 'pepeH'].includes($1)) {
+                return `<div class="emote ${$1}"></div>`
+            }
+            return m
+        }
+    )
+}
+
 const enrichText = (userinput: string) => {
     userinput = userinput.replaceAll(
         new RegExp('https?://[a-zA-Z0-9\\-_\\[\\]\\?\\#\\:\\&\\$\\+\\*\\%/\\.]+\\.(png|jpg|jpeg|webp)', 'ig'),
@@ -81,6 +93,7 @@ const enrichText = (userinput: string) => {
     //     new RegExp('`(.*)`', 'ig'),
     //     (m, $1) => hljs.highlight($1, {language: 'c'}).value
     // )
+    userinput = replaceEmotes(userinput)
     return userinput
 }
 

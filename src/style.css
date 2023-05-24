@@ -57,6 +57,23 @@ html, body {
     margin-left: 20px;
 }
 
+.emote {
+    height: 64px;
+    width: 64px;
+    background-size: cover;
+}
+
+.emote.fuckyousnail {
+    background-image: url("img/emotes/fuckyousnail.webp");
+}
+.emote.justatest {
+    background-image: url("img/emotes/justatest.png");
+}
+.emote.pepeH {
+    background-image: url("img/emotes/pepeH.webp");
+}
+
+
 .layout {
     display: grid;
     grid-template-columns: 100px 1fr;
