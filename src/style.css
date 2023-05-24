@@ -75,6 +75,9 @@ html, body {
 .emote.rocket {
     background-image: url("img/emotes/rocket.svg");
 }
+.emote.hissnail {
+    background-image: url("img/emotes/hissnail.png");
+}
 
 .layout {
     display: grid;
