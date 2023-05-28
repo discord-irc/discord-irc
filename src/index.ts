@@ -75,13 +75,26 @@ const replaceEmotes = (message: string): string => {
 
 const enrichText = (userinput: string) => {
     userinput = userinput.replaceAll(
-        new RegExp('https?://[a-zA-Z0-9\\-_\\[\\]\\?\\#\\:\\&\\$\\+\\*\\%/\\.\\=]+', 'ig'),
+        new RegExp('https?://[a-zA-Z0-9\\-_\\[\\]\\?\\#\\:\\&\\$\\+\\*\\%/\\.\\=\\@]+', 'ig'),
         (url) => {
             const isWhitelistedCdn: boolean =
                 url.startsWith("https://zillyhuhn.com/cs") ||
                 url.startsWith("https://raw.githubusercontent.com/") ||
                 url.startsWith("https://cdn.discordapp.com/attachments/")
             const isImageUrl: boolean = new RegExp('\\.(png|jpg|jpeg|webp|svg)$', 'i').test(url)
+            // https://github.com/foo/bar/@baz.com
+            // most browsers would visit the website baz.com
+            // and provide https as username and //github.com/foo/bar/
+            // as password given those would not be real slashes but
+            // some unicode character that looks like a slash
+            // since i am too lazy for a more sophisticated check
+            // we mark all domains containing an @ as potentially dangerous
+            // and make them non clickable
+            // there should be some hin on why this is being done tho
+            const isInsecure: boolean = url.includes("@")
+            if (isInsecure) {
+                return `<span class="danger">${url} [POTENTIALLY INSECURE]</span>`
+            }
             if (isWhitelistedCdn && isImageUrl) {
                 return `<img class="embed-img" src="${url}">`
             }
