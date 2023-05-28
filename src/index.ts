@@ -95,8 +95,7 @@ const enrichText = (userinput: string) => {
             const isInsecure: boolean = url.includes("@")
             if (isInsecure) {
                 return `
-                <
-                    span
+                <span
                     class="danger"
                     href="https://github.com/ChillerDragon/discord-irc/blob/6f3fb8d8f78f5c3d3f05e36a292a77d26a9f8d90/src/index.ts#L85-L97"
                 >
