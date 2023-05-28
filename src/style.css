@@ -186,6 +186,6 @@ a:hover {
     text-decoration: underline;
 }
 
-.danger {
+a.danger, a:visited.danger, a:hover.danger {
     color: red;
 }
