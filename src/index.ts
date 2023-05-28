@@ -90,10 +90,18 @@ const enrichText = (userinput: string) => {
             // since i am too lazy for a more sophisticated check
             // we mark all domains containing an @ as potentially dangerous
             // and make them non clickable
-            // there should be some hin on why this is being done tho
+            // here is some flashy youtube video highlighting the problem
+            // https://www.youtube.com/watch?v=GCVJsz7EODA
             const isInsecure: boolean = url.includes("@")
             if (isInsecure) {
-                return `<span class="danger">${url} [POTENTIALLY INSECURE]</span>`
+                return `
+                <
+                    span
+                    class="danger"
+                    href="https://github.com/ChillerDragon/discord-irc/blob/6f3fb8d8f78f5c3d3f05e36a292a77d26a9f8d90/src/index.ts#L85-L97"
+                >
+                    ${url}
+                </span>`
             }
             if (isWhitelistedCdn && isImageUrl) {
                 return `<img class="embed-img" src="${url}">`
