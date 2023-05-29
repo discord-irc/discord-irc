@@ -65,7 +65,7 @@ const replaceEmotes = (message: string): string => {
     return message.replaceAll(
         new RegExp(':([a-zA-Z0-9]+):', 'ig'),
         (m, $1) => {
-            if (['fuckyousnail', 'justatest', 'pepeH', 'rocket', 'hissnail'].includes($1)) {
+            if (['fuckyousnail', 'justatest', 'feelsbadman', 'pepeH', 'rocket', 'hissnail'].includes($1)) {
                 return `<div class="emote ${$1}"></div>`
             }
             return m
