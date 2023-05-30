@@ -30,6 +30,7 @@ const account = {
 let autoScroll = true
 let unreadMessages: number = 0
 let unreadPings: number = 0
+let notificationsActive: boolean = false
 const channelName = 'developer'
 
 const setCookie = (cname: string, cvalue: string, exdays: number) => {
@@ -55,6 +56,25 @@ const getCookie = (cname: string): string => {
     return ""
   }
 
+const desktopNotification = () => {
+    if (!notificationsActive) {
+        return
+    }
+    if (!Notification) {
+        return
+    }
+    if (Notification.permission !== 'granted') {
+        return
+    }
+    const notification = new Notification('chat.zillyhuhn.com', {
+        icon: 'https://ddnet.org/favicon.ico',
+        body: 'New message in ddnet#developer',
+    })
+    notification.onclick = () => {
+        // window.open('https://chat.zillyhuhn.com/')
+    }
+}
+
 const addMessageNotification = () => {
     unreadMessages++
     const pingTxt = unreadPings > 0 ? `!${unreadPings}! ` : ''
@@ -68,6 +88,7 @@ const addPingNotification = () => {
     unreadPings++
     const pingTxt = unreadPings > 0 ? `!${unreadPings}! ` : ''
     document.title = `#${channelName} ${pingTxt}(${unreadMessages}) `
+    desktopNotification()
 }
 
 const clearNotifications = () => {
@@ -349,6 +370,25 @@ const prefillLoginForm = () => {
     usernameInp.focus()
     usernameInp.value = username
 }
+
+const bellDiv: HTMLElement = document.querySelector('.notification-bell')
+bellDiv.addEventListener('click', () => {
+    if (!Notification) {
+        alert('Desktop notifications not available in your browser. Try Chromium.')
+        return
+    }
+
+    if (Notification.permission !== 'granted') {
+        Notification.requestPermission()
+        return
+    }
+    notificationsActive = !notificationsActive
+    if (notificationsActive) {
+        bellDiv.classList.add('active')
+    } else {
+        bellDiv.classList.remove('active')
+    }
+})
 
 /*
     RUN ON PAGE LOAD

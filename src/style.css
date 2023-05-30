@@ -100,6 +100,18 @@ html, body {
     margin: auto;
 }
 
+.notification-bell {
+    height: 64px;
+    width: 64px;
+    background-image: url("img/ui/bell_off.svg");
+    background-size: cover;
+    margin: auto;
+}
+
+.notification-bell.active {
+    background-image: url("img/ui/bell_on.svg");
+}
+
 .messages {
     height: calc(100vh - 80px);
     overflow: overlay;
