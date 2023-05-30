@@ -29,15 +29,27 @@ const account = {
 }
 let autoScroll = true
 let unreadMessages: number = 0
+let unreadPings: number = 0
 const channelName = 'developer'
 
 const addMessageNotification = () => {
     unreadMessages++
-    document.title = `#${channelName} (${unreadMessages})`
+    const pingTxt = unreadPings > 0 ? `!${unreadPings}! ` : ''
+    document.title = `#${channelName} ${pingTxt}(${unreadMessages}) `
+}
+
+const addPingNotification = () => {
+    if (!document.hidden) {
+        return
+    }
+    unreadPings++
+    const pingTxt = unreadPings > 0 ? `!${unreadPings}! ` : ''
+    document.title = `#${channelName} ${pingTxt}(${unreadMessages}) `
 }
 
 const clearNotifications = () => {
     unreadMessages = 0
+    unreadPings = 0
     document.title = `#${channelName}`
 }
 
@@ -61,12 +73,41 @@ const xssSanitize = (userinput: string) => {
     return DOMPurify.sanitize(userinput)
 }
 
+const replacePings = (message: string): string => {
+    let highlightMessage = false
+    message = message.replaceAll(
+        new RegExp('@([^ ]+)', 'ig'),
+        (m, $1) => {
+            if ($1 === account.username) {
+                highlightMessage = true
+                return `<span class="ping-you">${m}</span>`
+            }
+            // TODO: hightlight ping other here
+            //       is a bit more complicated with spaces
+            //       false positives in code blocks etc
+            return m
+        }
+    )
+    // TODO: this also highlights user "foo" in the word "barfoos"
+    if(!highlightMessage) {
+        message = message.replaceAll(account.username, (m) => {
+            highlightMessage = true
+            return `<span class="ping-you">${m}</span>`
+        })
+    }
+    if (highlightMessage) {
+        addPingNotification()
+        message = `<div class="highlight">${message}</div>`
+    }
+    return message
+}
+
 const replaceEmotes = (message: string): string => {
     return message.replaceAll(
         new RegExp(':([a-zA-Z0-9]+):', 'ig'),
         (m, $1) => {
             if (['fuckyousnail', 'justatest', 'feelsbadman', 'pepeH', 'rocket', 'hissnail'].includes($1)) {
-                return `<div class="emote ${$1}"></div>`
+                return `<span class="emote ${$1}"></span>`
             }
             return m
         }
@@ -110,21 +151,22 @@ const enrichText = (userinput: string) => {
     )
     userinput = userinput.replaceAll(
         new RegExp('```(.*)```', 'ig'),
-        (m, $1) => `<div class="single-line-code-snippet">${hljs.highlightAuto($1).value}</div>`
+        (m, $1) => `<span class="single-line-code-snippet">${hljs.highlightAuto($1).value}</span>`
     )
     userinput = userinput.replaceAll(
         new RegExp('``(.*)``', 'ig'),
-        (m, $1) => `<div class="single-line-code-snippet">${$1}</div>`
+        (m, $1) => `<span class="single-line-code-snippet">${$1}</span>`
     )
     userinput = userinput.replaceAll(
         new RegExp('`(.*)`', 'ig'),
-        (m, $1) => `<div class="single-line-code-snippet">${$1}</div>`
+        (m, $1) => `<span class="single-line-code-snippet">${$1}</span>`
     )
     // userinput = userinput.replaceAll(
     //     new RegExp('`(.*)`', 'ig'),
     //     (m, $1) => hljs.highlight($1, {language: 'c'}).value
     // )
     userinput = replaceEmotes(userinput)
+    userinput = replacePings(userinput)
     return userinput
 }
 

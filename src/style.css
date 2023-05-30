@@ -146,6 +146,19 @@ input {
     display: none;
 }
 
+.ping-you {
+    color: #808cd6;
+    background-color: #3d4051;
+}
+
+.highlight {
+    padding: 5px;
+    color: #bbc8b6;
+    background-color: #49443c;
+    border-left: 4px solid #ffb72d;
+    border-radius: 1px;
+}
+
 .alert {
     color: rgb(90, 1, 1);
     background-color: rgb(223, 48, 48);
