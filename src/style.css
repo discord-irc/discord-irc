@@ -61,6 +61,7 @@ html, body {
     height: 64px;
     width: 64px;
     background-size: cover;
+    display: block;
 }
 
 .emote.fuckyousnail {
