@@ -32,6 +32,29 @@ let unreadMessages: number = 0
 let unreadPings: number = 0
 const channelName = 'developer'
 
+const setCookie = (cname: string, cvalue: string, exdays: number) => {
+    const d = new Date()
+    d.setTime(d.getTime() + (exdays*24*60*60*1000))
+    let expires = "expires="+ d.toUTCString()
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";SameSite=Lax;path=/"
+}
+
+const getCookie = (cname: string): string => {
+    let name = cname + "="
+    let decodedCookie = decodeURIComponent(document.cookie)
+    let ca = decodedCookie.split(';')
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i]
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1)
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length)
+      }
+    }
+    return ""
+  }
+
 const addMessageNotification = () => {
     unreadMessages++
     const pingTxt = unreadPings > 0 ? `!${unreadPings}! ` : ''
@@ -271,6 +294,7 @@ const onLogout = (): void => {
 const onLogin = (username: string): void => {
     account.username = username
     account.loggedIn = true
+    setCookie('username', username, 30)
     const overlay: HTMLElement = document.querySelector('.overlay')
     overlay.style.display = 'none'
     loginPopup.style.display = 'none'
@@ -316,7 +340,22 @@ document.querySelector('.message-pane form')
         socket.emit('message', ircMessage)
     })
 
+const prefillLoginForm = () => {
+    const username = getCookie('username')
+    if (!username) {
+        return
+    }
+    const usernameInp: HTMLInputElement = document.querySelector('#username-input')
+    usernameInp.focus()
+    usernameInp.value = username
+}
+
+/*
+    RUN ON PAGE LOAD
+*/
+
 clearNotifications()
+prefillLoginForm()
 
 fetch(`${backendUrl}/messages`)
     .then(data => data.json())
