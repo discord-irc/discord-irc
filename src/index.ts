@@ -25,7 +25,8 @@ interface Account {
 
 const account = {
     username: 'nameless tee',
-    loggedIn: false
+    loggedIn: false,
+    sessionToken: 'unset'
 }
 let autoScroll = true
 let unreadMessages: number = 0
@@ -295,7 +296,7 @@ socket.on('authResponse', (auth: AuthResponse) => {
         addLoginAlert(auth.message)
         return
     }
-    onLogin(auth.username)
+    onLogin(auth)
 })
 
 socket.on('logout', (data: LogoutMessage) => {
@@ -312,10 +313,13 @@ const onLogout = (): void => {
     loginPopup.style.display = 'block'
 }
 
-const onLogin = (username: string): void => {
-    account.username = username
+const onLogin = (authResponse: AuthResponse): void => {
+    account.username = authResponse.username
     account.loggedIn = true
-    setCookie('username', username, 30)
+    account.sessionToken = authResponse.token
+    const passwordInp: HTMLInputElement = document.querySelector('#password-input')
+    setCookie('username', authResponse.username, 30)
+    setCookie('password', passwordInp.value, 30)
     const overlay: HTMLElement = document.querySelector('.overlay')
     overlay.style.display = 'none'
     loginPopup.style.display = 'none'
@@ -354,7 +358,8 @@ document.querySelector('.message-pane form')
         messageInp.value = ""
         const ircMessage = {
             from: account.username,
-            message: message
+            message: message,
+            token: account.sessionToken
         }
         // only render when we get the res from server
         // renderMessage(ircMessage)
@@ -363,12 +368,17 @@ document.querySelector('.message-pane form')
 
 const prefillLoginForm = () => {
     const username = getCookie('username')
-    if (!username) {
-        return
+    if (username) {
+        const usernameInp: HTMLInputElement = document.querySelector('#username-input')
+        usernameInp.focus()
+        usernameInp.value = username
     }
-    const usernameInp: HTMLInputElement = document.querySelector('#username-input')
-    usernameInp.focus()
-    usernameInp.value = username
+    const password = getCookie('password')
+    if (password) {
+        const passwordInp: HTMLInputElement = document.querySelector('#password-input')
+        passwordInp.focus()
+        passwordInp.value = password
+    }
 }
 
 const bellDiv: HTMLElement = document.querySelector('.notification-bell')
