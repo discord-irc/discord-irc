@@ -1,7 +1,7 @@
 const path = require('path')
 const dotenv = require('dotenv')
 const webpack = require('webpack')
-dotenv.config();
+dotenv.config()
 
 module.exports = {
   entry: './src/index.ts',
@@ -16,19 +16,19 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
-        exclude: /node_modules/,
+        exclude: /node_modules/
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
-      },
-    ],
+        use: ['style-loader', 'css-loader']
+      }
+    ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js']
   },
   output: {
     filename: 'main.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
-};
+    path: path.resolve(__dirname, 'dist')
+  }
+}
