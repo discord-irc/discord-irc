@@ -58,7 +58,7 @@ html, body {
     margin-left: 20px;
 }
 
-.message-text.a {
+.message-text a {
     overflow-wrap: anywhere;
 }
 
