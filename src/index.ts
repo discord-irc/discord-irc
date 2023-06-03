@@ -140,7 +140,7 @@ socket.on('connect', () => {
     console.log(`connected to ${backendUrl}`)
 })
 
-const messagesContainer: HTMLElement = document.querySelector('.messages')
+const messagesContainer: HTMLElement = document.querySelector('.message-pane')
 
 const xssSanitize = (userinput: string) => {
     userinput = userinput.replaceAll('<', '&lt;')
@@ -385,7 +385,7 @@ loginPopup.querySelector('form')
         )
     })
 
-document.querySelector('.message-pane form')
+document.querySelector('form.input-pane')
     .addEventListener('submit', (event) => {
         event.preventDefault()
         const messageInp: HTMLInputElement = document.querySelector('#message-input')

@@ -92,6 +92,7 @@ html, body {
     display: grid;
     grid-template-rows: 60px 1fr 80px;
     grid-template-columns: 100px 1fr;
+    max-height: 100vh;
 }
 .layout.expanded {
     /* expand user list add 3rd column */
@@ -120,6 +121,12 @@ html, body {
 
 .message-pane {
     grid-row: 2;
+    grid-column: 2;
+    overflow: scroll;
+}
+
+.input-pane {
+    grid-row: 3;
     grid-column: 2;
 }
 
@@ -187,6 +194,7 @@ input {
 
 .embed-img {
     max-height: 500px;
+    max-width: 100%;
 }
 
 .single-line-code-snippet {
