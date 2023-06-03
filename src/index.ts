@@ -38,7 +38,7 @@ const connectedUsers: string[] = []
 const knownDiscordNames: string[] = []
 
 const userListDiv: HTMLElement = document.querySelector('.user-list')
-const userListDiscordDiv: HTMLElement = document.querySelector('.user-list')
+const userListDiscordDiv: HTMLElement = document.querySelector('.user-list-discord')
 const messageInp: HTMLInputElement = document.querySelector('#message-input')
 
 let tabNameIndex: number = 0
