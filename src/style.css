@@ -58,6 +58,10 @@ html, body {
     margin-left: 20px;
 }
 
+.message-text.a {
+    overflow-wrap: anywhere;
+}
+
 .emote {
     height: 64px;
     width: 64px;
