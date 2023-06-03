@@ -13,6 +13,7 @@ html, body {
     width: 64px;
     height: 64px;
     border-radius: 50%;
+    flex-shrink: 0;
 }
 
 .message-img.profile1 {
@@ -55,6 +56,10 @@ html, body {
 
 .message-content {
     margin-left: 20px;
+}
+
+.message-text.a {
+    overflow-wrap: anywhere;
 }
 
 .emote {
