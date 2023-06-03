@@ -275,3 +275,23 @@ a:hover {
 a.danger, a:visited.danger, a:hover.danger {
     color: red;
 }
+
+/* webkit scrollbar */
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+/* track */
+::-webkit-scrollbar-track {
+    background: #000000b9;
+}
+/* handle */
+::-webkit-scrollbar-thumb {
+    background: #585858e0;
+    border-radius: 5px;
+}
+/* handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #666666;
+}
