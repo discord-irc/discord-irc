@@ -39,6 +39,20 @@ const knownDiscordNames: string[] = []
 
 const userListDiv: HTMLElement = document.querySelector('.user-list')
 const userListDiscordDiv: HTMLElement = document.querySelector('.user-list')
+const messageInp: HTMLInputElement = document.querySelector('#message-input')
+
+let tabNameIndex: number = 0
+/*
+    tabAppendLen
+
+    number of characters we appended after @
+    when pressing tab.
+
+    The same amount will be wiped on next tab press
+    to iterate names.
+*/
+let tabAppendLen: number = 0
+let isAutocompleteTabbing: boolean = false
 
 /*
     Including discord and webchat usernames
@@ -410,7 +424,6 @@ loginPopup.querySelector('form')
 document.querySelector('form.input-pane')
     .addEventListener('submit', (event) => {
         event.preventDefault()
-        const messageInp: HTMLInputElement = document.querySelector('#message-input')
         const message = messageInp.value
         if (!message) {
             return
@@ -468,6 +481,59 @@ bellDiv.addEventListener('click', () => {
     }
 })
 
+const autoComepletePings = (event: KeyboardEvent) => {
+    const end: number = messageInp.value.length
+    // tab complete pings when typed an @
+    if (event.key === 'Tab') {
+        event.preventDefault()
+        // start tabbing with empty @
+        if (messageInp.value[end - 1] === '@' || isAutocompleteTabbing) {
+            const completedName: string = allKnownUsernames()[tabNameIndex % allKnownUsernames().length]
+            if (tabAppendLen !== 0) {
+                const choppedComplete = messageInp.value.substring(0, messageInp.value.length - (tabAppendLen - 0))
+                messageInp.value = choppedComplete
+            }
+            messageInp.value += completedName
+            tabNameIndex++
+            tabAppendLen = completedName.length
+            isAutocompleteTabbing = true
+            return
+        }
+        // continue tabbing when already typed a name
+        const atIndex = messageInp.value.indexOf('@')
+        if (atIndex !== -1) {
+            const currentCompletion = messageInp.value.substring(atIndex + 1)
+            if (currentCompletion.indexOf(' ') !== -1) {
+                // do not continue tab completing if there is a space
+                return
+            }
+            if (!currentCompletion &&
+                    currentCompletion.length === 0 &&
+                    currentCompletion.length < 16) {
+                return
+            }
+            const matchingNames = allKnownUsernames().filter((name: string) => {
+                return name.toLowerCase().startsWith(currentCompletion.toLowerCase())
+            })
+            if (matchingNames.length < 1) {
+                return
+            }
+            messageInp.value =
+                messageInp.value.substring(0, atIndex + 1) +
+                matchingNames[tabNameIndex % matchingNames.length]
+        }
+    } else {
+        // pressing any key other than tab
+        // ends the tabbing mode
+        isAutocompleteTabbing = false
+        tabAppendLen = 0
+    }
+}
+
+messageInp.addEventListener('keydown', (event: KeyboardEvent) => {
+    autoComepletePings(event)
+})
+
 /*
     RUN ON PAGE LOAD
 */
@@ -478,11 +544,9 @@ prefillLoginForm()
 fetch(`${backendUrl}/users`)
     .then(data => data.json())
     .then((users: string[]) => {
-        console.log(users)
         users.forEach((username: string) => {
             connectedUsers.push(username)
         })
-        console.log("FUCKDAT")
         updateUserList()
     })
 
