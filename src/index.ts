@@ -34,6 +34,36 @@ let unreadPings: number = 0
 let notificationsActive: boolean = false
 const channelName = 'developer'
 
+const connectedUsers: string[] = []
+
+const userListDiv: HTMLElement = document.querySelector('.user-list')
+
+const updateUserList = () => {
+    userListDiv.innerHTML = ''
+    connectedUsers.forEach((user) => {
+        console.log("adding user" + user)
+        userListDiv.insertAdjacentHTML(
+            'beforeend',
+            `<div>${user}</div>`
+        )
+    })
+}
+
+const addUser = (username: string) => {
+    connectedUsers.push(username)
+    updateUserList()
+}
+
+const removeUser = (username: string): boolean => {
+    const index = connectedUsers.indexOf(username)
+    if (index === -1) {
+        return false
+    }
+    connectedUsers.splice(index, 1)
+    updateUserList()
+    return true
+}
+
 const setCookie = (cname: string, cvalue: string, exdays: number) => {
     const d = new Date()
     d.setTime(d.getTime() + (exdays*24*60*60*1000))
@@ -307,6 +337,14 @@ socket.on('logout', (data: LogoutMessage) => {
     addLoginAlert(data.message)
 })
 
+socket.on('userJoin', (username: string) => {
+    addUser(username)
+})
+
+socket.on('userLeave', (username: string) => {
+    removeUser(username)
+})
+
 const onLogout = (): void => {
     const overlay: HTMLElement = document.querySelector('.overlay')
     overlay.style.display = 'block'
@@ -381,6 +419,14 @@ const prefillLoginForm = () => {
     }
 }
 
+const usersButton: HTMLElement = document.querySelector('.users-icon')
+const userlistPane: HTMLElement = document.querySelector('.user-list-pane')
+const layoutDiv: HTMLElement = document.querySelector('.layout')
+usersButton.addEventListener('click', () => {
+    layoutDiv.classList.toggle('expanded')
+    userlistPane.classList.toggle('active')
+})
+
 const bellDiv: HTMLElement = document.querySelector('.notification-bell')
 bellDiv.addEventListener('click', () => {
     if (!Notification) {
@@ -406,6 +452,17 @@ bellDiv.addEventListener('click', () => {
 
 clearNotifications()
 prefillLoginForm()
+
+fetch(`${backendUrl}/users`)
+    .then(data => data.json())
+    .then((users: string[]) => {
+        console.log(users)
+        users.forEach((username: string) => {
+            connectedUsers.push(username)
+        })
+        console.log("FUCKDAT")
+        updateUserList()
+    })
 
 fetch(`${backendUrl}/messages`)
     .then(data => data.json())

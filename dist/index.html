@@ -20,8 +20,17 @@
     <div class="layout">
         <div class="menu-servers">
             <div class="ddnet-server"></div>
-            <div class="notification-bell"></div>
         </div>
+        <div class="menu-bar-top">
+            <div class="channel-name-box">
+                <span class="text-light">#</span>
+                <span class="channel-name">developer</span>
+            </div>
+            <div class="menu-buttons">
+                <div class="notification-bell"></div>
+                <div class="users-icon"></div>
+            </div>
+        </div> <!-- menu-bar-top -->
         <div class="message-pane">
             <div class="messages">
                 connecting to server ...
@@ -30,6 +39,13 @@
                 <input type="text" name="message" id="message-input" placeholder="Message #developer">
             </form>
         </div> <!-- message-pane -->
+        <div class="user-list-pane">
+            <div class="text-light">
+                Webchat
+            </div>
+            <div class="user-list">
+            </div>
+        </div> <!-- user-list -->
     </div> <!-- layout -->
     <script src="main.js"></script>
 </body>

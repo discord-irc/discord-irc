@@ -27,6 +27,8 @@ export interface ServerToClientEvents {
     message: (message: IrcMessage) => void
     authResponse: (auth: AuthResponse) => void
     logout: (data: LogoutMessage) => void
+    userJoin: (username: string) => void
+    userLeave: (username: string) => void
 }
 
 export interface ClientToServerEvents {

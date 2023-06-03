@@ -85,12 +85,57 @@ html, body {
 
 .layout {
     display: grid;
+    grid-template-rows: 60px 1fr 80px;
     grid-template-columns: 100px 1fr;
+}
+.layout.expanded {
+    /* expand user list add 3rd column */
+    grid-template-columns: 100px 1fr 400px;
 }
 
 .menu-servers {
     height: 100vh;
     background-color: #26272a;
+    grid-column: 1;
+    grid-row: 1 / -1;
+}
+
+.menu-bar-top {
+    height: 100%;
+    background-color: #383c40;
+    border-bottom: 1px solid #33363a;
+    grid-row: 1;
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.message-pane {
+    grid-row: 2;
+    grid-column: 2;
+}
+
+.user-list-pane {
+    display: none;
+    background-color: #313439;
+    grid-row: 1 / -1;
+    padding: 10px;
+}
+.user-list-pane.active {
+    display: block;
+}
+
+.menu-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.text-light {
+    color: #888d93;
 }
 
 .ddnet-server {
@@ -101,12 +146,18 @@ html, body {
     margin: auto;
 }
 
+.users-icon {
+    background-image: url("img/ui/users.svg");
+    height: 32px;
+    width: 32px;
+    background-size: cover;
+}
+
 .notification-bell {
-    height: 64px;
-    width: 64px;
+    height: 32px;
+    width: 32px;
     background-image: url("img/ui/bell_off.svg");
     background-size: cover;
-    margin: auto;
 }
 
 .notification-bell.active {
@@ -114,7 +165,7 @@ html, body {
 }
 
 .messages {
-    height: calc(100vh - 80px);
+    height: 100%;
     overflow: overlay;
 }
 
