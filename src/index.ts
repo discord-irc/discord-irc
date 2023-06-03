@@ -307,8 +307,7 @@ messagesContainer.addEventListener('scroll', () => {
     autoScroll = scroll > maxScroll - 5
 })
 
-socket.on('message', (message: IrcMessage) => {
-    console.log(message)
+const addMessage = (message: IrcMessage) => {
     let isBridge = false
     if (message.from === 'bridge') {
         const slibbers = message.message.split('>')
@@ -320,8 +319,11 @@ socket.on('message', (message: IrcMessage) => {
         }
         isBridge = true
     }
-    console.log(`'${message.from}'`)
     renderMessage(message, isBridge)
+}
+
+socket.on('message', (message: IrcMessage) => {
+    addMessage(message)
 })
 
 const loginPopup: HTMLElement = document.querySelector('.login-popup')
@@ -486,6 +488,6 @@ fetch(`${backendUrl}/messages`)
         // clears the loading message
         messagesContainer.innerHTML = ""
         messages.forEach((message: IrcMessage) => {
-            renderMessage(message)
+            addMessage(message)
         })
     })
