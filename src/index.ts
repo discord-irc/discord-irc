@@ -35,14 +35,25 @@ let notificationsActive: boolean = false
 const channelName = 'developer'
 
 const connectedUsers: string[] = []
+const knownDiscordNames: string[] = []
 
 const userListDiv: HTMLElement = document.querySelector('.user-list')
+const userListDiscordDiv: HTMLElement = document.querySelector('.user-list')
 
 const updateUserList = () => {
     userListDiv.innerHTML = ''
     connectedUsers.forEach((user) => {
-        console.log("adding user" + user)
         userListDiv.insertAdjacentHTML(
+            'beforeend',
+            `<div>${user}</div>`
+        )
+    })
+}
+
+const updateUserListDiscord = () => {
+    userListDiscordDiv.innerHTML = ""
+    knownDiscordNames.forEach((user) => {
+        userListDiscordDiv.insertAdjacentHTML(
             'beforeend',
             `<div>${user}</div>`
         )
@@ -303,6 +314,10 @@ socket.on('message', (message: IrcMessage) => {
         const slibbers = message.message.split('>')
 		message.from = slibbers[0].substring(1)
 		message.message = slibbers.slice(1).join('>').substring(1)
+        if (knownDiscordNames.indexOf(message.from) === -1) {
+            knownDiscordNames.push(message.from)
+            updateUserListDiscord()
+        }
 		isBridge = true
     }
     console.log(`'${message.from}'`)
