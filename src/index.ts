@@ -228,6 +228,7 @@ const enrichText = (userinput: string) => {
                 url.startsWith("https://raw.githubusercontent.com/") ||
                 url.startsWith("https://cdn.discordapp.com/attachments/")
             const isImageUrl: boolean = new RegExp('\\.(png|jpg|jpeg|webp|svg)$', 'i').test(url)
+            const isVideoUrl: boolean = new RegExp('\\.(mp4)$', 'i').test(url)
             // https://github.com/foo/bar/@baz.com
             // most browsers would visit the website baz.com
             // and provide https as username and //github.com/foo/bar/
@@ -248,8 +249,15 @@ const enrichText = (userinput: string) => {
                     ${url}
                 </a>`
             }
-            if (isWhitelistedCdn && isImageUrl) {
-                return `<img class="embed-img" src="${url}">`
+            if (isWhitelistedCdn) {
+                if (isImageUrl) {
+                    return `<img class="embed-img" src="${url}">`
+                } else if (isVideoUrl) {
+                    return `<video width="320" controls>
+                        <source src="${url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>`
+                }
             }
             return `<a href="${url}">${url}</a>`
         }
