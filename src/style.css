@@ -172,11 +172,12 @@ html, body {
 input {
     all: unset;
     background-color: #43464c;
-    width: 100%;
+    width: calc(100% - 16px);
     height: 40px;
     padding-left: 5px;
     margin: 8px;
     border-radius: 5px;
+    box-sizing: border-box;
 }
 
 .embed-img {
