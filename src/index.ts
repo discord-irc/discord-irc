@@ -40,6 +40,13 @@ const knownDiscordNames: string[] = []
 const userListDiv: HTMLElement = document.querySelector('.user-list')
 const userListDiscordDiv: HTMLElement = document.querySelector('.user-list')
 
+/*
+    Including discord and webchat usernames
+*/
+const allKnownUsernames = (): string[] => {
+    return connectedUsers.concat(knownDiscordNames)
+}
+
 const updateUserList = () => {
     userListDiv.innerHTML = ''
     connectedUsers.forEach((user) => {
@@ -161,24 +168,22 @@ const xssSanitize = (userinput: string) => {
 
 const replacePings = (message: string): string => {
     let highlightMessage = false
-    message = message.replaceAll(
-        new RegExp('@([^ ]+)', 'ig'),
-        (m, $1) => {
-            if ($1 === account.username) {
-                highlightMessage = true
-                return `<span class="ping-you">${m}</span>`
+    allKnownUsernames().forEach((username) => {
+        message = message.replaceAll(
+            `@${username}`,
+            () => {
+                if (username === account.username) {
+                    highlightMessage = true
+                }
+                return `<span class="ping">@${username}</span>`
             }
-            // TODO: hightlight ping other here
-            //       is a bit more complicated with spaces
-            //       false positives in code blocks etc
-            return m
-        }
-    )
+        )
+    })
     // TODO: this also highlights user "foo" in the word "barfoos"
     if(!highlightMessage) {
-        message = message.replaceAll(account.username, (m) => {
+        message = message.replaceAll(new RegExp(account.username, 'ig'), (m) => {
             highlightMessage = true
-            return `<span class="ping-you">${m}</span>`
+            return `<span class="ping">${m}</span>`
         })
     }
     if (highlightMessage) {

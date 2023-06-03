@@ -222,12 +222,13 @@ input {
     display: none;
 }
 
-.ping-you {
+.ping {
     color: #808cd6;
     background-color: #3d4051;
 }
 
 .highlight {
+    width: 100%;
     padding: 5px;
     color: #bbc8b6;
     background-color: #49443c;
