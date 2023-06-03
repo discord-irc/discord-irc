@@ -312,13 +312,13 @@ socket.on('message', (message: IrcMessage) => {
     let isBridge = false
     if (message.from === 'bridge') {
         const slibbers = message.message.split('>')
-		message.from = slibbers[0].substring(1)
-		message.message = slibbers.slice(1).join('>').substring(1)
+        message.from = slibbers[0].substring(1)
+        message.message = slibbers.slice(1).join('>').substring(1)
         if (knownDiscordNames.indexOf(message.from) === -1) {
             knownDiscordNames.push(message.from)
             updateUserListDiscord()
         }
-		isBridge = true
+        isBridge = true
     }
     console.log(`'${message.from}'`)
     renderMessage(message, isBridge)
