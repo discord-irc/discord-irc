@@ -56,7 +56,21 @@ html, body {
 }
 
 .message-author {
-    color: #59767f;
+    color: white;
+    font-size: 22px;
+}
+
+.message-date {
+    margin-left: 10px;
+    color: #72767d;
+    font-size: 16px;
+}
+
+.message-header {
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
 }
 
 .message-content {

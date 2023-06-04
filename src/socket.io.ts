@@ -3,6 +3,7 @@ import { Socket } from 'socket.io'
 export interface IrcMessage {
     from: string,
     message: string,
+    date: string,
     token?: string
 }
 

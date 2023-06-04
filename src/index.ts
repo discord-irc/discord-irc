@@ -285,10 +285,53 @@ const enrichText = (userinput: string) => {
     // )
     userinput = replaceEmotes(userinput)
     userinput = replacePings(userinput)
+    userinput = userinput.replaceAll('\n', '<br>')
     return userinput
 }
 
+const utcStrToMMDDYYYY = (utc: string): string => {
+    const date: Date = new Date(utc)
+    const month: string = String(date.getMonth()).padStart(2, '0')
+    const day: string = String(date.getDate()).padStart(2, '0')
+    return `${month}/${day}/${date.getFullYear()}`
+}
+
+const utcStrToNiceDate = (utc: string): string => {
+    const date = new Date(utc)
+    const today = new Date()
+    const diffTime = Math.abs(today.valueOf() - date.valueOf())
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+    if (diffDays === 0) {
+        return `Today at ${date.getHours()}:${date.getMinutes()}`
+    }
+    return utcStrToMMDDYYYY(utc)
+}
+
+const checkMergePrevMessage = (message: IrcMessage): HTMLElement | null => {
+    const prevMessage: HTMLElement = document.querySelector('.message:last-child')
+    if (!prevMessage) {
+        return null
+    }
+    const prevAuthorDom: HTMLElement = prevMessage.querySelector('.message-author')
+    const prevAuthor = prevAuthorDom.innerText
+    if (prevAuthor !== message.from) {
+        return null
+    }
+    const lastDate = new Date(prevMessage.dataset.date)
+    const thisDate = new Date(message.date)
+    const diff = thisDate.valueOf() - lastDate.valueOf()
+    // only merge messages that were sent
+    // with a 6 second delay
+    // should still cover the bridge ratelimited
+    // discord multi line message delays
+    if (diff > 6000) {
+        return null
+    }
+    return prevMessage
+}
+
 const renderMessage = (message: IrcMessage, isBridge = false) => {
+    const mergeMessage: HTMLElement | null = checkMergePrevMessage(message)
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charCodeAt
     // can return 0-65535
     // but should be in the ascii range for most names
@@ -307,26 +350,41 @@ const renderMessage = (message: IrcMessage, isBridge = false) => {
     } else if (code > 80) {
         profileId = 6
     }
-    messagesContainer.insertAdjacentHTML(
-        'beforeend',
-        `<div class="message">
-            <div class="message-img profile${profileId}${isBridge ? " bridge" : ""}"></div>
-            <div class="message-content">
-                <div class="message-author">
-                    ${xssSanitize(message.from)}
-                </div>
-                <div class="message-text">
-                    ${
-                        enrichText(
-                            xssSanitize(message.message)
-                        )
-                    }
-                </div>
-            </div> <!-- message-content -->
-        </div>`
-    )
-    if (document.hidden) {
-        addMessageNotification()
+    if (mergeMessage) {
+        const mergeMessageText: HTMLElement = mergeMessage.querySelector('.message-text')
+        const newRichText = enrichText(xssSanitize(
+            mergeMessageText.innerText +
+            '\n' +
+            message.message
+        ))
+        mergeMessageText.innerHTML = newRichText
+    } else {
+        messagesContainer.insertAdjacentHTML(
+            'beforeend',
+            `<div class="message" data-date="${message.date}">
+                <div class="message-img profile${profileId}${isBridge ? " bridge" : ""}"></div>
+                <div class="message-content">
+                    <div class="message-header">
+                        <div class="message-author">
+                            ${xssSanitize(message.from)}
+                        </div>
+                        <div class="message-date">
+                            ${utcStrToNiceDate(message.date)}
+                        </div>
+                    </div> <!-- message-header -->
+                    <div class="message-text">
+                        ${
+                            enrichText(
+                                xssSanitize(message.message)
+                            )
+                        }
+                    </div>
+                </div> <!-- message-content -->
+            </div>`
+        )
+        if (document.hidden) {
+            addMessageNotification()
+        }
     }
     if (autoScroll) {
         messagesContainer.scrollTop = messagesContainer.scrollHeight
@@ -445,7 +503,8 @@ document.querySelector('form.input-pane')
         const ircMessage = {
             from: account.username,
             message: message,
-            token: account.sessionToken
+            token: account.sessionToken,
+            date: new Date().toUTCString()
         }
         // only render when we get the res from server
         // renderMessage(ircMessage)
