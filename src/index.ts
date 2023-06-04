@@ -293,29 +293,41 @@ const enrichText = (userinput: string) => {
         let currentCodeBlock = ''
         lines.forEach((line) => {
             console.log(`inCodeBlock=${inCodeBlock} currentCodeBlock=${currentCodeBlock} line=${line}`)
+            const languages = [
+                'c', 'rust',
+                'c++', 'cpp',
+                'python', 'javascript',
+                'xml', 'html', 'css',
+                'dockerfile', 'yaml', 'json',
+                'bash', 'shell'
+            ]
+            let isCodeBlockOpenLine: boolean = false
+            if (inCodeBlock === null) {
+                languages.forEach((lang) => {
+                    if (line === '```' + lang) {
+                        inCodeBlock = lang
+                    } else if (line === '```rs' || line === '```edlang') {
+                        inCodeBlock = 'rust'
+                    } else if (line === '```') {
+                        inCodeBlock = 'plaintext'
+                    } else {
+                        return
+                    }
+                    isCodeBlockOpenLine = true
+                })
+            }
+            if (isCodeBlockOpenLine) {
+                return
+            }
             if (line === '```') {
-                if (inCodeBlock === null) {
-                    inCodeBlock = 'unset'
-                } else {
-                    const lang = inCodeBlock === 'unset' ? 'plaintext' : inCodeBlock
-                    const codeHljs = hljs.highlight(currentCodeBlock, {language: lang}).value
-                    console.log(`apply code lang=${lang} code=${codeHljs}`)
+                if (inCodeBlock !== null) {
+                    const codeHljs = hljs.highlight(currentCodeBlock, {language: inCodeBlock}).value
+                    console.log(`apply code lang=${inCodeBlock} code=${codeHljs}`)
                     mergedLines += `<span class="multi-line-code-snippet code-snippet">${codeHljs}</span>`
                     currentCodeBlock = ''
                     inCodeBlock = null
-                }
-            } else if (inCodeBlock === 'unset') {
-                if ([
-                    'c', 'rust',
-                    'c++', 'cpp',
-                    'python', 'javascript',
-                    'xml', 'html', 'css',
-                    'dockerfile', 'yaml', 'json',
-                    'bash', 'shell'
-                ].includes(line)) {
-                    inCodeBlock = line
                 } else {
-                    inCodeBlock = 'plaintext'
+                    console.log('WARNING UNEXPECTED ```')
                 }
             } else if (inCodeBlock !== null) {
                 currentCodeBlock += line + '\n'
@@ -325,9 +337,11 @@ const enrichText = (userinput: string) => {
         })
         userinput = mergedLines
         if (inCodeBlock) {
-            userinput += '```' + '\n'
-            if (inCodeBlock !== 'unset') {
+            userinput += '```'
+            if (inCodeBlock !== 'plaintext') {
                 userinput += inCodeBlock + '\n'
+            } else {
+                userinput += '\n'
             }
             userinput += currentCodeBlock
         }
