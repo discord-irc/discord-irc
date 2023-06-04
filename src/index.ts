@@ -4,16 +4,33 @@ import { ClientToServerEvents, ServerToClientEvents, IrcMessage, AuthResponse, L
 import DOMPurify from 'dompurify'
 // import hljs from 'highlight.js' // works but is slow because it bloats in too many langs
 import hljs from 'highlight.js/lib/core'
+import plaintext from 'highlight.js/lib/languages/plaintext';
 import javascript from 'highlight.js/lib/languages/javascript';
 import python from 'highlight.js/lib/languages/python';
 import c from 'highlight.js/lib/languages/c';
 import cpp from 'highlight.js/lib/languages/cpp';
 import rust from 'highlight.js/lib/languages/rust';
+import xml from 'highlight.js/lib/languages/xml';
+import css from 'highlight.js/lib/languages/css';
+import dockerfile from 'highlight.js/lib/languages/dockerfile';
+import yaml from 'highlight.js/lib/languages/yaml';
+import json from 'highlight.js/lib/languages/json';
+import bash from 'highlight.js/lib/languages/bash';
+import shell from 'highlight.js/lib/languages/shell';
+hljs.registerLanguage('plaintext', plaintext);
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('python', python);
 hljs.registerLanguage('c', c);
 hljs.registerLanguage('cpp', cpp);
 hljs.registerLanguage('rust', rust);
+hljs.registerLanguage('html', xml);
+hljs.registerLanguage('xml', xml);
+hljs.registerLanguage('css', css);
+hljs.registerLanguage('dockerfile', dockerfile);
+hljs.registerLanguage('yaml', yaml);
+hljs.registerLanguage('json', json);
+hljs.registerLanguage('bash', bash);
+hljs.registerLanguage('shell', shell);
 
 import './style.css'
 import 'highlight.js/styles/github.css';
@@ -267,22 +284,83 @@ const enrichText = (userinput: string) => {
             return `<a target="_blank" href="${url}">${url}</a>`
         }
     )
-    userinput = userinput.replaceAll(
-        new RegExp('```(.*)```', 'ig'),
-        (m, $1) => `<span class="single-line-code-snippet">${hljs.highlightAuto($1).value}</span>`
-    )
-    userinput = userinput.replaceAll(
-        new RegExp('``(.*)``', 'ig'),
-        (m, $1) => `<span class="single-line-code-snippet">${$1}</span>`
-    )
-    userinput = userinput.replaceAll(
-        new RegExp('`(.*)`', 'ig'),
-        (m, $1) => `<span class="single-line-code-snippet">${$1}</span>`
-    )
+    // multi line message!
+    if (userinput.indexOf('\n') !== -1) {
+        console.log('got multi line')
+        const lines = userinput.split('\n')
+        let mergedLines = ''
+        let inCodeBlock: null | string = null
+        let currentCodeBlock = ''
+        lines.forEach((line) => {
+            console.log(`inCodeBlock=${inCodeBlock} currentCodeBlock=${currentCodeBlock} line=${line}`)
+            if (line === '```') {
+                if (inCodeBlock === null) {
+                    inCodeBlock = 'unset'
+                } else {
+                    const lang = inCodeBlock === 'unset' ? 'plaintext' : inCodeBlock
+                    const codeHljs = hljs.highlight(currentCodeBlock, {language: lang}).value
+                    console.log(`apply code lang=${lang} code=${codeHljs}`)
+                    mergedLines += `<span class="multi-line-code-snippet code-snippet">${codeHljs}</span>`
+                    currentCodeBlock = ''
+                    inCodeBlock = null
+                }
+            } else if (inCodeBlock === 'unset') {
+                if ([
+                    'c', 'rust',
+                    'c++', 'cpp',
+                    'python', 'javascript',
+                    'xml', 'html', 'css',
+                    'dockerfile', 'yaml', 'json',
+                    'bash', 'shell'
+                ].includes(line)) {
+                    inCodeBlock = line
+                } else {
+                    inCodeBlock = 'plaintext'
+                }
+            } else if (inCodeBlock !== null) {
+                currentCodeBlock += line + '\n'
+            } else {
+                mergedLines += line + '\n'
+            }
+        })
+        userinput = mergedLines
+        if (inCodeBlock) {
+            userinput += '```' + '\n'
+            if (inCodeBlock !== 'unset') {
+                userinput += inCodeBlock + '\n'
+            }
+            userinput += currentCodeBlock
+        }
+        console.log('rebuild userinput to: ' + userinput)
+    }
     // userinput = userinput.replaceAll(
     //     new RegExp('`(.*)`', 'ig'),
     //     (m, $1) => hljs.highlight($1, {language: 'c'}).value
     // )
+    userinput = userinput.replaceAll(
+        new RegExp('```(.*)```', 'ig'),
+        (m, $1) => {
+            return `<span class="single-line-code-snippet code-snippet">${hljs.highlightAuto($1).value}</span>`
+        }
+    )
+    userinput = userinput.replaceAll(
+        new RegExp('``(.*)``', 'ig'),
+        (m, $1) => {
+            return `<span class="single-line-code-snippet code-snippet">${$1}</span>`
+        }
+    )
+    userinput = userinput.replaceAll(
+        new RegExp('`(.*)`', 'ig'),
+        (m, $1) => {
+            // do not pack ``` as a single ` in code
+            // because its most of the time a tripple code block
+            if ($1 === '`') {
+                return m
+            }
+            console.log("single applied")
+            return `<span class="single-line-code-snippet code-snippet">${$1}</span>`
+        }
+    )
     userinput = replaceEmotes(userinput)
     userinput = replacePings(userinput)
     userinput = userinput.replaceAll('\n', '<br>')

@@ -212,13 +212,21 @@ input {
     max-width: 100%;
 }
 
-.single-line-code-snippet {
+.code-snippet {
     background-color: #333439;
     border-radius: 3px;
     font-feature-settings:"liga" 0, "dlig" 0;
-    width: fit-content;
-    padding: 3px;
     font-family: 'Courier New', Courier, monospace;
+    padding: 3px;
+}
+
+.single-line-code-snippet {
+    width: fit-content;
+}
+
+.multi-line-code-snippet {
+    width: 100%;
+    display: block;
 }
 
 .overlay {
