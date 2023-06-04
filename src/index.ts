@@ -395,6 +395,11 @@ const checkMergePrevMessage = (message: IrcMessage): HTMLElement | null => {
     if (prevAuthor !== message.from) {
         return null
     }
+    if (prevMessage.querySelector('img') || prevMessage.querySelector('video')) {
+        // never merge messages containing media
+        // otherwise they get unhtmld and then the media is lost
+        return null
+    }
     const lastDate = new Date(prevMessage.dataset.date)
     const thisDate = new Date(message.date)
     const diff = thisDate.valueOf() - lastDate.valueOf()
