@@ -96,6 +96,10 @@ const removeUser = (username: string): boolean => {
     return true
 }
 
+const getLastIndex = (haystack: string, needle: string): number => {
+	return haystack.length - 1 - haystack.split('').reverse().indexOf(needle)
+}
+
 const setCookie = (cname: string, cvalue: string, exdays: number) => {
     const d = new Date()
     d.setTime(d.getTime() + (exdays*24*60*60*1000))
@@ -508,7 +512,7 @@ const autoComepletePings = (event: KeyboardEvent) => {
             return
         }
         // continue tabbing when already typed a name
-        const atIndex = messageInp.value.indexOf('@')
+        const atIndex = getLastIndex(messageInp.value, '@')
         if (atIndex !== -1) {
             const currentCompletion = messageInp.value.substring(atIndex + 1)
             if (currentCompletion.indexOf(' ') !== -1) {
