@@ -352,19 +352,39 @@ const enrichText = (userinput: string) => {
     //     (m, $1) => hljs.highlight($1, {language: 'c'}).value
     // )
     userinput = userinput.replaceAll(
-        new RegExp('```(.*)```', 'ig'),
+        new RegExp('```(.*)```', 'g'),
         (m, $1) => {
             return `<span class="single-line-code-snippet code-snippet">${hljs.highlightAuto($1).value}</span>`
         }
     )
+    const codeSnipAnnotater = (sep: string, codesnip: string): string => {
+        const subsplits: string[] = codesnip.split(sep)
+        console.log(subsplits)
+        if (subsplits.length === 0) {
+            return `<span class="single-line-code-snippet code-snippet">${codesnip}</span>`
+        }
+        let res = ''
+        let isCode = true
+        subsplits.forEach((subsplit) => {
+            if (isCode) {
+                res += '<span class="single-line-code-snippet code-snippet">'
+                res += subsplit
+                res += '</span>'
+            } else {
+                res += subsplit
+            }
+            isCode = !isCode
+        })
+        return res
+    }
     userinput = userinput.replaceAll(
-        new RegExp('``(.*)``', 'ig'),
+        new RegExp('``(.*)``', 'g'),
         (m, $1) => {
-            return `<span class="single-line-code-snippet code-snippet">${$1}</span>`
+            return codeSnipAnnotater('``', $1)
         }
     )
     userinput = userinput.replaceAll(
-        new RegExp('`(.*)`', 'ig'),
+        new RegExp('`(.*)`', 'g'),
         (m, $1) => {
             // do not pack ``` as a single ` in code
             // because its most of the time a tripple code block
@@ -372,7 +392,7 @@ const enrichText = (userinput: string) => {
                 return m
             }
             console.log("single applied")
-            return `<span class="single-line-code-snippet code-snippet">${$1}</span>`
+            return codeSnipAnnotater('`', $1)
         }
     )
     userinput = replaceEmotes(userinput)
