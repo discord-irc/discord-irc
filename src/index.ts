@@ -286,13 +286,11 @@ const enrichText = (userinput: string) => {
     )
     // multi line message!
     if (userinput.indexOf('\n') !== -1) {
-        console.log('got multi line')
         const lines = userinput.split('\n')
         let mergedLines = ''
         let inCodeBlock: null | string = null
         let currentCodeBlock = ''
         lines.forEach((line) => {
-            console.log(`inCodeBlock=${inCodeBlock} currentCodeBlock=${currentCodeBlock} line=${line}`)
             const languages = [
                 'c', 'rust',
                 'c++', 'cpp',
@@ -322,7 +320,6 @@ const enrichText = (userinput: string) => {
             if (line === '```') {
                 if (inCodeBlock !== null) {
                     const codeHljs = hljs.highlight(currentCodeBlock, {language: inCodeBlock}).value
-                    console.log(`apply code lang=${inCodeBlock} code=${codeHljs}`)
                     mergedLines += `<span class="multi-line-code-snippet code-snippet">${codeHljs}</span>`
                     currentCodeBlock = ''
                     inCodeBlock = null
@@ -345,7 +342,6 @@ const enrichText = (userinput: string) => {
             }
             userinput += currentCodeBlock
         }
-        console.log('rebuild userinput to: ' + userinput)
     }
     // userinput = userinput.replaceAll(
     //     new RegExp('`(.*)`', 'ig'),
@@ -359,7 +355,6 @@ const enrichText = (userinput: string) => {
     )
     const codeSnipAnnotater = (sep: string, codesnip: string): string => {
         const subsplits: string[] = codesnip.split(sep)
-        console.log(subsplits)
         if (subsplits.length === 0) {
             return `<span class="single-line-code-snippet code-snippet">${codesnip}</span>`
         }
@@ -391,7 +386,6 @@ const enrichText = (userinput: string) => {
             if ($1 === '`') {
                 return m
             }
-            console.log("single applied")
             return codeSnipAnnotater('`', $1)
         }
     )
@@ -742,7 +736,6 @@ fetch(`${backendUrl}/users`)
 fetch(`${backendUrl}/messages`)
     .then(data => data.json())
     .then((messages: IrcMessage[]) => {
-        console.log(messages)
         // clears the loading message
         messagesContainer.innerHTML = ""
         messages.forEach((message: IrcMessage) => {
