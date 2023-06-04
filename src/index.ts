@@ -196,8 +196,8 @@ socket.on('connect', () => {
 const messagesContainer: HTMLElement = document.querySelector('.message-pane')
 
 const xssSanitize = (userinput: string) => {
-    userinput = userinput.replaceAll('<', '&lt;')
-    userinput = userinput.replaceAll('>', '&gt;')
+    // userinput = userinput.replaceAll('<', '&lt;')
+    // userinput = userinput.replaceAll('>', '&gt;')
     return DOMPurify.sanitize(userinput)
 }
 
