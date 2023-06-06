@@ -250,7 +250,6 @@ const translateEmotes = (message: string): string => {
 }
 
 const replaceEmotes = (message: string): string => {
-    console.log(`replaceEmotes msg=${message}`)
     message = message.replaceAll(
         new RegExp('(<|&lt;):([a-zA-Z0-9]+):([0-9]+)(>|&gt;)', 'ig'),
         (m, $1, $2, $3) => {
@@ -258,16 +257,14 @@ const replaceEmotes = (message: string): string => {
             if (!emoteName) {
                 return m
             }
-            if (['fuckyousnail', 'justatest', 'feelsbadman', 'pepeH', 'rocket', 'hissnail'].includes(emoteName)) {
-                return `<span class="emote ${emoteName}"></span>`
-            }
-            return m
+            return `<span class="emote ${emoteName}"></span>`
         }
     )
     message = message.replaceAll(
         new RegExp(':([a-zA-Z0-9]+):', 'ig'),
         (m, $1) => {
-            if (['fuckyousnail', 'justatest', 'feelsbadman', 'pepeH', 'rocket', 'hissnail'].includes($1)) {
+            const emoteId: string | null = getDiscordEmoteIdByName($1)
+            if (emoteId) {
                 return `<span class="emote ${$1}"></span>`
             }
             return m

@@ -84,6 +84,18 @@ html, body {
     display: block;
 }
 
+.emote.wormy {
+    background-image: url("img/emotes/wormy.png");
+}
+.emote.ass {
+    background-image: url("img/emotes/ass.png");
+}
+.emote.trollchungus {
+    background-image: url("img/emotes/trollchungus.png");
+}
+.emote.gigachad {
+    background-image: url("img/emotes/gigachad.png");
+}
 .emote.fuckyousnail {
     background-image: url("img/emotes/fuckyousnail.webp");
 }
@@ -96,11 +108,20 @@ html, body {
 .emote.pepeH {
     background-image: url("img/emotes/pepeH.webp");
 }
-.emote.rocket {
-    background-image: url("img/emotes/rocket.svg");
+.emote.poggers2 {
+    background-image: url("img/emotes/poggers2.png");
 }
 .emote.hissnail {
     background-image: url("img/emotes/hissnail.png");
+}
+.emote.f3 {
+    background-image: url("img/emotes/f3.png");
+}
+.emote.f4 {
+    background-image: url("img/emotes/f4.png");
+}
+.emote.rocket {
+    background-image: url("img/emotes/rocket.svg");
 }
 
 .layout {
