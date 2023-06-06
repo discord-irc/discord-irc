@@ -10,21 +10,31 @@ const emoteMappings: Record<string, string> = {
     'hisnail': '768893210726367232',
     'f3': '397431188941438976',
     'f4': '397431204552376320',
-    'Catxplosion': '1082715870893195274', // https://cdn.discordapp.com/emojis/1082715870893195274.gif?size=80&quality=lossless
     'rocket': 'rocket',
 }
 // TODO: fuckyousnail
+const animatedEmoteMappings: Record<string, string> = {
+    'Catxplosion': '1082715870893195274', // https://cdn.discordapp.com/emojis/1082715870893195274.gif?size=80&quality=lossless
+}
 
 /*
     justatest => 572499997178986510
 */
-export const getDiscordEmoteIdByName = (emoteName: string): string | null => {
-    return emoteMappings[emoteName] || null
+export const getDiscordEmoteIdByName = (emoteName: string, type: string = 'custom'): string | null => {
+    let lookupObj = emoteMappings
+    if (type === 'animated') {
+        lookupObj = animatedEmoteMappings
+    }
+    return lookupObj[emoteName] || null
 }
 
 /*
     572499997178986510 => justatest
 */
-export const getDiscordEmoteNameById = (emoteId: string): string | null => {
-    return Object.keys(emoteMappings).find(key => emoteMappings[key] === emoteId) || null
+export const getDiscordEmoteNameById = (emoteId: string, type: string = 'custom'): string | null => {
+    let lookupObj = emoteMappings
+    if (type === 'animated') {
+        lookupObj = animatedEmoteMappings
+    }
+    return Object.keys(lookupObj).find(key => lookupObj[key] === emoteId) || null
 }

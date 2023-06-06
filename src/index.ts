@@ -250,6 +250,22 @@ const translateEmotes = (message: string): string => {
 }
 
 const replaceEmotes = (message: string): string => {
+    // discord rich presence animated emotes for example:
+    // <a:Catxplosion:1082715870893195274>
+    message = message.replaceAll(
+        new RegExp('(<|&lt;)a:([a-zA-Z0-9]+):([0-9]+)(>|&gt;)', 'ig'),
+        (m, $1, $2, $3) => {
+            const emoteId: string = $2
+            const emoteName: string | null = getDiscordEmoteNameById(emoteId, 'animated')
+            if (!emoteName) {
+                return m
+            }
+            const gifUrl = `https://cdn.discordapp.com/emojis/${emoteId}.gif?size=80&quality=lossless`
+            return `<img src="${gifUrl}" alt="${emoteName}">`
+        }
+    )
+    // discord rich presence emotes for example:
+    // <:hisnail:768893210726367232>
     message = message.replaceAll(
         new RegExp('(<|&lt;):([a-zA-Z0-9]+):([0-9]+)(>|&gt;)', 'ig'),
         (m, $1, $2, $3) => {
@@ -260,6 +276,8 @@ const replaceEmotes = (message: string): string => {
             return `<span class="emote ${emoteName}"></span>`
         }
     )
+    // simple emotes for example:
+    // :justatest:
     message = message.replaceAll(
         new RegExp(':([a-zA-Z0-9]+):', 'ig'),
         (m, $1) => {
