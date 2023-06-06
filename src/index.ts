@@ -255,7 +255,7 @@ const replaceEmotes = (message: string): string => {
     message = message.replaceAll(
         new RegExp('(<|&lt;)a:([a-zA-Z0-9]+):([0-9]+)(>|&gt;)', 'ig'),
         (m, $1, $2, $3) => {
-            const emoteId: string = $2
+            const emoteId: string = $3
             const emoteName: string | null = getDiscordEmoteNameById(emoteId, 'animated')
             if (!emoteName) {
                 return m
@@ -516,7 +516,7 @@ const renderMessage = (message: IrcMessage, isBridge = false) => {
     }
     if (mergeMessage) {
         const mergeMessageText: HTMLElement = mergeMessage.querySelector('.message-text')
-        const newRichText = enrichText(xssSanitize(
+        const newRichText = xssSanitize(enrichText(
             mergeMessageText.innerText +
             '\n' +
             message.message
@@ -538,8 +538,8 @@ const renderMessage = (message: IrcMessage, isBridge = false) => {
                     </div> <!-- message-header -->
                     <div class="message-text">
                         ${
-                            enrichText(
-                                xssSanitize(message.message)
+                            xssSanitize(
+                                enrichText(message.message)
                             )
                         }
                     </div>
