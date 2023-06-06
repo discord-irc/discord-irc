@@ -12,7 +12,7 @@ const emoteMappings: Record<string, string> = {
     'f4': '397431204552376320',
     'rocket': 'rocket',
 }
-// TODO: fuckyousnail
+// TODO: :fuckyousnail: :banhammer: :feelsamazingman: :greenthing: :kek: :monkalaugh: :monkaS: :troll: :nouis: 
 const animatedEmoteMappings: Record<string, string> = {
     'Catxplosion': '1082715870893195274', // https://cdn.discordapp.com/emojis/1082715870893195274.gif?size=80&quality=lossless
 }
