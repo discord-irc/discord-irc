@@ -33,7 +33,8 @@ hljs.registerLanguage('bash', bash);
 hljs.registerLanguage('shell', shell);
 
 import './style.css'
-import 'highlight.js/styles/github.css';
+import 'highlight.js/styles/github.css'
+import { getDiscordEmoteIdByName, getDiscordEmoteNameById } from './emotes'
 
 interface Account {
     username: string,
@@ -228,8 +229,42 @@ const replacePings = (message: string): string => {
     return message
 }
 
+/*
+    translateEmotes
+
+    replace :justatest: with <:justatest:572499997178986510>
+    which then gets rendered as actual emote on discord
+*/
+const translateEmotes = (message: string): string => {
+    message = message.replaceAll(
+        new RegExp(':([a-zA-Z0-9]+):', 'ig'),
+        (m, $1) => {
+            const emoteId: string | null = getDiscordEmoteIdByName($1)
+            if (!emoteId) {
+                return
+            }
+            return `<:${$1}:${emoteId}>`
+        }
+    )
+    return message
+}
+
 const replaceEmotes = (message: string): string => {
-    return message.replaceAll(
+    console.log(`replaceEmotes msg=${message}`)
+    message = message.replaceAll(
+        new RegExp('(<|&lt;):([a-zA-Z0-9]+):([0-9]+)(>|&gt;)', 'ig'),
+        (m, $1, $2, $3) => {
+            const emoteName: string | null = getDiscordEmoteNameById($3)
+            if (!emoteName) {
+                return m
+            }
+            if (['fuckyousnail', 'justatest', 'feelsbadman', 'pepeH', 'rocket', 'hissnail'].includes(emoteName)) {
+                return `<span class="emote ${emoteName}"></span>`
+            }
+            return m
+        }
+    )
+    message = message.replaceAll(
         new RegExp(':([a-zA-Z0-9]+):', 'ig'),
         (m, $1) => {
             if (['fuckyousnail', 'justatest', 'feelsbadman', 'pepeH', 'rocket', 'hissnail'].includes($1)) {
@@ -238,6 +273,7 @@ const replaceEmotes = (message: string): string => {
             return m
         }
     )
+    return message
 }
 
 const enrichText = (userinput: string) => {
@@ -423,7 +459,9 @@ const checkMergePrevMessage = (message: IrcMessage): HTMLElement | null => {
     if (prevAuthor !== message.from) {
         return null
     }
-    if (prevMessage.querySelector('img') || prevMessage.querySelector('video')) {
+    if (prevMessage.querySelector('img')
+        || prevMessage.querySelector('video')
+        || prevMessage.querySelector('.emote')) {
         // never merge messages containing media
         // otherwise they get unhtmld and then the media is lost
         return null
@@ -613,7 +651,7 @@ document.querySelector('form.input-pane')
         messageInp.value = ""
         const ircMessage = {
             from: account.username,
-            message: message,
+            message: translateEmotes(message),
             token: account.sessionToken,
             date: new Date().toUTCString()
         }
