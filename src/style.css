@@ -105,6 +105,12 @@ html, body {
 .emote.feelsbadman {
     background-image: url("img/emotes/feelsbadman.png");
 }
+.emote.feelsamazingman {
+    background-image: url("img/emotes/feelsamazingman.png");
+}
+.emote.greenthing {
+    background-image: url("img/emotes/greenthing.png");
+}
 .emote.pepeH {
     background-image: url("img/emotes/pepeH.webp");
 }
@@ -119,6 +125,75 @@ html, body {
 }
 .emote.f4 {
     background-image: url("img/emotes/f4.png");
+}
+.emote.angry {
+    background-image: url("img/emotes/angry.png");
+}
+.emote.banhammer {
+    background-image: url("img/emotes/banhammer.png");
+}
+.emote.bluekitty {
+    background-image: url("img/emotes/bluekitty.png");
+}
+.emote.bluestripe {
+    background-image: url("img/emotes/bluestripe.png");
+}
+.emote.boo {
+    background-image: url("img/emotes/boo.png");
+}
+.emote.brownbear {
+    background-image: url("img/emotes/brownbear.png");
+}
+.emote.cammo {
+    background-image: url("img/emotes/cammo.png");
+}
+.emote.cammostripes {
+    background-image: url("img/emotes/cammostripes.png");
+}
+.emote.ddnet {
+    background-image: url("img/emotes/ddnet.png");
+}
+.emote.ddnet_lgbt {
+    background-image: url("img/emotes/ddnet_lgbt.png");
+}
+.emote.flag_unk {
+    background-image: url("img/emotes/flag_unk.png");
+}
+.emote.frozen {
+    background-image: url("img/emotes/frozen.png");
+}
+.emote.fury {
+    background-image: url("img/emotes/fury.png");
+}
+.emote.gg {
+    background-image: url("img/emotes/gg.png");
+}
+.emote.giftee_green {
+    background-image: url("img/emotes/giftee_green.png");
+}
+.emote.giftee_red {
+    background-image: url("img/emotes/giftee_red.png");
+}
+.emote.happy {
+    background-image: url("img/emotes/happy.png");
+}
+.emote.heartw {
+    background-image: url("img/emotes/heartw.png");
+}
+.emote.hey {
+    background-image: url("img/emotes/hey.png");
+}
+.emote.kek {
+    background-image: url("img/emotes/kek.png");
+}
+.emote.jaouis {
+    background-image: url("img/emotes/jaouis.png");
+}
+.emote.lol {
+    background-image: url("img/emotes/lol.png");
+}
+.emote.mmm {
+    background-image: url("img/emotes/mmm.png");
 }
 .emote.rocket {
     background-image: url("img/emotes/rocket.svg");
