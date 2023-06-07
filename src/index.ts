@@ -241,7 +241,7 @@ const translateEmotes = (message: string): string => {
         (m, $1) => {
             const emoteId: string | null = getDiscordEmoteIdByName($1)
             if (!emoteId) {
-                return
+                return m
             }
             return `<:${$1}:${emoteId}>`
         }
