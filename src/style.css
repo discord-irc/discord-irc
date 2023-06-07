@@ -123,11 +123,17 @@ html, body {
 .emote.troll {
     background-image: url("img/emotes/troll.png");
 }
+.emote.rust {
+    background-image: url("img/emotes/rust.png");
+}
 .emote.pepeH {
     background-image: url("img/emotes/pepeH.webp");
 }
 .emote.poggers2 {
     background-image: url("img/emotes/poggers2.png");
+}
+.emote.poggers {
+    background-image: url("img/emotes/poggers.png");
 }
 .emote.hissnail {
     background-image: url("img/emotes/hissnail.png");
@@ -143,6 +149,12 @@ html, body {
 }
 .emote.banhammer {
     background-image: url("img/emotes/banhammer.png");
+}
+.emote.deviltee {
+    background-image: url("img/emotes/deviltee.png");
+}
+.emote.cateeholic {
+    background-image: url("img/emotes/cateeholic.png");
 }
 .emote.bluekitty {
     background-image: url("img/emotes/bluekitty.png");
