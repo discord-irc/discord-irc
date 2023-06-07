@@ -7,6 +7,10 @@ const emoteMappings: Record<string, string> = {
     'feelsbadman': '391614770303991808',
     'feelsamazingman': '391614823655538699',
     'greenthing': '623706333677617203',
+    'monkalaugh': '757185761840857109',
+    'monkaS': '397449067661099008',
+    'nouis': '745612528834445313',
+    'troll': '490644344341135380',
     'pepeH': '46273591700684802',
     'poggers2': '46273591700684802',
     'hisnail': '768893210726367232',
@@ -41,6 +45,18 @@ const emoteMappings: Record<string, string> = {
 // TODO: :fuckyousnail: :monkalaugh: :monkaS: :troll: :nouis:
 const animatedEmoteMappings: Record<string, string> = {
     'Catxplosion': '1082715870893195274', // https://cdn.discordapp.com/emojis/1082715870893195274.gif?size=80&quality=lossless
+    'nekospin': '1039804721378111548',
+    'whooo': '631548554267328514',
+    'yeee': '631547536288514051',
+    'hotcoffee': '635654970275921960',
+    'danceclown': '773516781158662144',
+    'cagentpatpat': '785420444924248085',
+    'kekw_1': '1022786101443829770',
+    'kekw_2': '1022786191868842014',
+    'banouis': '1063776702544744498',
+    'pepewideeyes': '1022785384146550885',
+    'Deadneko': '823430684680781879',
+    'aPES_RoastedPepe': '596259843174563840',
 }
 
 /*

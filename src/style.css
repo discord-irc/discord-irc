@@ -111,6 +111,18 @@ html, body {
 .emote.greenthing {
     background-image: url("img/emotes/greenthing.png");
 }
+.emote.monkalaugh {
+    background-image: url("img/emotes/monkalaugh.png");
+}
+.emote.monkaS {
+    background-image: url("img/emotes/monkaS.png");
+}
+.emote.nouis {
+    background-image: url("img/emotes/nouis.png");
+}
+.emote.troll {
+    background-image: url("img/emotes/troll.png");
+}
 .emote.pepeH {
     background-image: url("img/emotes/pepeH.webp");
 }
