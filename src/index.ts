@@ -35,6 +35,7 @@ hljs.registerLanguage('shell', shell);
 import './style.css'
 import 'highlight.js/styles/github.css'
 import { getDiscordEmoteIdByName, getDiscordEmoteNameById } from './emotes'
+import { autoComplete } from './autocomplete';
 
 interface Account {
     username: string,
@@ -58,19 +59,6 @@ const knownDiscordNames: string[] = []
 const userListDiv: HTMLElement = document.querySelector('.user-list')
 const userListDiscordDiv: HTMLElement = document.querySelector('.user-list-discord')
 const messageInp: HTMLInputElement = document.querySelector('#message-input')
-
-let tabNameIndex: number = 0
-/*
-    tabAppendLen
-
-    number of characters we appended after @
-    when pressing tab.
-
-    The same amount will be wiped on next tab press
-    to iterate names.
-*/
-let tabAppendLen: number = 0
-let isAutocompleteTabbing: boolean = false
 
 /*
     Including discord and webchat usernames
@@ -112,10 +100,6 @@ const removeUser = (username: string): boolean => {
     connectedUsers.splice(index, 1)
     updateUserList()
     return true
-}
-
-const getLastIndex = (haystack: string, needle: string): number => {
-	return haystack.length - 1 - haystack.split('').reverse().indexOf(needle)
 }
 
 const setCookie = (cname: string, cvalue: string, exdays: number) => {
@@ -718,57 +702,8 @@ bellDiv.addEventListener('click', () => {
     }
 })
 
-const autoComepletePings = (event: KeyboardEvent) => {
-    const end: number = messageInp.value.length
-    // tab complete pings when typed an @
-    if (event.key === 'Tab') {
-        event.preventDefault()
-        // start tabbing with empty @
-        if (messageInp.value[end - 1] === '@' || isAutocompleteTabbing) {
-            const completedName: string = allKnownUsernames()[tabNameIndex % allKnownUsernames().length]
-            if (tabAppendLen !== 0) {
-                const choppedComplete = messageInp.value.substring(0, messageInp.value.length - (tabAppendLen - 0))
-                messageInp.value = choppedComplete
-            }
-            messageInp.value += completedName
-            tabNameIndex++
-            tabAppendLen = completedName.length
-            isAutocompleteTabbing = true
-            return
-        }
-        // continue tabbing when already typed a name
-        const atIndex = getLastIndex(messageInp.value, '@')
-        if (atIndex !== -1) {
-            const currentCompletion = messageInp.value.substring(atIndex + 1)
-            if (currentCompletion.indexOf(' ') !== -1) {
-                // do not continue tab completing if there is a space
-                return
-            }
-            if (!currentCompletion &&
-                    currentCompletion.length === 0 &&
-                    currentCompletion.length < 16) {
-                return
-            }
-            const matchingNames = allKnownUsernames().filter((name: string) => {
-                return name.toLowerCase().startsWith(currentCompletion.toLowerCase())
-            })
-            if (matchingNames.length < 1) {
-                return
-            }
-            messageInp.value =
-                messageInp.value.substring(0, atIndex + 1) +
-                matchingNames[tabNameIndex % matchingNames.length]
-        }
-    } else {
-        // pressing any key other than tab
-        // ends the tabbing mode
-        isAutocompleteTabbing = false
-        tabAppendLen = 0
-    }
-}
-
 messageInp.addEventListener('keydown', (event: KeyboardEvent) => {
-    autoComepletePings(event)
+    autoComplete('@', allKnownUsernames(), event, messageInp)
 })
 
 /*
