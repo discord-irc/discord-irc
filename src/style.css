@@ -13,7 +13,7 @@ html, body {
 }
 
 .message-img {
-    background-image: url("teecord.png");
+    background-image: url("img/teecord.png");
     background-size: cover;
     width: 64px;
     height: 64px;
@@ -46,7 +46,7 @@ html, body {
 }
 
 .message-img.bridge {
-    background-image: url("teecord_bot.png");
+    background-image: url("img/teecord_bot.png");
 }
 
 .message {
@@ -276,7 +276,7 @@ html, body {
 .ddnet-server {
     height: 64px;
     width: 64px;
-    background-image: url("ddnet-logo.png");
+    background-image: url("img/ddnet-logo.png");
     background-size: cover;
     margin: auto;
 }
