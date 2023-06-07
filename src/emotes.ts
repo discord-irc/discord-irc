@@ -1,3 +1,22 @@
+/*
+    emoteMappings
+
+    mapping emote names to their cdn id on discord
+
+    if you want to get new emotes send the emote with \:emotename:
+    from discord to get its id. Then run ./download_emotes.sh
+    to download the png files from the discord cdn.
+
+    The cdn urls look like this:
+    https://cdn.discordapp.com/emojis/572499997178986510.png
+
+    And adjust the style.css to add a class for every emote you add that
+    then uses the downloaded image as background image. Like this:
+
+    .emote.gigachad {
+        background-image: url("img/emotes/gigachad.png");
+    }
+*/
 const emoteMappings: Record<string, string> = {
     'wormy': '1055668586691178568',
     'ass': '1010609071902171226',
@@ -42,9 +61,25 @@ const emoteMappings: Record<string, string> = {
 
     'rocket': 'rocket',
 }
-// TODO: :fuckyousnail: :monkalaugh: :monkaS: :troll: :nouis:
+
+/*
+    animatedEmoteMappings
+
+    Similar to emoteMappings it is mapping emote names to discord cdn ids
+    The difference is that these are not static pngs but animated gif files.
+
+    Their cdn urls look like this:
+    https://cdn.discordapp.com/emojis/1082715870893195274.gif?size=80&quality=lossless
+
+    We do not download the gifs to render them on our side.
+    We just display the discord cdn link as a img tag for now.
+
+    They do have a different format than the regular emotes.
+    When sent to discord they will look like this <a:Catxplosion:1082715870893195274>
+    while regular emotes look like this <:troll:490644344341135380>
+*/
 const animatedEmoteMappings: Record<string, string> = {
-    'Catxplosion': '1082715870893195274', // https://cdn.discordapp.com/emojis/1082715870893195274.gif?size=80&quality=lossless
+    'Catxplosion': '1082715870893195274',
     'nekospin': '1039804721378111548',
     'whooo': '631548554267328514',
     'yeee': '631547536288514051',
