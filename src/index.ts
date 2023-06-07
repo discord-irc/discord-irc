@@ -298,6 +298,7 @@ const enrichText = (userinput: string) => {
             const isWhitelistedCdn: boolean =
                 url.startsWith("https://zillyhuhn.com/cs") ||
                 url.startsWith("https://raw.githubusercontent.com/") ||
+                url.startsWith("https://i.imgur.com/") ||
                 url.startsWith("https://cdn.discordapp.com/attachments/")
             const isImageUrl: boolean = new RegExp('\\.(png|jpg|jpeg|webp|svg)$', 'i').test(url)
             const isVideoUrl: boolean = new RegExp('\\.(mp4)$', 'i').test(url)
