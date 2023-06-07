@@ -62,8 +62,6 @@ const emoteMappings: Record<string, string> = {
     'jaouis': '771825988556292096',
     'lol': '460429405328506900',
     'mmm': '395753965410582538',
-
-    'rocket': 'rocket',
 }
 
 /*
@@ -98,6 +96,11 @@ const animatedEmoteMappings: Record<string, string> = {
     'aPES_RoastedPepe': '596259843174563840',
 }
 
+const unicodeEmoteMappings: Record<string, string> = {
+    'checkmark': '✅',
+    'rocket': '🚀',
+}
+
 /*
     justatest => 572499997178986510
 */
@@ -120,10 +123,17 @@ export const getDiscordEmoteNameById = (emoteId: string, type: string = 'custom'
     return Object.keys(lookupObj).find(key => lookupObj[key] === emoteId) || null
 }
 
+export const getUnicodeByName = (unicodeName: string): string | null => {
+    return unicodeEmoteMappings[unicodeName] || null
+}
+
+/*
+    returns custom discord emotes and unicode emote names
+*/
 export const getAllEmoteNames = (type: string = 'custom'): string[] => {
     let lookupObj = emoteMappings
     if (type === 'animated') {
         lookupObj = animatedEmoteMappings
     }
-    return Object.keys(lookupObj)
+    return Object.keys(lookupObj).concat(Object.keys(unicodeEmoteMappings))
 }

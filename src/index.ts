@@ -34,7 +34,7 @@ hljs.registerLanguage('shell', shell);
 
 import './style.css'
 import 'highlight.js/styles/github.css'
-import { getAllEmoteNames, getDiscordEmoteIdByName, getDiscordEmoteNameById } from './emotes'
+import { getAllEmoteNames, getDiscordEmoteIdByName, getDiscordEmoteNameById, getUnicodeByName } from './emotes'
 import { autoComplete } from './autocomplete';
 
 interface Account {
@@ -224,10 +224,14 @@ const translateEmotes = (message: string): string => {
         new RegExp(':([a-zA-Z0-9]+):', 'ig'),
         (m, $1) => {
             const emoteId: string | null = getDiscordEmoteIdByName($1)
-            if (!emoteId) {
-                return m
+            if (emoteId) {
+                return `<:${$1}:${emoteId}>`
             }
-            return `<:${$1}:${emoteId}>`
+            const unicodeEmote: string | null = getUnicodeByName($1)
+            if (unicodeEmote) {
+                return unicodeEmote
+            }
+            return m
         }
     )
     return message
