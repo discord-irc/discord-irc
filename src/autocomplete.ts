@@ -1,17 +1,21 @@
 import { getLastIndex } from "./strings"
 
-let tabNameIndex: number = 0
-/*
-    tabAppendLen
+export interface CompletionState {
+    tabNameIndex: number,
+    /*
+        tabAppendLen
 
-    number of characters we appended after @
-    when pressing tab.
+        number of characters we appended after @
+        when pressing tab.
 
-    The same amount will be wiped on next tab press
-    to iterate names.
-*/
-let tabAppendLen: number = 0
-let isAutocompleteTabbing: boolean = false
+        The same amount will be wiped on next tab press
+        to iterate names.
+    */
+    tabAppendLen: number,
+    isAutocompleteTabbing: boolean,
+}
+
+const completionStates: Record<string, CompletionState> = {}
 
 /**
  * generic autocompletion for input fields
@@ -33,6 +37,12 @@ let isAutocompleteTabbing: boolean = false
  */
 export const autoComplete = (prefix: string, completions: string[], event: KeyboardEvent, inputField: HTMLInputElement) => {
     const end: number = inputField.value.length
+    const compState: CompletionState = completionStates[prefix] || {
+        tabNameIndex: 0,
+        tabAppendLen: 0,
+        isAutocompleteTabbing: false
+    }
+    completionStates[prefix] = compState
     // tab complete when typed the prefix and hitting tab
     if (event.key === 'Tab') {
         event.preventDefault()
@@ -43,16 +53,16 @@ export const autoComplete = (prefix: string, completions: string[], event: Keybo
         }
 
         // start tabbing with empty prefix
-        if (inputField.value[end - 1] === prefix || isAutocompleteTabbing) {
-            const completedName: string = completions[tabNameIndex % completions.length]
-            if (tabAppendLen !== 0) {
-                const choppedComplete = inputField.value.substring(0, inputField.value.length - (tabAppendLen - 0))
+        if (inputField.value[end - 1] === prefix || compState.isAutocompleteTabbing) {
+            const completedName: string = completions[compState.tabNameIndex % completions.length]
+            if (compState.tabAppendLen !== 0) {
+                const choppedComplete = inputField.value.substring(0, inputField.value.length - (compState.tabAppendLen - 0))
                 inputField.value = choppedComplete
             }
             inputField.value += completedName
-            tabNameIndex++
-            tabAppendLen = completedName.length
-            isAutocompleteTabbing = true
+            compState.tabNameIndex++
+            compState.tabAppendLen = completedName.length
+            compState.isAutocompleteTabbing = true
             return
         }
         // continue tabbing when already typed a name
@@ -76,12 +86,12 @@ export const autoComplete = (prefix: string, completions: string[], event: Keybo
             }
             inputField.value =
                 inputField.value.substring(0, atIndex + 1) +
-                matchingNames[tabNameIndex % matchingNames.length]
+                matchingNames[compState.tabNameIndex % matchingNames.length]
         }
     } else {
         // pressing any key other than tab
         // ends the tabbing mode
-        isAutocompleteTabbing = false
-        tabAppendLen = 0
+        compState.isAutocompleteTabbing = false
+        compState.tabAppendLen = 0
     }
 }

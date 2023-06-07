@@ -34,7 +34,7 @@ hljs.registerLanguage('shell', shell);
 
 import './style.css'
 import 'highlight.js/styles/github.css'
-import { getDiscordEmoteIdByName, getDiscordEmoteNameById } from './emotes'
+import { getAllEmoteNames, getDiscordEmoteIdByName, getDiscordEmoteNameById } from './emotes'
 import { autoComplete } from './autocomplete';
 
 interface Account {
@@ -704,6 +704,7 @@ bellDiv.addEventListener('click', () => {
 
 messageInp.addEventListener('keydown', (event: KeyboardEvent) => {
     autoComplete('@', allKnownUsernames(), event, messageInp)
+    autoComplete(':', getAllEmoteNames(), event, messageInp)
 })
 
 /*

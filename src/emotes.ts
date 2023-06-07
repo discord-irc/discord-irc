@@ -115,3 +115,11 @@ export const getDiscordEmoteNameById = (emoteId: string, type: string = 'custom'
     }
     return Object.keys(lookupObj).find(key => lookupObj[key] === emoteId) || null
 }
+
+export const getAllEmoteNames = (type: string = 'custom'): string[] => {
+    let lookupObj = emoteMappings
+    if (type === 'animated') {
+        lookupObj = animatedEmoteMappings
+    }
+    return Object.keys(lookupObj)
+}
