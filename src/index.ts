@@ -221,7 +221,7 @@ const replacePings = (message: string): string => {
 */
 const translateEmotes = (message: string): string => {
     message = message.replaceAll(
-        new RegExp(':([a-zA-Z0-9]+):', 'ig'),
+        new RegExp(':([a-zA-Z0-9\\+\\-_]+):', 'ig'),
         (m, $1) => {
             const emoteId: string | null = getDiscordEmoteIdByName($1)
             if (emoteId) {
