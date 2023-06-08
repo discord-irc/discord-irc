@@ -465,6 +465,7 @@ const checkMergePrevMessage = (message: IrcMessage): HTMLElement | null => {
     }
     if (prevMessage.querySelector('img')
         || prevMessage.querySelector('video')
+        || prevMessage.querySelector('.multi-line-code-snippet')
         || prevMessage.querySelector('.emote')) {
         // never merge messages containing media
         // otherwise they get unhtmld and then the media is lost
