@@ -707,8 +707,8 @@ bellDiv.addEventListener('click', () => {
 })
 
 messageInp.addEventListener('keydown', (event: KeyboardEvent) => {
-    autoComplete('@', allKnownUsernames(), event, messageInp)
-    autoComplete(':', getAllEmoteNames(), event, messageInp)
+    autoComplete('@', allKnownUsernames(), event, messageInp, ' ')
+    autoComplete(':', getAllEmoteNames(), event, messageInp, ': ')
 })
 
 /*

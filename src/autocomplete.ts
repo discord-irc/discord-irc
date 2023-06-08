@@ -64,7 +64,7 @@ export const autoComplete = (
             // do no tab complete if there is no space in fron of prefix
             // chillerdragon@<tab> should not complete another name
             // :justatest:<tab> should not complete another emote
-            if (end > 1 && inputField.value[end - 2] !== ' ') {
+            if (!compState.isAutocompleteTabbing && end > 1 && inputField.value[end - 2] !== ' ') {
                 return
             }
             const completedName: string = completions[compState.tabNameIndex % completions.length]
@@ -74,7 +74,7 @@ export const autoComplete = (
             }
             inputField.value += completedName + suffix
             compState.tabNameIndex++
-            compState.tabAppendLen = completedName.length
+            compState.tabAppendLen = completedName.length + suffix.length
             compState.isAutocompleteTabbing = true
             return
         }
