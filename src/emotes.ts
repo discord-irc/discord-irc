@@ -95,6 +95,7 @@ const animatedEmoteMappings: Record<string, string> = {
     'pepewideeyes': '1022785384146550885',
     'Deadneko': '823430684680781879',
     'aPES_RoastedPepe': '596259843174563840',
+    'pepeFASTJAM': '799388844491276311',
 }
 
 const unicodeEmoteMappings: Record<string, string> = {
