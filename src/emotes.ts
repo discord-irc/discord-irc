@@ -26,6 +26,7 @@ const emoteMappings: Record<string, string> = {
     'feelsbadman': '391614770303991808',
     'feelsamazingman': '391614823655538699',
     'greenthing': '623706333677617203',
+    'fuckyousnail': '691290240266141766',
     'monkalaugh': '757185761840857109',
     'monkaS': '397449067661099008',
     'nouis': '745612528834445313',
