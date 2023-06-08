@@ -474,9 +474,16 @@ const checkMergePrevMessage = (message: IrcMessage): HTMLElement | null => {
     const thisDate = new Date(message.date)
     const diff = thisDate.valueOf() - lastDate.valueOf()
     // only merge messages that were sent
-    // with a 6 second delay
+    // with a 11 second delay
     // should still cover the bridge ratelimited
     // discord multi line message delays
+    //
+    // 11 is long and has some false positive merges
+    // but that is fine. Since it does need that much sometimes
+    // when the discord bridge sends larger blocks of code
+    // the messages can get delayed that long.
+    // and we want to make sure that it still renders
+    // one nice syntax highlighted code block
     if (diff > 11000) {
         return null
     }
