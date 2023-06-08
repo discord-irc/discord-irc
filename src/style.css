@@ -73,10 +73,6 @@ html, body {
     align-items: flex-end;
 }
 
-.message-text {
-    overflow: scroll;
-}
-
 .message-content {
     margin-left: 20px;
 }
