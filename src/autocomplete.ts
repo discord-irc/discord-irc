@@ -1,4 +1,4 @@
-import { getLastIndex } from "./strings"
+import { getLastIndexSpaced } from "./strings"
 
 export interface CompletionState {
     tabNameIndex: number,
@@ -54,6 +54,12 @@ export const autoComplete = (prefix: string, completions: string[], event: Keybo
 
         // start tabbing with empty prefix
         if (inputField.value[end - 1] === prefix || compState.isAutocompleteTabbing) {
+            // do no tab complete if there is no space in fron of prefix
+            // chillerdragon@<tab> should not complete another name
+            // :justatest:<tab> should not complete another emote
+            if (end > 1 && inputField.value[end - 2] !== ' ') {
+                return
+            }
             const completedName: string = completions[compState.tabNameIndex % completions.length]
             if (compState.tabAppendLen !== 0) {
                 const choppedComplete = inputField.value.substring(0, inputField.value.length - (compState.tabAppendLen - 0))
@@ -66,7 +72,7 @@ export const autoComplete = (prefix: string, completions: string[], event: Keybo
             return
         }
         // continue tabbing when already typed a name
-        const atIndex = getLastIndex(inputField.value, prefix)
+        const atIndex = getLastIndexSpaced(inputField.value, prefix)
         if (atIndex !== -1) {
             const currentCompletion = inputField.value.substring(atIndex + 1)
             if (currentCompletion.indexOf(' ') !== -1) {
