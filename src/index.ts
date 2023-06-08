@@ -360,7 +360,7 @@ const enrichText = (userinput: string) => {
             if (line === '```') {
                 if (inCodeBlock !== null) {
                     const codeHljs = hljs.highlight(currentCodeBlock, {language: inCodeBlock}).value
-                    mergedLines += `<span class="multi-line-code-snippet code-snippet">${codeHljs}</span>`
+                    mergedLines += `<pre class="multi-line-code-snippet code-snippet">${codeHljs}</pre>`
                     currentCodeBlock = ''
                     inCodeBlock = null
                 } else {
@@ -516,19 +516,9 @@ const renderMessage = (message: IrcMessage, isBridge = false) => {
     }
     if (mergeMessage) {
         const mergeMessageText: HTMLElement = mergeMessage.querySelector('.message-text')
-        // this is weird and i do not understand it
-        // but without this code newlines get doubled
-        // if not putting and \n its always in the same line :shrug:
-        let sep = '\n'
-        if (mergeMessageText.innerText.endsWith('\n')) {
-            sep = ''
-        }
-        if (message.message.startsWith('\n')) {
-            sep = ''
-        }
         const newRichText = xssSanitize(enrichText(
             mergeMessageText.innerText +
-            sep +
+            '\n' +
             message.message
         ))
         mergeMessageText.innerHTML = newRichText
@@ -546,13 +536,11 @@ const renderMessage = (message: IrcMessage, isBridge = false) => {
                             ${utcStrToNiceDate(message.date)}
                         </div>
                     </div> <!-- message-header -->
-                    <div class="message-text">
-                        ${
+                        <div class="message-text">${
                             xssSanitize(
                                 enrichText(message.message)
                             )
-                        }
-                    </div>
+                        }</div>
                 </div> <!-- message-content -->
             </div>`
         )
