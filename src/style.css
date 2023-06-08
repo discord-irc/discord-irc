@@ -338,6 +338,7 @@ input {
     font-feature-settings:"liga" 0, "dlig" 0;
     font-family: 'Courier New', Courier, monospace;
     padding: 3px;
+    overflow-x: scroll;
 }
 
 .single-line-code-snippet {
