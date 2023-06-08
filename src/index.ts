@@ -516,9 +516,19 @@ const renderMessage = (message: IrcMessage, isBridge = false) => {
     }
     if (mergeMessage) {
         const mergeMessageText: HTMLElement = mergeMessage.querySelector('.message-text')
+        // this is weird and i do not understand it
+        // but without this code newlines get doubled
+        // if not putting and \n its always in the same line :shrug:
+        let sep = '\n'
+        if (mergeMessageText.innerText.endsWith('\n')) {
+            sep = ''
+        }
+        if (message.message.startsWith('\n')) {
+            sep = ''
+        }
         const newRichText = xssSanitize(enrichText(
             mergeMessageText.innerText +
-            '\n' +
+            sep +
             message.message
         ))
         mergeMessageText.innerHTML = newRichText
