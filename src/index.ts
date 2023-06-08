@@ -33,7 +33,7 @@ hljs.registerLanguage('bash', bash);
 hljs.registerLanguage('shell', shell);
 
 import './style.css'
-import 'highlight.js/styles/github.css'
+import 'highlight.js/styles/base16/solarized-dark.css'
 import { getAllEmoteNames, getDiscordEmoteIdByName, getDiscordEmoteNameById, getUnicodeByName } from './emotes'
 import { autoComplete } from './autocomplete';
 
@@ -474,17 +474,21 @@ const checkMergePrevMessage = (message: IrcMessage): HTMLElement | null => {
     const thisDate = new Date(message.date)
     const diff = thisDate.valueOf() - lastDate.valueOf()
     // only merge messages that were sent
-    // with a 11 second delay
+    // with a 30 second delay
     // should still cover the bridge ratelimited
     // discord multi line message delays
     //
-    // 11 is long and has some false positive merges
+    // 30 is long and has some false positive merges
     // but that is fine. Since it does need that much sometimes
     // when the discord bridge sends larger blocks of code
     // the messages can get delayed that long.
     // and we want to make sure that it still renders
     // one nice syntax highlighted code block
-    if (diff > 11000) {
+    //
+    // also it is counting the diff of the first and the last message
+    // so pasting a whole code block sending 10 messages with 3s delay
+    // causes a 30 sec diff
+    if (diff > 30000) {
         return null
     }
     return prevMessage
