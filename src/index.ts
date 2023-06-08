@@ -477,7 +477,7 @@ const checkMergePrevMessage = (message: IrcMessage): HTMLElement | null => {
     // with a 6 second delay
     // should still cover the bridge ratelimited
     // discord multi line message delays
-    if (diff > 6000) {
+    if (diff > 9000) {
         return null
     }
     return prevMessage
