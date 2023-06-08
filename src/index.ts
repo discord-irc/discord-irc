@@ -517,10 +517,10 @@ const renderMessage = (message: IrcMessage, isBridge = false) => {
     if (mergeMessage) {
         const mergeMessageText: HTMLElement = mergeMessage.querySelector('.message-text')
         const newRichText = xssSanitize(enrichText(
-            mergeMessageText.innerText +
+            mergeMessageText.textContent +
             '\n' +
             message.message
-        ))
+        )).replaceAll('<br>', '\n')
         mergeMessageText.innerHTML = newRichText
     } else {
         messagesContainer.insertAdjacentHTML(
