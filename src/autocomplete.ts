@@ -33,9 +33,16 @@ const completionStates: Record<string, CompletionState> = {}
  * @param completions array of items to complete for example ["help", "info"]
  * @param event KeyboardEvent such as keydown or keyup
  * @param inputField HTMLInputElement where the input is coming from and where the completion will be applied
+ * @param suffix string that will be appended to the completion result
  * @returns
  */
-export const autoComplete = (prefix: string, completions: string[], event: KeyboardEvent, inputField: HTMLInputElement) => {
+export const autoComplete = (
+    prefix: string,
+    completions: string[],
+    event: KeyboardEvent,
+    inputField: HTMLInputElement,
+    suffix: string = ''
+) => {
     const end: number = inputField.value.length
     const compState: CompletionState = completionStates[prefix] || {
         tabNameIndex: 0,
@@ -65,7 +72,7 @@ export const autoComplete = (prefix: string, completions: string[], event: Keybo
                 const choppedComplete = inputField.value.substring(0, inputField.value.length - (compState.tabAppendLen - 0))
                 inputField.value = choppedComplete
             }
-            inputField.value += completedName
+            inputField.value += completedName + suffix
             compState.tabNameIndex++
             compState.tabAppendLen = completedName.length
             compState.isAutocompleteTabbing = true
@@ -92,7 +99,8 @@ export const autoComplete = (prefix: string, completions: string[], event: Keybo
             }
             inputField.value =
                 inputField.value.substring(0, atIndex + 1) +
-                matchingNames[compState.tabNameIndex % matchingNames.length]
+                matchingNames[compState.tabNameIndex % matchingNames.length] +
+                suffix
         }
     } else {
         // pressing any key other than tab
