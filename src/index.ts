@@ -286,10 +286,12 @@ const enrichText = (userinput: string) => {
             const isWhitelistedCdn: boolean =
                 url.startsWith("https://zillyhuhn.com/cs") ||
                 url.startsWith("https://raw.githubusercontent.com/") ||
+                url.startsWith("https://user-images.githubusercontent.com/") ||
                 url.startsWith("https://i.imgur.com/") ||
                 url.startsWith("https://upload.wikimedia.org/") ||
                 url.startsWith("https://ddnet.org/") ||
                 url.startsWith("https://wiki.ddnet.org/") ||
+                url.startsWith("https://media.discordapp.net/attachments/") ||
                 url.startsWith("https://cdn.discordapp.com/attachments/")
             const isImageUrl: boolean = new RegExp('\\.(png|jpg|jpeg|webp|svg)$', 'i').test(url)
             const isVideoUrl: boolean = new RegExp('\\.(mp4)$', 'i').test(url)
