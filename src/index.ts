@@ -471,7 +471,7 @@ const checkMergePrevMessage = (message: IrcMessage): HTMLElement | null => {
         // otherwise they get unhtmld and then the media is lost
         return null
     }
-    if (message.message.startsWith('```')) {
+    if (message.message.startsWith('```') && !prevMessage.innerHTML.includes('```')) {
         // split code block in a new message
         // to get a new date for the beginning of the code block
         // to ensure that all code lines get merged into the block
