@@ -293,7 +293,7 @@ const enrichText = (userinput: string) => {
                 url.startsWith("https://wiki.ddnet.org/") ||
                 url.startsWith("https://media.discordapp.net/attachments/") ||
                 url.startsWith("https://cdn.discordapp.com/attachments/")
-            const isImageUrl: boolean = new RegExp('\\.(png|jpg|jpeg|webp|svg)$', 'i').test(url)
+            const isImageUrl: boolean = new RegExp('\\.(png|jpg|jpeg|webp|svg|gif)$', 'i').test(url)
             const isVideoUrl: boolean = new RegExp('\\.(mp4)$', 'i').test(url)
             // https://github.com/foo/bar/@baz.com
             // most browsers would visit the website baz.com
