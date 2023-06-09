@@ -471,6 +471,28 @@ const checkMergePrevMessage = (message: IrcMessage): HTMLElement | null => {
         // otherwise they get unhtmld and then the media is lost
         return null
     }
+    if (message.message.startsWith('```')) {
+        // split code block in a new message
+        // to get a new date for the beginning of the code block
+        // to ensure that all code lines get merged into the block
+        //
+        // otherwise some one could send messages like this:
+        //
+        // user1: hello <---- takes merge date from this message
+        // user1: world
+        // user1: wanna see my code?
+        // user1: ok here it is:
+        // user1: ```cpp
+        // user1: int main()
+        // user1: {
+        //
+        // ! BOOOM MESSAGE SPLIT !
+        //
+        // eventho the code block it self was sent in a merge time frame
+        // the end of the code block and the first hello
+        // are too far away
+        return null
+    }
     const lastDate = new Date(prevMessage.dataset.date)
     const thisDate = new Date(message.date)
     const diff = thisDate.valueOf() - lastDate.valueOf()
