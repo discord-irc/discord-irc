@@ -466,6 +466,15 @@ const checkMergePrevMessage = (message: IrcMessage): HTMLElement | null => {
     if (prevMessage.querySelector('img')
         || prevMessage.querySelector('video')
         || prevMessage.querySelector('.multi-line-code-snippet')
+        /*
+            single-line-code-snippet
+
+            Is a cheap trick to not have to worry about porting code blocks
+            into merged message.
+            It might look nicer in some cases to actually merge the messages if
+            it is just a single line snippet but its okayish
+        */
+        || prevMessage.querySelector('.single-line-code-snippet')
         || prevMessage.querySelector('.emote')) {
         // never merge messages containing media
         // otherwise they get unhtmld and then the media is lost
