@@ -255,7 +255,7 @@ const replaceEmotes = (message: string): string => {
     // discord rich presence emotes for example:
     // <:hisnail:768893210726367232>
     message = message.replaceAll(
-        new RegExp('(<|&lt;):([a-zA-Z0-9]+):([0-9]+)(>|&gt;)', 'ig'),
+        new RegExp('(<|&lt;):([a-zA-Z0-9_]+):([0-9]+)(>|&gt;)', 'ig'),
         (m, $1, $2, $3) => {
             const emoteName: string | null = getDiscordEmoteNameById($3)
             if (!emoteName) {
@@ -267,7 +267,7 @@ const replaceEmotes = (message: string): string => {
     // simple emotes for example:
     // :justatest:
     message = message.replaceAll(
-        new RegExp(':([a-zA-Z0-9]+):', 'ig'),
+        new RegExp(':([a-zA-Z0-9_]+):', 'ig'),
         (m, $1) => {
             const emoteId: string | null = getDiscordEmoteIdByName($1)
             if (emoteId) {
