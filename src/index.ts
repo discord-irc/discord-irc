@@ -261,7 +261,7 @@ const replaceEmotes = (message: string): string => {
             if (!emoteName) {
                 return m
             }
-            return `<span class="emote ${emoteName}"></span>`
+            return `<span class="emote emote-${emoteName}"></span>`
         }
     )
     // simple emotes for example:
@@ -271,7 +271,7 @@ const replaceEmotes = (message: string): string => {
         (m, $1) => {
             const emoteId: string | null = getDiscordEmoteIdByName($1)
             if (emoteId) {
-                return `<span class="emote ${$1}"></span>`
+                return `<span class="emote emote-${$1}"></span>`
             }
             return m
         }
