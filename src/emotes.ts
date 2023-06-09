@@ -128,6 +128,7 @@ const unicodeEmoteMappings: Record<string, string> = {
     'sos': '🆘',
     'snowflake': '❄',
     'sunglasses': '🕶',
+    'robot': '🤖',
     'fr': '🇫🇷',
     'de': '🇩🇪',
     'ru': '🇷🇺',
