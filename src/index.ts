@@ -143,11 +143,13 @@ loginPopup.querySelector('form')
         if (!password) {
             return
         }
+        console.log(`requesting to join '${getActiveChannel()}'`)
         socket.emit(
             'authRequest',
             {
                 username: username,
-                password: password
+                password: password,
+                channel: getActiveChannel()
             }
         )
     })
@@ -164,6 +166,7 @@ document.querySelector('form.input-pane')
             from: account.username,
             message: translateEmotes(message),
             token: account.sessionToken,
+            channel: getActiveChannel(),
             date: new Date().toUTCString()
         }
         // only render when we get the res from server

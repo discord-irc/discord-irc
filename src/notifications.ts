@@ -24,7 +24,7 @@ export const desktopNotification = () => {
     }
     const notification = new Notification('chat.zillyhuhn.com', {
         icon: 'https://ddnet.org/favicon.ico',
-        body: 'New message in ddnet#developer',
+        body: `New message in #${getActiveChannel()}`,
     })
     notification.onclick = () => {
         // window.open('https://chat.zillyhuhn.com/')

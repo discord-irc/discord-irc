@@ -3,6 +3,7 @@ import { Socket } from 'socket.io'
 export interface IrcMessage {
     from: string,
     message: string,
+    channel: string,
     date: string,
     token?: string
 }
@@ -10,6 +11,7 @@ export interface IrcMessage {
 export interface AuthRequest {
     username: string,
     password: string,
+    channel: string,
 }
 
 export interface AuthResponse {
@@ -21,6 +23,11 @@ export interface AuthResponse {
 
 export interface LogoutMessage {
     message: string
+}
+
+export interface JoinChannel {
+    channel: string,
+    password: string
 }
 
 export interface ServerToClientEvents {
@@ -39,4 +46,5 @@ export interface ClientToServerEvents {
     // irc-websockets
     message: (message: IrcMessage) => void
     authRequest: (auth: AuthRequest) => void
+    joinChannel: (join: JoinChannel) => void
 }
