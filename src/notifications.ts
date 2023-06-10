@@ -1,7 +1,8 @@
+import { getActiveChannel } from "./channels"
+
 let unreadMessages: number = 0
 let unreadPings: number = 0
 let notificationsActive: boolean = false
-const channelName = 'developer' // TODO: duplicated remove
 
 export const toggleNotifications = () => {
     notificationsActive = !notificationsActive
@@ -33,7 +34,7 @@ export const desktopNotification = () => {
 export const addMessageNotification = () => {
     unreadMessages++
     const pingTxt = unreadPings > 0 ? `!${unreadPings}! ` : ''
-    document.title = `#${channelName} ${pingTxt}(${unreadMessages}) `
+    document.title = `#${getActiveChannel()} ${pingTxt}(${unreadMessages}) `
 }
 
 export const addPingNotification = () => {
@@ -42,12 +43,12 @@ export const addPingNotification = () => {
     }
     unreadPings++
     const pingTxt = unreadPings > 0 ? `!${unreadPings}! ` : ''
-    document.title = `#${channelName} ${pingTxt}(${unreadMessages}) `
+    document.title = `#${getActiveChannel()} ${pingTxt}(${unreadMessages}) `
     desktopNotification()
 }
 
 export const clearNotifications = () => {
     unreadMessages = 0
     unreadPings = 0
-    document.title = `#${channelName}`
+    document.title = `#${getActiveChannel()}`
 }

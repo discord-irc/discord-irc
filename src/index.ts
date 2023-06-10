@@ -41,6 +41,7 @@ import { account } from './account';
 import { clearMessagesContainer, renderMessage } from './render_message';
 import { translateEmotes } from './rich_text';
 import { getCookie, setCookie } from './cookies';
+import { getActiveChannel } from './channels';
 
 const messageInp: HTMLInputElement = document.querySelector('#message-input')
 
@@ -233,7 +234,7 @@ fetch(`${backendUrl}/users`)
         updateUserList()
     })
 
-fetch(`${backendUrl}/messages`)
+fetch(`${backendUrl}/${getActiveChannel()}/messages`)
     .then(data => data.json())
     .then((messages: IrcMessage[]) => {
         // clears the loading message
