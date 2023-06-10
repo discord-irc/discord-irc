@@ -41,7 +41,7 @@ import { account } from './account';
 import { clearMessagesContainer, renderMessage } from './render_message';
 import { translateEmotes } from './rich_text';
 import { getCookie, setCookie } from './cookies';
-import { getActiveChannel } from './channels';
+import { getActiveChannel, getActiveServer } from './channels';
 
 const messageInp: HTMLInputElement = document.querySelector('#message-input')
 
@@ -149,7 +149,8 @@ loginPopup.querySelector('form')
             {
                 username: username,
                 password: password,
-                channel: getActiveChannel()
+                channel: getActiveChannel(),
+                server: getActiveServer()
             }
         )
     })
@@ -167,6 +168,7 @@ document.querySelector('form.input-pane')
             message: translateEmotes(message),
             token: account.sessionToken,
             channel: getActiveChannel(),
+            server: getActiveServer(),
             date: new Date().toUTCString()
         }
         // only render when we get the res from server
@@ -237,7 +239,7 @@ fetch(`${backendUrl}/users`)
         updateUserList()
     })
 
-fetch(`${backendUrl}/${getActiveChannel()}/messages`)
+fetch(`${backendUrl}/${getActiveServer()}/${getActiveChannel()}/messages`)
     .then(data => data.json())
     .then((messages: IrcMessage[]) => {
         // clears the loading message

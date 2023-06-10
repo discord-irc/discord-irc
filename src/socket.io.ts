@@ -4,6 +4,7 @@ export interface IrcMessage {
     from: string,
     message: string,
     channel: string,
+    server: string,
     date: string,
     token?: string
 }
@@ -12,6 +13,7 @@ export interface AuthRequest {
     username: string,
     password: string,
     channel: string,
+    server: string,
 }
 
 export interface AuthResponse {
@@ -27,6 +29,7 @@ export interface LogoutMessage {
 
 export interface JoinChannel {
     channel: string,
+    server: string,
     password: string
 }
 
