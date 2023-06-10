@@ -295,27 +295,6 @@ const enrichText = (userinput: string) => {
                 url.startsWith("https://cdn.discordapp.com/attachments/")
             const isImageUrl: boolean = new RegExp('\\.(png|jpg|jpeg|webp|svg|gif)$', 'i').test(url)
             const isVideoUrl: boolean = new RegExp('\\.(mp4)$', 'i').test(url)
-            // https://github.com/foo/bar/@baz.com
-            // most browsers would visit the website baz.com
-            // and provide https as username and //github.com/foo/bar/
-            // as password given those would not be real slashes but
-            // some unicode character that looks like a slash
-            // since i am too lazy for a more sophisticated check
-            // we mark all domains containing an @ as potentially dangerous
-            // and make them non clickable
-            // here is some flashy youtube video highlighting the problem
-            // https://www.youtube.com/watch?v=GCVJsz7EODA
-            const isInsecure: boolean = url.includes("@")
-            if (isInsecure) {
-                return `
-                <a
-                    target="_blank"
-                    class="danger"
-                    href="https://github.com/ChillerDragon/discord-irc/blob/6f3fb8d8f78f5c3d3f05e36a292a77d26a9f8d90/src/index.ts#L85-L97"
-                >
-                    ${url}
-                </a>`
-            }
             if (isWhitelistedCdn) {
                 if (isImageUrl) {
                     return `<img class="embed-img" src="${url}">`
