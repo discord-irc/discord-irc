@@ -23,6 +23,13 @@ export interface AuthResponse {
     success: boolean,
 }
 
+export interface JoinChannelResponse {
+    message: string,
+    success: boolean,
+    channel: string,
+    server: string,
+}
+
 export interface LogoutMessage {
     message: string
 }
@@ -40,6 +47,7 @@ export interface ServerToClientEvents {
     logout: (data: LogoutMessage) => void
     userJoin: (username: string) => void
     userLeave: (username: string) => void
+    joinChannelResponse: (reponse: JoinChannelResponse) => void
 }
 
 export interface ClientToServerEvents {

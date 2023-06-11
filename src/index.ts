@@ -1,5 +1,4 @@
-import { io, Socket } from 'socket.io-client'
-import { ClientToServerEvents, ServerToClientEvents, IrcMessage, AuthResponse, LogoutMessage } from './socket.io'
+import { IrcMessage, AuthResponse, LogoutMessage } from './socket.io'
 
 // import hljs from 'highlight.js' // works but is slow because it bloats in too many langs
 import hljs from 'highlight.js/lib/core'
@@ -35,14 +34,15 @@ import './style.css'
 import 'highlight.js/styles/base16/solarized-dark.css'
 import { getAllEmoteNames } from './emotes'
 import { autoComplete } from './autocomplete';
-import { knownDiscordNames, updateUserListDiscord, addUser, removeUser, allKnownUsernames, updateUserList } from './users';
+import { addUser, removeUser, allKnownUsernames, updateUserList } from './users';
 import { clearNotifications, toggleNotifications, isNotificationsActive } from './notifications';
 import { account } from './account';
-import { clearMessagesContainer, renderMessage } from './render_message';
 import { translateEmotes } from './rich_text';
 import { getCookie, setCookie } from './cookies';
 import { getActiveChannel, getActiveServer } from './channels';
 import { backendUrl } from './backend';
+import { addMessage, reloadMessageBacklog } from './message_loader';
+import { getSocket } from './ws_connection';
 
 const messageInp: HTMLInputElement = document.querySelector('#message-input')
 
@@ -50,28 +50,11 @@ window.addEventListener('focus', () => {
     clearNotifications()
 })
 
-const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(backendUrl)
-
-socket.on('connect', () => {
+getSocket().on('connect', () => {
     console.log(`connected to ${backendUrl}`)
 })
 
-const addMessage = (message: IrcMessage) => {
-    let isBridge = false
-    if (message.from === 'bridge') {
-        const slibbers = message.message.split('>')
-        message.from = slibbers[0].substring(1)
-        message.message = slibbers.slice(1).join('>').substring(1)
-        if (knownDiscordNames.indexOf(message.from) === -1) {
-            knownDiscordNames.push(message.from)
-            updateUserListDiscord()
-        }
-        isBridge = true
-    }
-    renderMessage(message, isBridge)
-}
-
-socket.on('message', (message: IrcMessage) => {
+getSocket().on('message', (message: IrcMessage) => {
     addMessage(message)
 })
 
@@ -87,7 +70,7 @@ const addLoginAlert = (message: string): void => {
     )
 }
 
-socket.on('authResponse', (auth: AuthResponse) => {
+getSocket().on('authResponse', (auth: AuthResponse) => {
     if (!auth.success) {
         addLoginAlert(auth.message)
         return
@@ -95,7 +78,7 @@ socket.on('authResponse', (auth: AuthResponse) => {
     onLogin(auth)
 })
 
-socket.on('logout', (data: LogoutMessage) => {
+getSocket().on('logout', (data: LogoutMessage) => {
     if (!account.loggedIn) {
         return
     }
@@ -103,11 +86,11 @@ socket.on('logout', (data: LogoutMessage) => {
     addLoginAlert(data.message)
 })
 
-socket.on('userJoin', (username: string) => {
+getSocket().on('userJoin', (username: string) => {
     addUser(username)
 })
 
-socket.on('userLeave', (username: string) => {
+getSocket().on('userLeave', (username: string) => {
     removeUser(username)
 })
 
@@ -142,8 +125,8 @@ loginPopup.querySelector('form')
         if (!password) {
             return
         }
-        console.log(`requesting to join '${getActiveChannel()}'`)
-        socket.emit(
+        console.log(`requesting to join '${getActiveServer()}#${getActiveChannel()}'`)
+        getSocket().emit(
             'authRequest',
             {
                 username: username,
@@ -172,7 +155,7 @@ document.querySelector('form.input-pane')
         }
         // only render when we get the res from server
         // renderMessage(ircMessage)
-        socket.emit('message', ircMessage)
+        getSocket().emit('message', ircMessage)
     })
 
 const prefillLoginForm = () => {
@@ -228,6 +211,7 @@ messageInp.addEventListener('keydown', (event: KeyboardEvent) => {
 
 clearNotifications()
 prefillLoginForm()
+reloadMessageBacklog()
 
 fetch(`${backendUrl}/users`)
     .then(data => data.json())
@@ -236,14 +220,4 @@ fetch(`${backendUrl}/users`)
             addUser(username, false)
         })
         updateUserList()
-    })
-
-fetch(`${backendUrl}/${getActiveServer()}/${getActiveChannel()}/messages`)
-    .then(data => data.json())
-    .then((messages: IrcMessage[]) => {
-        // clears the loading message
-        clearMessagesContainer()
-        messages.forEach((message: IrcMessage) => {
-            addMessage(message)
-        })
     })
