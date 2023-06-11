@@ -42,14 +42,13 @@ import { clearMessagesContainer, renderMessage } from './render_message';
 import { translateEmotes } from './rich_text';
 import { getCookie, setCookie } from './cookies';
 import { getActiveChannel, getActiveServer } from './channels';
+import { backendUrl } from './backend';
 
 const messageInp: HTMLInputElement = document.querySelector('#message-input')
 
 window.addEventListener('focus', () => {
     clearNotifications()
 })
-
-const backendUrl: string = process.env.BACKEND_URL
 
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(backendUrl)
 
@@ -195,7 +194,7 @@ const usersButton: HTMLElement = document.querySelector('.users-icon')
 const userlistPane: HTMLElement = document.querySelector('.user-list-pane')
 const layoutDiv: HTMLElement = document.querySelector('.layout')
 usersButton.addEventListener('click', () => {
-    layoutDiv.classList.toggle('expanded')
+    layoutDiv.classList.toggle('expanded-user-list')
     userlistPane.classList.toggle('active')
 })
 
