@@ -1,10 +1,15 @@
 interface Account {
     username: string,
-    loggedIn: boolean
+    loggedIn: boolean,
+    sessionToken: string
 }
 
-export const account = {
+const account = {
     username: 'nameless tee',
     loggedIn: false,
     sessionToken: 'unset'
+}
+
+export const getAccount = (): Account => {
+    return account
 }

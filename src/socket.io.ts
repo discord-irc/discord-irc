@@ -40,6 +40,17 @@ export interface JoinChannel {
     password: string
 }
 
+export interface TypingInfo {
+    isTyping: boolean,
+    channel: string,
+    server: string,
+}
+
+export interface TypingState {
+    names: string[],
+    channel: string
+}
+
 export interface ServerToClientEvents {
     // irc-websockets
     message: (message: IrcMessage) => void
@@ -48,6 +59,7 @@ export interface ServerToClientEvents {
     userJoin: (username: string) => void
     userLeave: (username: string) => void
     joinChannelResponse: (reponse: JoinChannelResponse) => void
+    typingUsers: (state: TypingState) => void
 }
 
 export interface ClientToServerEvents {
@@ -58,4 +70,5 @@ export interface ClientToServerEvents {
     message: (message: IrcMessage) => void
     authRequest: (auth: AuthRequest) => void
     joinChannel: (join: JoinChannel) => void
+    typingInfo: (typingInfo: TypingInfo) => void
 }

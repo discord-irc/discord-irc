@@ -1,5 +1,5 @@
 import hljs from "highlight.js"
-import { account } from "./account"
+import { getAccount } from "./account"
 import { getDiscordEmoteIdByName, getDiscordEmoteNameById, getUnicodeByName } from "./emotes"
 import { addPingNotification } from "./notifications"
 import { allKnownUsernames } from "./users"
@@ -10,7 +10,7 @@ export const replacePings = (message: string): string => {
         message = message.replaceAll(
             `@${username}`,
             () => {
-                if (username === account.username) {
+                if (username === getAccount().username) {
                     highlightMessage = true
                 }
                 return `<span class="ping">@${username}</span>`
@@ -19,7 +19,7 @@ export const replacePings = (message: string): string => {
     })
     // TODO: this also highlights user "foo" in the word "barfoos"
     if(!highlightMessage) {
-        message = message.replaceAll(new RegExp(account.username, 'ig'), (m) => {
+        message = message.replaceAll(new RegExp(getAccount().username, 'ig'), (m) => {
             highlightMessage = true
             return `<span class="ping">${m}</span>`
         })

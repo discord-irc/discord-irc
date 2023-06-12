@@ -1,4 +1,4 @@
-import { IrcMessage, AuthResponse, LogoutMessage } from './socket.io'
+import { IrcMessage, AuthResponse, LogoutMessage, TypingInfo } from './socket.io'
 
 // import hljs from 'highlight.js' // works but is slow because it bloats in too many langs
 import hljs from 'highlight.js/lib/core'
@@ -36,13 +36,15 @@ import { getAllEmoteNames } from './emotes'
 import { autoComplete } from './autocomplete';
 import { addUser, removeUser, allKnownUsernames, updateUserList } from './users';
 import { clearNotifications, toggleNotifications, isNotificationsActive } from './notifications';
-import { account } from './account';
+import { getAccount } from './account';
 import { translateEmotes } from './rich_text';
 import { getCookie, setCookie } from './cookies';
 import { getActiveChannel, getActiveServer } from './channels';
 import { backendUrl } from './backend';
 import { addMessage, reloadMessageBacklog } from './message_loader';
 import { getSocket } from './ws_connection';
+import { startGameLoop } from './tick';
+import { getPlugins } from './plugins/plugins';
 
 const messageInp: HTMLInputElement = document.querySelector('#message-input')
 
@@ -79,7 +81,7 @@ getSocket().on('authResponse', (auth: AuthResponse) => {
 })
 
 getSocket().on('logout', (data: LogoutMessage) => {
-    if (!account.loggedIn) {
+    if (!getAccount().loggedIn) {
         return
     }
     onLogout()
@@ -101,9 +103,9 @@ const onLogout = (): void => {
 }
 
 const onLogin = (authResponse: AuthResponse): void => {
-    account.username = authResponse.username
-    account.loggedIn = true
-    account.sessionToken = authResponse.token
+    getAccount().username = authResponse.username
+    getAccount().loggedIn = true
+    getAccount().sessionToken = authResponse.token
     const passwordInp: HTMLInputElement = document.querySelector('#password-input')
     setCookie('username', authResponse.username, 30)
     setCookie('password', passwordInp.value, 30)
@@ -146,9 +148,9 @@ document.querySelector('form.input-pane')
         }
         messageInp.value = ""
         const ircMessage = {
-            from: account.username,
+            from: getAccount().username,
             message: translateEmotes(message),
-            token: account.sessionToken,
+            token: getAccount().sessionToken,
             channel: getActiveChannel(),
             server: getActiveServer(),
             date: new Date().toUTCString()
@@ -203,15 +205,20 @@ bellDiv.addEventListener('click', () => {
 messageInp.addEventListener('keydown', (event: KeyboardEvent) => {
     autoComplete('@', allKnownUsernames(), event, messageInp, ' ')
     autoComplete(':', getAllEmoteNames(), event, messageInp, ': ')
+    getPlugins().forEach((plugin) => {
+        plugin.onKeydown(event)
+    })
 })
 
 /*
     RUN ON PAGE LOAD
 */
 
+startGameLoop()
 clearNotifications()
 prefillLoginForm()
 reloadMessageBacklog()
+getPlugins().forEach((plugin) => plugin.onInit())
 
 fetch(`${backendUrl}/users`)
     .then(data => data.json())
