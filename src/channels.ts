@@ -76,6 +76,7 @@ export const highlightNewMessageInChannel = (channel: string) => {
     const channelDom: HTMLElement | null = document.querySelector(`[data-channel-name="${channel}"]`)
     if (!channelDom) {
         console.log(`[!] WARNING! failed to find channel with name '${channel}'`)
+        return
     }
     channelDom.classList.add('new-messages')
 }
@@ -84,6 +85,7 @@ export const highlightNewPingInChannel = (channel: string) => {
     const channelDom: HTMLElement | null = document.querySelector(`[data-channel-name="${channel}"]`)
     if (!channelDom) {
         console.log(`[!] WARNING! failed to find channel with name '${channel}'`)
+        return
     }
     const numPingsDom: HTMLElement = channelDom.querySelector('.num-pings')
     numPingsDom.classList.add('active')
