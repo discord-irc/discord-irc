@@ -53,7 +53,7 @@ const requestSwitchChannel = (serverName: string, channelName: string) => {
 }
 
 const switchChannel = (serverName: string, channelName: string) => {
-    console.log(`Switching to channel ${serverName}#${channelName}`)
+    // console.log(`Switching to channel ${serverName}#${channelName}`)
     const oldServer = getActiveServer()
     const oldChannel = getActiveChannel()
     setActiveServer(serverName)
