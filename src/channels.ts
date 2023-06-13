@@ -72,6 +72,25 @@ getSocket().on('joinChannelResponse', (response: JoinChannelResponse) => {
     console.log(`failed to switch channel! todo error toast in ui`)
 })
 
+export const highlightNewMessageInChannel = (channel: string) => {
+    const channelDom: HTMLElement | null = document.querySelector(`[data-channel-name="${channel}"]`)
+    if (!channelDom) {
+        console.log(`[!] WARNING! failed to find channel with name '${channel}'`)
+    }
+    channelDom.classList.add('new-messages')
+}
+
+export const highlightNewPingInChannel = (channel: string) => {
+    const channelDom: HTMLElement | null = document.querySelector(`[data-channel-name="${channel}"]`)
+    if (!channelDom) {
+        console.log(`[!] WARNING! failed to find channel with name '${channel}'`)
+    }
+    const numPingsDom: HTMLElement = channelDom.querySelector('.num-pings')
+    numPingsDom.classList.add('active')
+    const numPings: number = parseInt(numPingsDom.innerText, 10)
+    numPingsDom.innerHTML = (numPings + 1).toString()
+}
+
 const renderChannelList = (serverName: string) => {
     textChannelsDom.innerHTML = ''
     if (!connectedServers[serverName]) {
@@ -80,9 +99,12 @@ const renderChannelList = (serverName: string) => {
     connectedServers[serverName].channels.forEach((channel: ChannelInfo) => {
         const active = channel.name === getActiveChannel() ? ' active' : ''
         textChannelsDom.innerHTML += 
-            `<div class="channel-name-box clickable">
-                <span class="text-light">#</span>
-                <span class="channel-name${active}">${channel.name}</span>
+            `<div class="channel-name-box clickable${active}" data-channel-name="${channel.name}">
+                <span>
+                    <span class="text-light">#</span>
+                    <span class="channel-name">${channel.name}</span>
+                </span>
+                <span class="num-pings">0</span>
             </div>`
     })
     const clickableChannels: NodeListOf<HTMLElement> = document.querySelectorAll('.clickable.channel-name-box')
@@ -90,8 +112,12 @@ const renderChannelList = (serverName: string) => {
         channel.addEventListener('click', () => {
             const channelNameDom: HTMLElement | null = channel.querySelector('.channel-name')
             const oldActive: HTMLElement = document.querySelector('.text-channels .active')
+            const numPingsDom: HTMLElement = channel.querySelector('.num-pings')
             oldActive.classList.remove('active')
-            channelNameDom.classList.add('active')
+            oldActive.classList.remove('new-messages')
+            numPingsDom.classList.remove('active')
+            channel.classList.add('active')
+            channel.classList.remove('new-messages')
             requestSwitchChannel(getActiveServer(), channelNameDom.innerText)
         })
     })

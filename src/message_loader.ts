@@ -1,8 +1,16 @@
+import { getAccount } from "./account"
 import { backendUrl } from "./backend"
-import { getActiveServer, getActiveChannel } from "./channels"
+import { getActiveServer, getActiveChannel, highlightNewMessageInChannel, highlightNewPingInChannel } from "./channels"
 import { clearMessagesContainer, renderMessage } from "./render_message"
 import { IrcMessage } from "./socket.io"
 import { knownDiscordNames, updateUserListDiscord } from "./users"
+
+const checkNotificationFromOtherChannel = (message: IrcMessage) => {
+    highlightNewMessageInChannel(message.channel)
+    if (message.message.includes(getAccount().username)) {
+        highlightNewPingInChannel(message.channel)
+    }
+}
 
 export const addMessage = (message: IrcMessage) => {
     let isBridge = false
@@ -16,7 +24,11 @@ export const addMessage = (message: IrcMessage) => {
         }
         isBridge = true
     }
-    renderMessage(message, isBridge)
+    if (message.channel === getActiveChannel()) {
+        renderMessage(message, isBridge)
+    } else {
+        checkNotificationFromOtherChannel(message)
+    }
 }
 
 export const reloadMessageBacklog = () => {

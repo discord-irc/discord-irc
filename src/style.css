@@ -304,8 +304,34 @@ html, body {
     color: #888d93;
 }
 
-.channel-name.active {
+.active .channel-name, .new-messages .channel-name {
     color: white;
+}
+
+.num-pings {
+    display: none;
+}
+
+.num-pings.active {
+    display: block;
+    background-color: #f14a4a;
+    border-radius: 2px;
+    padding: 2px;
+    color: white;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.158);
+}
+
+.channel-name-box {
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.channel-name-box.active {
+    background-color: #393c43;
+    border-radius: 3px;
+    margin-right: 5px;
 }
 
 .server-details-toggle {
