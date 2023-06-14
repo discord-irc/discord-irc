@@ -197,6 +197,10 @@ html, body {
     overflow-y: auto;
 }
 
+.ui-box-rounding {
+    border-radius: 10px;
+}
+
 .input-pane {
     grid-row: 3;
     grid-column: 3;
@@ -260,7 +264,6 @@ input {
     height: 40px;
     padding-left: 5px;
     margin: 8px;
-    border-radius: 5px;
     box-sizing: border-box;
 }
 

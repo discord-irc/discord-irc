@@ -46,8 +46,15 @@
         <div class="message-pane">
             connecting to server ...
         </div> <!-- message-pane -->
+        <div class="emoji-picker-pane">
+            <div class="emoji-picker ui-box-rounding">
+                <input type="text" name="emoji-search" id="emoji-search" placeholder="Search emoji">
+                <hr>
+                <div class="emoji-picker-list"></div>
+            </div> <!-- emoji-picker -->
+        </div> <!-- emoji-picker-pane -->
         <form class="input-pane" action="">
-            <input type="text" name="message" id="message-input" placeholder="Message #developer" autocomplete="off">
+            <input type="text" name="message" class="ui-box-rounding" id="message-input" placeholder="Message #developer" autocomplete="off">
             <div class="typing-users"></div>
         </form>
         <div class="user-list-pane">

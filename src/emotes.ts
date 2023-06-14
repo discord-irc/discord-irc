@@ -164,13 +164,37 @@ export const getUnicodeByName = (unicodeName: string): string | null => {
     return unicodeEmoteMappings[unicodeName] || null
 }
 
-/*
-    returns custom discord emotes and unicode emote names
-*/
+/**
+ * returns custom discord emotes and unicode emote names
+ *
+ * if you want only discord custom use
+ * getDiscordEmoteNames()
+ *
+ * @param type either custom or animated
+ * @returns array of emote names as strings
+ */
 export const getAllEmoteNames = (type: string = 'custom'): string[] => {
     let lookupObj = emoteMappings
     if (type === 'animated') {
         lookupObj = animatedEmoteMappings
     }
     return Object.keys(lookupObj).concat(Object.keys(unicodeEmoteMappings))
+}
+
+/**
+ * Returns all custom discord emotes
+ * no standard unicode emotes
+ *
+ * if you want both discord custom and unicode emotes use
+ * getAllEmoteNames()
+ *
+ * @param type either custom or animated
+ * @returns array of emote names as strings
+ */
+export const getDiscordEmoteNames = (type: string = 'custom'): string[] => {
+    let lookupObj = emoteMappings
+    if (type === 'animated') {
+        lookupObj = animatedEmoteMappings
+    }
+    return Object.keys(lookupObj)
 }
