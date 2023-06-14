@@ -204,6 +204,7 @@ html, body {
 .input-pane {
     grid-row: 3;
     grid-column: 3;
+    position: relative; /* needed to align buttons inside the input */
 }
 
 .user-list-pane {

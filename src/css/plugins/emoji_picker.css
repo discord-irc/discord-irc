@@ -4,10 +4,27 @@
     grid-column: 3;
     padding-bottom: 5px;
     padding-right: 10px;
-    display: flex;
-    display: none; /* TODO: activate with button */
     align-items: flex-end;
     justify-content: flex-end;
+    display: none;
+}
+
+.emoji-picker-toggle {
+    height: 40px;
+    width: 40px;
+    top: 8px;
+    right: 10px;
+    background-image: url("../../img/rofl_grey.svg");
+    position: absolute;
+}
+
+.emoji-picker-toggle:hover {
+    background-image: url("../../img/rofl.svg");
+
+}
+
+.emoji-picker-pane.active {
+    display: flex;
 }
 
 .emoji-picker {
@@ -31,4 +48,9 @@
 #emoji-search {
     border-radius: 4px;
     background-color: #212226;
+}
+
+.emoji-selected {
+    background-color: #1f2420;
+    border-radius: 1px;
 }

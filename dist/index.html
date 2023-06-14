@@ -48,13 +48,16 @@
         </div> <!-- message-pane -->
         <div class="emoji-picker-pane">
             <div class="emoji-picker ui-box-rounding">
-                <input type="text" name="emoji-search" id="emoji-search" placeholder="Search emoji">
+                <form action="" class="emoji-search-form">
+                    <input type="text" name="emoji-search" id="emoji-search" placeholder="Search emoji">
+                </form>
                 <hr>
                 <div class="emoji-picker-list"></div>
             </div> <!-- emoji-picker -->
         </div> <!-- emoji-picker-pane -->
         <form class="input-pane" action="">
             <input type="text" name="message" class="ui-box-rounding" id="message-input" placeholder="Message #developer" autocomplete="off">
+            <div class="emoji-picker-toggle"></div>
             <div class="typing-users"></div>
         </form>
         <div class="user-list-pane">
