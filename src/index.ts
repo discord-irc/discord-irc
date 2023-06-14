@@ -30,7 +30,8 @@ hljs.registerLanguage('json', json);
 hljs.registerLanguage('bash', bash);
 hljs.registerLanguage('shell', shell);
 
-import './style.css'
+import './css/style.css'
+import './css/emotes.css'
 import 'highlight.js/styles/base16/solarized-dark.css'
 import { getAllEmoteNames } from './emotes'
 import { autoComplete } from './autocomplete';
