@@ -40,9 +40,18 @@
 .emoji-picker-list {
     display: grid;
     padding: 5px;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     gap: 5px;
     width: fit-content;
+
+    /*
+        this is set by javascript
+        if you want to change the columns go to
+        emoji_picker.ts and change the line
+        
+        this.numEmojiColumns = 9
+    */
+
+    /* grid-template-columns: repeat(9, 1fr); */
 }
 
 #emoji-search {
