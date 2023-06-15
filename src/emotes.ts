@@ -99,6 +99,7 @@ const animatedEmoteMappings: Record<string, string> = {
     'Deadneko': '823430684680781879',
     'aPES_RoastedPepe': '596259843174563840',
     'pepeFASTJAM': '799388844491276311',
+    'POGGERS2': '882364244065157210'
 }
 
 const unicodeEmoteMappings: Record<string, string> = {
