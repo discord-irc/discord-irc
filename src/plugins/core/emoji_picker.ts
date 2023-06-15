@@ -4,6 +4,24 @@ import BasePlugin from "../base_plugin"
 import '../../css/plugins/emoji_picker.css'
 
 class EmojiPickerPlugin extends BasePlugin {
+
+    /**
+     * the main div holding basically the whole view port
+     *
+     * it has the grid that splits the whole menu
+     * we can insert our emoji pane at the end of this div
+     * and then align our selfs in the grid
+     */
+    layoutDiv: HTMLElement
+
+    /**
+     * pluginButtonInputButtonContainer
+     *
+     * div inside the message send from
+     * designed to be inserted with plugin buttons
+     */
+    pluginButtonInputButtonContainer: HTMLElement
+
     /**
      * emojiPickerDom
      *
@@ -11,6 +29,7 @@ class EmojiPickerPlugin extends BasePlugin {
      * search and all emojis
      */
     emojiPickerDom: HTMLElement
+
     /**
      * emojiPaneDom
      *
@@ -30,6 +49,23 @@ class EmojiPickerPlugin extends BasePlugin {
 
     constructor() {
         super('emoji_picker')
+
+        this.pluginButtonInputButtonContainer = document.querySelector('.plugin-input-buttons')
+        this.layoutDiv = document.querySelector('.layout')
+
+        this.pluginButtonInputButtonContainer.insertAdjacentHTML('beforeend', '<div class="emoji-picker-toggle"></div>')
+        this.layoutDiv.insertAdjacentHTML(
+            'beforeend',
+            `<div class="emoji-picker-pane">
+            <div class="emoji-picker ui-box-rounding">
+                <form action="" class="emoji-search-form">
+                    <input type="text" name="emoji-search" id="emoji-search" placeholder="Search emoji">
+                </form>
+                <hr>
+                <div class="emoji-picker-list"></div>
+            </div> <!-- emoji-picker -->
+            </div> <!-- emoji-picker-pane -->`
+        )
 
         this.emojiPickerDom = document.querySelector('.emoji-picker')
         this.emojiPaneDom = document.querySelector('.emoji-picker-pane')
