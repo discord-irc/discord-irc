@@ -46,6 +46,7 @@ import { addMessage, reloadMessageBacklog } from './message_loader';
 import { getSocket } from './ws_connection';
 import { startGameLoop } from './tick';
 import { getPlugins } from './plugins/plugins';
+import { getNextMessageId } from './message_ids';
 
 const messageInp: HTMLInputElement = document.querySelector('#message-input')
 
@@ -149,6 +150,7 @@ document.querySelector('form.input-pane')
         }
         messageInp.value = ""
         const ircMessage = {
+            id: getNextMessageId(),
             from: getAccount().username,
             message: translateEmotes(message),
             token: getAccount().sessionToken,

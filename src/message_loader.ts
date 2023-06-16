@@ -1,6 +1,7 @@
 import { getAccount } from "./account"
 import { backendUrl } from "./backend"
 import { getActiveServer, getActiveChannel, highlightNewMessageInChannel, highlightNewPingInChannel } from "./channels"
+import { setLatestMessageId } from "./message_ids"
 import { clearMessagesContainer, renderMessage } from "./render_message"
 import { IrcMessage } from "./socket.io"
 import { knownDiscordNames, updateUserListDiscord } from "./users"
@@ -13,6 +14,7 @@ const checkNotificationFromOtherChannel = (message: IrcMessage) => {
 }
 
 export const addMessage = (message: IrcMessage) => {
+    setLatestMessageId(message.id)
     let isBridge = false
     if (message.from === 'bridge') {
         const slibbers = message.message.split('>')
@@ -32,7 +34,7 @@ export const addMessage = (message: IrcMessage) => {
 }
 
 export const reloadMessageBacklog = () => {
-    fetch(`${backendUrl}/${getActiveServer()}/${getActiveChannel()}/messages`)
+    fetch(`${backendUrl}/${getActiveServer()}/${getActiveChannel()}/messages?count=200`)
         .then(data => data.json())
         .then((messages: IrcMessage[]) => {
             // clears the loading message

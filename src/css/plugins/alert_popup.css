@@ -1,0 +1,7 @@
+.alert-popup-top-left {
+    min-height: 100px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+}

@@ -1,6 +1,7 @@
 import { Socket } from 'socket.io'
 
 export interface IrcMessage {
+    id: number,
     from: string,
     message: string,
     channel: string,
@@ -51,6 +52,12 @@ export interface TypingState {
     channel: string
 }
 
+export interface AlertMessage {
+    success: boolean,
+    message: string,
+    expire: number
+}
+
 export interface ServerToClientEvents {
     // irc-websockets
     message: (message: IrcMessage) => void
@@ -60,6 +67,7 @@ export interface ServerToClientEvents {
     userLeave: (username: string) => void
     joinChannelResponse: (reponse: JoinChannelResponse) => void
     typingUsers: (state: TypingState) => void
+    alert: (msg: AlertMessage) => void
 }
 
 export interface ClientToServerEvents {
