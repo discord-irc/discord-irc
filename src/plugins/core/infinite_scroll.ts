@@ -1,6 +1,7 @@
 import { backendUrl } from "../../backend"
 import { getActiveServer, getActiveChannel } from "../../channels"
 import { getOldestMessageId } from "../../message_ids"
+import { addMessage } from "../../message_loader"
 import { IrcMessage } from "../../socket.io"
 import BasePlugin from "../base_plugin" 
 
@@ -29,16 +30,15 @@ class InfiniteScrollPlugin extends BasePlugin {
             console.log('[!] load of more messages already pending!')
             return
         }
-        console.log('TODO: load more messages')
         this.pendingLoad = true
         const stepSize: number = 10
         const fromId: number = Math.max(0, getOldestMessageId() - stepSize)
+        console.log(`Requesting ${stepSize} messages starting from id ${fromId} (oldest known id = ${getOldestMessageId()})`)
         fetch(`${backendUrl}/${getActiveServer()}/${getActiveChannel()}/messages?count=${stepSize}&from=${fromId}`)
             .then(data => data.json())
             .then((messages: IrcMessage[]) => {
                 messages.forEach((message: IrcMessage) => {
-                    console.log(message)
-                    // TODO: insert at the top
+                    addMessage(message, true)
                 })
                 this.pendingLoad = false
             })

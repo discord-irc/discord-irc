@@ -1,7 +1,7 @@
 import { getAccount } from "./account"
 import { backendUrl } from "./backend"
 import { getActiveServer, getActiveChannel, highlightNewMessageInChannel, highlightNewPingInChannel } from "./channels"
-import { setLatestMessageId } from "./message_ids"
+import { isRenderedMessageId, trackNewMessageId } from "./message_ids"
 import { clearMessagesContainer, renderMessage } from "./render_message"
 import { IrcMessage } from "./socket.io"
 import { knownDiscordNames, updateUserListDiscord } from "./users"
@@ -13,8 +13,14 @@ const checkNotificationFromOtherChannel = (message: IrcMessage) => {
     }
 }
 
-export const addMessage = (message: IrcMessage) => {
-    setLatestMessageId(message.id)
+export const addMessage = (message: IrcMessage, insertTop: boolean = false) => {
+    if (isRenderedMessageId(message.id)) {
+        // TODO: let those through and update the old
+        //       to enable message edits
+        console.log(`[!] Warning ignoring known message id=${message.id}`)
+        return
+    }
+    trackNewMessageId(message.id)
     let isBridge = false
     if (message.from === 'bridge') {
         const slibbers = message.message.split('>')
@@ -27,7 +33,7 @@ export const addMessage = (message: IrcMessage) => {
         isBridge = true
     }
     if (message.channel === getActiveChannel()) {
-        renderMessage(message, isBridge)
+        renderMessage(message, insertTop, isBridge)
     } else {
         checkNotificationFromOtherChannel(message)
     }
@@ -40,7 +46,7 @@ export const reloadMessageBacklog = () => {
             // clears the loading message
             clearMessagesContainer()
             messages.forEach((message: IrcMessage) => {
-                addMessage(message)
+                addMessage(message, false)
             })
         })
 }

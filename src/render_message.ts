@@ -115,8 +115,9 @@ const checkMergePrevMessage = (message: IrcMessage): HTMLElement | null => {
     return prevMessage
 }
 
-export const renderMessage = (message: IrcMessage, isBridge = false) => {
-    const mergeMessage: HTMLElement | null = checkMergePrevMessage(message)
+export const renderMessage = (message: IrcMessage, insertTop: boolean = false, isBridge = false) => {
+    // TODO: insertTop merges
+    const mergeMessage: HTMLElement | null = insertTop ? null : checkMergePrevMessage(message)
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charCodeAt
     // can return 0-65535
     // but should be in the ascii range for most names
@@ -156,8 +157,8 @@ export const renderMessage = (message: IrcMessage, isBridge = false) => {
         mergeMessageText.innerHTML = newRichText
     } else {
         messagesContainer.insertAdjacentHTML(
-            'beforeend',
-            `<div class="message" data-date="${message.date}">
+            insertTop ? 'afterbegin' : 'beforeend',
+            `<div class="message" data-date="${message.date}" data-message-id="${message.id}">
                 <div class="message-img profile${profileId}${isBridge ? " bridge" : ""}"></div>
                 <div class="message-content">
                     <div class="message-header">
