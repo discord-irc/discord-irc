@@ -66,6 +66,7 @@ const emoteMappings: Record<string, string> = {
     'jaouis': '771825988556292096',
     'lol': '460429405328506900',
     'mmm': '395753965410582538',
+    'tee_thinking': '478629518358085653',
 }
 
 /*

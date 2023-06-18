@@ -149,6 +149,9 @@
 .emote.emote-mmm {
     background-image: url("../img/emotes/mmm.png");
 }
+.emote.emote-tee_thinking {
+    background-image: url("../img/emotes/tee_thinking.png");
+}
 
 /* TODO: rocket is unused */
 .emote.emote-rocket {
