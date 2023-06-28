@@ -22,7 +22,7 @@ export const addMessage = (message: IrcMessage, insertTop: boolean = false) => {
     }
     trackNewMessageId(message.id)
     let isBridge = false
-    if (message.from === 'bridge') {
+    if (['bridge', 'bridge_'].includes(message.from)) {
         const slibbers = message.message.split('>')
         message.from = slibbers[0].substring(1)
         message.message = slibbers.slice(1).join('>').substring(1)
