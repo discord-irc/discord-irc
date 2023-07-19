@@ -34,19 +34,20 @@ import './css/style.css'
 import './css/emotes.css'
 import 'highlight.js/styles/base16/solarized-dark.css'
 import { getAllEmoteNames } from './emotes'
-import { autoComplete } from './autocomplete';
-import { addUser, removeUser, allKnownUsernames, updateUserList } from './users';
-import { clearNotifications, toggleNotifications, isNotificationsActive } from './notifications';
-import { getAccount } from './account';
-import { translateEmotes } from './rich_text';
-import { getCookie, setCookie } from './cookies';
-import { getActiveChannel, getActiveServer } from './channels';
-import { backendUrl } from './backend';
-import { addMessage, reloadMessageBacklog } from './message_loader';
-import { getSocket } from './ws_connection';
-import { startGameLoop } from './tick';
-import { getPlugins } from './plugins/plugins';
-import { getNextMessageId } from './message_ids';
+import { autoComplete } from './autocomplete'
+import { addUser, removeUser, allKnownUsernames, updateUserList } from './users'
+import { clearNotifications, toggleNotifications, isNotificationsActive } from './notifications'
+import { getAccount } from './account'
+import { translateEmotes } from './rich_text'
+import { getCookie, setCookie } from './cookies'
+import { getActiveChannel, getActiveServer } from './channels'
+import { backendUrl } from './backend'
+import { addMessage, reloadMessageBacklog } from './message_loader'
+import { getSocket } from './ws_connection'
+import { startGameLoop } from './tick'
+import { getPlugins } from './plugins/plugins'
+import { getNextMessageId } from './message_ids'
+import './settings'
 
 const messageInp: HTMLInputElement = document.querySelector('#message-input')
 
