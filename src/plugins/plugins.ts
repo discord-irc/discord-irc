@@ -1,4 +1,4 @@
-import { getUserSettings } from "../user_settings"
+import { getUserSettings, setUserSettings } from "../user_settings"
 import BasePlugin from "./base_plugin"
 import AlertPopupPlugin from "./core/alert_popup"
 import EmojiPickerPlugin from "./core/emoji_picker"
@@ -17,6 +17,18 @@ export const getPlugins = (): BasePlugin[] => {
 
 export const isPluginActive = (pluginName: string): boolean => {
     const settings = getUserSettings()
-    console.log(settings.active_plugins)
     return settings.active_plugins.includes(pluginName)
+}
+
+export const deactivatePlugin = (pluginName: string) => {
+    const settings = getUserSettings()
+    const newPlugins = settings.active_plugins.filter((plugin) => plugin !== pluginName)
+    settings.active_plugins = newPlugins
+    setUserSettings(settings)
+}
+
+export const activatePlugin = (pluginName: string) => {
+    const settings = getUserSettings()
+    settings.active_plugins.push(pluginName)
+    setUserSettings(settings)
 }

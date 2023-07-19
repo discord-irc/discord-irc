@@ -194,6 +194,10 @@ html, body {
     grid-template-rows: 1fr 60px;
 }
 
+.channel-list-pane.settings-active {
+    grid-template-rows: 1fr 1fr;
+}
+
 .profile-and-settings-bar {
     background-color: #2a2c31;
     display: flex;
@@ -279,7 +283,7 @@ html, body {
     overflow-y: auto;
 }
 
-input {
+input[type=text], input[type=password], input[type=submit] {
     all: unset;
     background-color: #43464c;
     width: calc(100% - 16px);

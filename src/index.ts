@@ -47,7 +47,7 @@ import { getSocket } from './ws_connection'
 import { startGameLoop } from './tick'
 import { getPlugins, isPluginActive } from './plugins/plugins'
 import { getNextMessageId } from './message_ids'
-import './settings'
+import './settings_menu'
 
 const messageInp: HTMLInputElement = document.querySelector('#message-input')
 
