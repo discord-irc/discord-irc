@@ -5,7 +5,9 @@ import { getPlugins } from "./plugins/plugins"
  */
 const OnTick = () => {
     getPlugins().forEach((plugin) => {
-        plugin.onTick()
+        if (plugin.isActive()) {
+            plugin.onTick()
+        }
     })
 }
 

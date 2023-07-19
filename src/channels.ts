@@ -60,7 +60,9 @@ const switchChannel = (serverName: string, channelName: string) => {
     setActiveChannel(channelName)
     reloadMessageBacklog()
     getPlugins().forEach((plugin) => {
-        plugin.onSwitchChannel(oldServer, oldChannel, serverName, channelName)
+        if(plugin.isActive()) {
+            plugin.onSwitchChannel(oldServer, oldChannel, serverName, channelName)
+        }
     })
 }
 

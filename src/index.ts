@@ -45,7 +45,7 @@ import { backendUrl } from './backend'
 import { addMessage, reloadMessageBacklog } from './message_loader'
 import { getSocket } from './ws_connection'
 import { startGameLoop } from './tick'
-import { getPlugins } from './plugins/plugins'
+import { getPlugins, isPluginActive } from './plugins/plugins'
 import { getNextMessageId } from './message_ids'
 import './settings'
 
@@ -210,7 +210,9 @@ messageInp.addEventListener('keydown', (event: KeyboardEvent) => {
     autoComplete('@', allKnownUsernames(), event, messageInp, ' ')
     autoComplete(':', getAllEmoteNames(), event, messageInp, ': ')
     getPlugins().forEach((plugin) => {
-        plugin.onKeydown(event)
+        if(plugin.isActive()) {
+            plugin.onKeydown(event)
+        }
     })
 })
 
@@ -222,7 +224,12 @@ startGameLoop()
 clearNotifications()
 prefillLoginForm()
 reloadMessageBacklog()
-getPlugins().forEach((plugin) => plugin.onInit())
+getPlugins().forEach((plugin) => {
+    plugin.active = isPluginActive(plugin.pluginName)
+    if(plugin.isActive()) {
+        plugin.onInit()
+    }
+})
 
 fetch(`${backendUrl}/users`)
     .then(data => data.json())

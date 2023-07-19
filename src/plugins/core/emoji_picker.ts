@@ -49,7 +49,9 @@ class EmojiPickerPlugin extends BasePlugin {
 
     constructor() {
         super('emoji_picker')
+    }
 
+    onInit(): void {
         this.pluginButtonInputButtonContainer = document.querySelector('.plugin-input-buttons')
         this.layoutDiv = document.querySelector('.layout')
 
@@ -79,9 +81,7 @@ class EmojiPickerPlugin extends BasePlugin {
         // apparently js can not use css trix
         // this.emojiListDom.style.gridTemplateColumns = `repeat(${this.numEmojiColumns}, 1fr);`
         this.emojiListDom.style.gridTemplateColumns = '1fr '.repeat(this.numEmojiColumns)
-    }
 
-    onInit(): void {
         this.renderList()
         this.emojiSearchForm.addEventListener('submit', (event) => this.onSearchSubmit(event))
         this.emojiSearchInput.addEventListener('keyup', (event) => this.onSearchKey(event))
