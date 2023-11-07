@@ -1,5 +1,6 @@
 // source: https://tenor.com/embed.js
 // the code in this file belongs to tenor.com
+// edited by ChillerDragon to reduce tracking
 
 if (!false) {
     var __ry_imported = true;
@@ -52,14 +53,6 @@ if (!false) {
               root = framewrapper;
             }
             var url = embedurl + embedSubPath;
-            var sharemethod = (
-              e.getAttribute('data-share-method') || 'tenor');
-            if (sharemethod === 'host') {
-              var hosturl;
-              if (canonical) hosturl = canonical.href;
-              else hosturl = document.location.href;
-              url += '?canonicalurl=' + hosturl;
-            }
             iframe.setAttribute('src',url);
             e.innerHTML = '';
             e.appendChild(root);
