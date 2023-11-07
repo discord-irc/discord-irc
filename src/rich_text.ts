@@ -3,6 +3,7 @@ import { getAccount } from "./account"
 import { getDiscordEmoteIdByName, getDiscordEmoteNameById, getUnicodeByName } from "./emotes"
 import { addPingNotification } from "./notifications"
 import { allKnownUsernames } from "./users"
+import { getPlugins } from "./plugins/plugins"
 
 export const replacePings = (message: string): string => {
     let highlightMessage = false
@@ -97,7 +98,12 @@ const replaceEmotes = (message: string): string => {
     return message
 }
 
-export const enrichText = (userinput: string) => {
+export const enrichText = (userinput: string): string => {
+    getPlugins().forEach((plugin) => {
+        if (plugin.isActive()) {
+            userinput = plugin.onPreEnrichText(userinput)
+        }
+    })
     userinput = userinput.replaceAll(
         new RegExp('https?://[a-zA-Z0-9\\-_\\[\\]\\?\\#\\:\\&\\$\\+\\*\\%/\\.\\=\\@]+', 'ig'),
         (url) => {
@@ -123,6 +129,18 @@ export const enrichText = (userinput: string) => {
                     </video>`
                 }
             }
+            let pluginUrl: string | null = null
+            getPlugins().forEach((plugin) => {
+                if (plugin.isActive()) {
+                    pluginUrl = plugin.onEnrichUrl(url)
+                }
+            })
+            console.log(`url = ${url}`)
+            if (pluginUrl) {
+                console.log(` plugin: ${pluginUrl}`)
+                return pluginUrl
+            }
+            console.log(` ahref: <a target="_blank" href="${url}">${url}</a>`)
             return `<a target="_blank" href="${url}">${url}</a>`
         }
     )

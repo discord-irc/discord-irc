@@ -25,6 +25,14 @@ class BasePlugin {
     onTick(): void {
     }
 
+    onPreEnrichText(text: string): string {
+        return text
+    }
+
+    onEnrichUrl(url: string): string | null {
+        return null
+    }
+
     onSwitchChannel(oldServer: string, oldChannel: string, newServer: string, newChannel: string): void {
     }
 

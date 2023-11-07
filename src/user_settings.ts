@@ -12,7 +12,8 @@ export const getDefaultUserSettings = (): UserSettings => {
             'alert_popup',
             'emoji_picker',
             'infinite_scroll',
-            'typing'
+            'typing',
+            'tenor'
         ]
     }
 }
