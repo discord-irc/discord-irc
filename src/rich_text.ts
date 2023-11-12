@@ -117,6 +117,15 @@ export const enrichText = (userinput: string): string => {
                 url.startsWith("https://wiki.ddnet.org/") ||
                 url.startsWith("https://media.discordapp.net/attachments/") ||
                 url.startsWith("https://cdn.discordapp.com/attachments/")
+
+            // discord started attaching weird tracking query params
+            // https://cdn.discordapp.com/attachments/293493549758939136/1173302166967034018/image.png?ex=656375cb&is=655100cb&hm=a20e57298b3c9a8e468d674ba3d9f8cc167736c8bd4480271fed882b219137d0&
+            // it works without them so lets get rid of all of them
+            // and then we can also easily check for .png image extension again
+            if (url.startsWith("https://cdn.discordapp.com/attachments/")) {
+                url = url.split('?')[0]
+            }
+
             const isImageUrl: boolean = new RegExp('\\.(png|jpg|jpeg|webp|svg|gif)$', 'i').test(url)
             const isVideoUrl: boolean = new RegExp('\\.(mp4)$', 'i').test(url)
             if (isWhitelistedCdn) {
