@@ -72,16 +72,24 @@ const formPopupAlerts: HTMLElement = formPopup.querySelector('.alerts')
 const linkRegister: HTMLElement = document.querySelector('.link-register')
 const linkLogin: HTMLElement = document.querySelector('.link-login')
 
-linkRegister.addEventListener('click', (event) => {
-    event.preventDefault()
+const switchToLoginForm = () => {
+    loginForm.classList.add('active')
+    registerForm.classList.remove('active')
+}
+
+const switchToRegisterForm = () => {
     loginForm.classList.remove('active')
     registerForm.classList.add('active')
+}
+
+linkRegister.addEventListener('click', (event) => {
+    event.preventDefault()
+    switchToRegisterForm()
 })
 
 linkLogin.addEventListener('click', (event) => {
     event.preventDefault()
-    loginForm.classList.add('active')
-    registerForm.classList.remove('active')
+    switchToLoginForm()
 })
 
 const addLoginAlert = (message: string): void => {
@@ -93,12 +101,31 @@ const addLoginAlert = (message: string): void => {
     )
 }
 
+const addLoginNotice = (message: string): void => {
+    formPopupAlerts.insertAdjacentHTML(
+        'beforeend',
+        `<div class="notice">
+            ${message}
+        </div>`
+    )
+}
+
 getSocket().on('authResponse', (auth: AuthResponse) => {
     if (!auth.success) {
         addLoginAlert(auth.message)
         return
     }
-    onLogin(auth)
+
+    if(auth.message === 'logged in') {
+        onLogin(auth)
+    } else {
+        addLoginNotice(auth.message)
+        switchToLoginForm()
+        const usernameInp: HTMLInputElement = loginForm.querySelector('#username-input')
+        const passwordInp: HTMLInputElement = loginForm.querySelector('#password-input')
+        usernameInp.value = ''
+        passwordInp.value = ''
+    }
 })
 
 getSocket().on('logout', (data: LogoutMessage) => {
@@ -138,8 +165,8 @@ const onLogin = (authResponse: AuthResponse): void => {
 formPopup.querySelector('.login-form')
     .addEventListener('submit', (event) => {
         event.preventDefault()
-        const usernameInp: HTMLInputElement = document.querySelector('#username-input')
-        const passwordInp: HTMLInputElement = document.querySelector('#password-input')
+        const usernameInp: HTMLInputElement = loginForm.querySelector('#username-input')
+        const passwordInp: HTMLInputElement = loginForm.querySelector('#password-input')
         const username = usernameInp.value
         const password = passwordInp.value
         if (!username) {
@@ -156,6 +183,33 @@ formPopup.querySelector('.login-form')
                 password: password,
                 channel: getActiveChannel(),
                 server: getActiveServer()
+            }
+        )
+    })
+
+
+formPopup.querySelector('.register-form')
+    .addEventListener('submit', (event) => {
+        event.preventDefault()
+        const usernameInp: HTMLInputElement = registerForm.querySelector('#username-input')
+        const passwordInp: HTMLInputElement = registerForm.querySelector('#password-input')
+        const tokenInp: HTMLInputElement = registerForm.querySelector('#token-input')
+        const username = usernameInp.value
+        const password = passwordInp.value
+        const token = tokenInp.value
+        if (!username) {
+            return
+        }
+        if (!password) {
+            return
+        }
+        console.log(`requesting to register as '${username}'`)
+        getSocket().emit(
+            'registerRequest',
+            {
+                username: username,
+                password: password,
+                token: token
             }
         )
     })

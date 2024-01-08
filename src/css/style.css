@@ -363,6 +363,14 @@ input[type=text], input[type=password], input[type=submit] {
     padding: 20px;
 }
 
+.notice {
+    color: rgb(255, 255, 255);
+    background-color: rgb(151, 142, 14);
+    border: 10px solid rgb(207, 226, 102);
+    border-radius: 5px;
+    padding: 20px;
+}
+
 .form-popup.active {
     display: flex;
     justify-content: center;
