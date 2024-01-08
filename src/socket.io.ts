@@ -10,6 +10,12 @@ export interface IrcMessage {
     token?: string
 }
 
+export interface RegisterRequest {
+    username: string,
+    password: string,
+    token: string
+}
+
 export interface AuthRequest {
     username: string,
     password: string,
@@ -76,6 +82,7 @@ export interface ClientToServerEvents {
 
     // irc-websockets
     message: (message: IrcMessage) => void
+    registerRequest: (register: RegisterRequest) => void
     authRequest: (auth: AuthRequest) => void
     joinChannel: (join: JoinChannel) => void
     typingInfo: (typingInfo: TypingInfo) => void
