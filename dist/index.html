@@ -8,14 +8,22 @@
 </head>
 <body>
     <div class="overlay"></div>
-    <div class="login-popup active">
+    <div class="form-popup active">
         <div class="alerts"></div>
-        <form action="">
+        <form action="" class="login-form active">
             <input type="text" name="username" id="username-input" placeholder="Pick username">
             <input type="password" name="password" id="password-input" placeholder="password" value="">
             <input type="submit" value="login" class="btn">
+            Don't have an account? <a href="#" class="link-register">Register here!</a>
         </form>
-    </div> <!-- login-popup -->
+        <form action="" class="register-form">
+            <input type="text" name="username" id="username-input" placeholder="Pick username">
+            <input type="password" name="password" id="password-input" placeholder="password" value="">
+            <input type="password" name="token" id="token-input" placeholder="sign up token" value="">
+            <input type="submit" value="register" class="btn">
+            Already have an account? <a href="#" class="link-login">Login here!</a>
+        </form>
+    </div> <!-- form-popup -->
     <div class="plugin-popups">
         <!--
             insert your popup list container here

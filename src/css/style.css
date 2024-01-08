@@ -336,7 +336,7 @@ input[type=text], input[type=password], input[type=submit] {
     z-index: 2;
 }
 
-.login-popup {
+.form-popup {
     z-index: 3;
     display: none;
 }
@@ -363,7 +363,7 @@ input[type=text], input[type=password], input[type=submit] {
     padding: 20px;
 }
 
-.login-popup.active {
+.form-popup.active {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -376,8 +376,22 @@ input[type=text], input[type=password], input[type=submit] {
     right: 0;
 }
 
-.login-popup form {
+.form-popup form {
     max-width: 600px;
+}
+
+.login-form {
+    display: none;
+}
+.login-form.active {
+    display: block;
+}
+
+.register-form {
+    display: none;
+}
+.register-form.active {
+    display: block;
 }
 
 .btn {

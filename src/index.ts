@@ -63,11 +63,29 @@ getSocket().on('message', (message: IrcMessage) => {
     addMessage(message)
 })
 
-const loginPopup: HTMLElement = document.querySelector('.login-popup')
-const loginPopupAlerts: HTMLElement = loginPopup.querySelector('.alerts')
+const loginForm: HTMLElement = document.querySelector('.login-form')
+const registerForm: HTMLElement = document.querySelector('.register-form')
+
+const formPopup: HTMLElement = document.querySelector('.form-popup')
+const formPopupAlerts: HTMLElement = formPopup.querySelector('.alerts')
+
+const linkRegister: HTMLElement = document.querySelector('.link-register')
+const linkLogin: HTMLElement = document.querySelector('.link-login')
+
+linkRegister.addEventListener('click', (event) => {
+    event.preventDefault()
+    loginForm.classList.remove('active')
+    registerForm.classList.add('active')
+})
+
+linkLogin.addEventListener('click', (event) => {
+    event.preventDefault()
+    loginForm.classList.add('active')
+    registerForm.classList.remove('active')
+})
 
 const addLoginAlert = (message: string): void => {
-    loginPopupAlerts.insertAdjacentHTML(
+    formPopupAlerts.insertAdjacentHTML(
         'beforeend',
         `<div class="alert">
             ${message}
@@ -102,7 +120,7 @@ getSocket().on('userLeave', (username: string) => {
 const onLogout = (): void => {
     const overlay: HTMLElement = document.querySelector('.overlay')
     overlay.style.display = 'block'
-    loginPopup.style.display = 'block'
+    formPopup.style.display = 'block'
 }
 
 const onLogin = (authResponse: AuthResponse): void => {
@@ -114,10 +132,10 @@ const onLogin = (authResponse: AuthResponse): void => {
     setCookie('password', passwordInp.value, 30)
     const overlay: HTMLElement = document.querySelector('.overlay')
     overlay.style.display = 'none'
-    loginPopup.style.display = 'none'
+    formPopup.style.display = 'none'
 }
 
-loginPopup.querySelector('form')
+formPopup.querySelector('.login-form')
     .addEventListener('submit', (event) => {
         event.preventDefault()
         const usernameInp: HTMLInputElement = document.querySelector('#username-input')
