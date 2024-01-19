@@ -115,10 +115,13 @@ class EmojiPickerPlugin extends BasePlugin {
     }
 
     hide() {
+        if(!this.emojiPaneDom.classList.contains('active')) {
+            return
+        }
         this.emojiPaneDom.classList.remove('active')
         this.messageInp.focus()
     }
-    
+
     show() {
         this.emojiPaneDom.classList.add('active')
         this.emojiSearchInput.focus()
