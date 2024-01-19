@@ -144,12 +144,12 @@ export const enrichText = (userinput: string): string => {
                     pluginUrl = plugin.onEnrichUrl(url)
                 }
             })
-            console.log(`url = ${url}`)
+            // console.log(`url = ${url}`)
             if (pluginUrl) {
                 console.log(` plugin: ${pluginUrl}`)
                 return pluginUrl
             }
-            console.log(` ahref: <a target="_blank" href="${url}">${url}</a>`)
+            // console.log(` ahref: <a target="_blank" href="${url}">${url}</a>`)
             return `<a target="_blank" href="${url}">${url}</a>`
         }
     )

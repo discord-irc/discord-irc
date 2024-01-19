@@ -17,11 +17,11 @@ class TenorPlugin extends BasePlugin {
         }
         const tenorMatch = url.match('https://tenor.com/view/[^ ]+\-([0-9]+)')
         if (!tenorMatch) {
-            console.log("url does not match!!!!!!!!!!! url=" + url)
+            // console.log("url does not match!!!!!!!!!!! url=" + url)
             return null
         }
         const tenorId = tenorMatch[1]
-        console.log("tenor got message")
+        // console.log("tenor got message")
         // https://tenor.com/view/mean-people-rude-ignorant-spiteful-hurtful-gif-19113534
         return `
         <div class="tenor-gif-embed" data-postid="${tenorId}" data-share-method="host" data-aspect-ratio="1" data-width="100%">
