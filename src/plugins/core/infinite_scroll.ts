@@ -3,7 +3,7 @@ import { getActiveServer, getActiveChannel } from "../../channels"
 import { getOldestMessageId } from "../../message_ids"
 import { addMessage } from "../../message_loader"
 import { IrcMessage } from "../../socket.io"
-import BasePlugin from "../base_plugin" 
+import BasePlugin from "../base_plugin"
 
 class InfiniteScrollPlugin extends BasePlugin {
     messagesContainer: HTMLElement = document.querySelector('.message-pane')
@@ -37,7 +37,7 @@ class InfiniteScrollPlugin extends BasePlugin {
         fetch(`${backendUrl}/${getActiveServer()}/${getActiveChannel()}/messages?count=${stepSize}&from=${fromId}`)
             .then(data => data.json())
             .then((messages: IrcMessage[]) => {
-                messages.forEach((message: IrcMessage) => {
+                messages.reverse().forEach((message: IrcMessage) => {
                     addMessage(message, true)
                 })
                 this.pendingLoad = false
