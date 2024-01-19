@@ -48,6 +48,7 @@ import { startGameLoop } from './tick'
 import { getPlugins, isPluginActive } from './plugins/plugins'
 import { getNextMessageId } from './message_ids'
 import './settings_menu'
+import './mobile'
 
 const messageInp: HTMLInputElement = document.querySelector('#message-input')
 

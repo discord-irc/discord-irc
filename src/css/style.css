@@ -177,12 +177,21 @@ html, body {
     margin-right: 5px;
 }
 
-.server-details-toggle {
+.server-details-desktop-toggle {
     background-image: url('../img/ui/arrow_down.svg');
     background-size: cover;
     height: 15px;
     width: 30px;
     margin-right: 10px;
+}
+
+.burger-menu-mobile-toggle {
+    background-image: url('../img/ui/burger_menu.svg');
+    background-size: cover;
+    height: 32px;
+    width: 32px;
+    margin-right: 10px;
+    display: none;
 }
 
 .channel-list-pane {
@@ -438,4 +447,46 @@ a:hover {
 /* handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #666666;
+}
+
+/* * * * * * * * * * * * * * * * * * *
+ *   MOBILE/DESKTOP MEDIA QUERIES    *
+ *                                   *
+ *   we use desktop style by default *
+ *   so all css rules below here     *
+ *   are mobile and overwrite the    *
+ *   desktop ones                    *
+ *                                   *
+ * * * * * * * * * * * * * * * * * * */
+
+/* left pane */
+.collapse-left-pane .server-name-bar-top {
+    display: none;
+}
+.collapse-left-pane .channel-list-pane {
+    display: none;
+}
+
+/* let the message pane flow into the collapsed left pane */
+.collapse-left-pane .message-pane {
+    grid-row: 2;
+    grid-column: 2 / 4;
+}
+.collapse-left-pane .input-pane {
+    grid-column: 2 / 4;
+}
+.collapse-left-pane .menu-bar-top {
+    grid-row: 1;
+    grid-column: 2 / 4;
+}
+
+/* mobile */
+@media all and (max-width: 700px) {
+    /* buttons */
+    .server-details-desktop-toggle {
+        display: none;
+    }
+    .burger-menu-mobile-toggle {
+        display: block;
+    }
 }
