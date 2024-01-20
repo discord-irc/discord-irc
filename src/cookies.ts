@@ -2,7 +2,7 @@ export const setCookie = (cname: string, cvalue: string, exdays: number) => {
     const d = new Date()
     d.setTime(d.getTime() + (exdays*24*60*60*1000))
     let expires = "expires="+ d.toUTCString()
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";SameSite=Lax;path=/"
+    document.cookie = cname + "=" + encodeURIComponent(cvalue) + ";" + expires + ";SameSite=Lax;path=/"
 }
 
 export const getCookie = (cname: string): string => {
