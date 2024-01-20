@@ -105,7 +105,7 @@ export const enrichText = (userinput: string): string => {
         }
     })
     userinput = userinput.replaceAll(
-        new RegExp('https?://[a-zA-Z0-9\\-_\\[\\]\\?\\#\\:\\&\\$\\+\\*\\%/\\.\\=\\@]+', 'ig'),
+        new RegExp('(?<!```)(https?://[a-zA-Z0-9\\-_\\[\\]\\?\\#\\:\\&\\$\\+\\*\\%/\\.\\=\\@]+)(?!.*```)', 'ig'),
         (url) => {
             const isWhitelistedCdn: boolean =
                 url.startsWith("https://zillyhuhn.com/cs") ||
