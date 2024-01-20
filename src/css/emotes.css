@@ -1,7 +1,9 @@
 .emote {
     height: 40px;
     width: 40px;
-    background-size: cover;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
     display: block;
 }
 
@@ -151,6 +153,12 @@
 }
 .emote.emote-tee_thinking {
     background-image: url("../img/emotes/tee_thinking.png");
+}
+.emote.emote-owo {
+    background-image: url("../img/emotes/owo.png");
+}
+.emote.emote-pepeW {
+    background-image: url("../img/emotes/pepeW.png");
 }
 
 /* TODO: rocket is unused */
