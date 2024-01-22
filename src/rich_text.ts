@@ -105,9 +105,9 @@ export const enrichText = (userinput: string): string => {
         }
     })
     userinput = userinput.replaceAll(
-        new RegExp(/(`+)(.*?)(\1)|(https?:\/\/[a-zA-Z0-9\-_\[\]\?\#\:\&\$\+\*\%\/\.\=\@]+)/ig),
-        (g0, g1, g2, g3, url) => {
-            if (url == undefined) { return g0; }
+        new RegExp(/(`{1,3})(.*?)(\1)|(https?:\/\/[a-zA-Z0-9\-_\[\]\?\#\:\&\$\+\*\%\/\.\=\@]+)/ig),
+        (match, openingBackticks, closingBackticks, textInBackticks, url) => {
+            if (url == undefined) { return match; }
 
             const isWhitelistedCdn: boolean =
                 url.startsWith("https://zillyhuhn.com/cs") ||
