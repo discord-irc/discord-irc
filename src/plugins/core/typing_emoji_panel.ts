@@ -43,6 +43,7 @@ export default class TypingEmojiPanelPlugin extends BasePlugin {
     currentEmoji: string;
     caretPosition: number;
     messageInp: HTMLInputElement;
+    isVisible: boolean;
 
     constructor() {
         super('typing_emoji_panel')
@@ -58,10 +59,12 @@ export default class TypingEmojiPanelPlugin extends BasePlugin {
 
     hide(): void {
         this.typingEmojiPanel.classList.remove('active');
+        this.isVisible = false;
     }
 
     show(): void {
         this.typingEmojiPanel.classList.add('active');
+        this.isVisible = true;
     }
 
     onInit(): void {
@@ -103,7 +106,7 @@ export default class TypingEmojiPanelPlugin extends BasePlugin {
         } else if (e.key == 'ArrowDown') {
             e.preventDefault();
             this.selectNextEmoji();
-        } else if (e.key == 'Tab') {
+        } else if (e.key == 'Tab' && this.isVisible) {
             e.preventDefault();
             this.insertEmoji(this.currentEmoji);
         }
