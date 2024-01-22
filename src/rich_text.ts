@@ -111,6 +111,7 @@ export const enrichText = (userinput: string): string => {
                 url.startsWith("https://zillyhuhn.com/cs") ||
                 url.startsWith("https://raw.githubusercontent.com/") ||
                 url.startsWith("https://user-images.githubusercontent.com/") ||
+                url.startsWith("https://gist.github.com/assets/") ||
                 url.startsWith("https://i.imgur.com/") ||
                 url.startsWith("https://upload.wikimedia.org/") ||
                 url.startsWith("https://ddnet.org/") ||
