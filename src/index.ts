@@ -281,7 +281,6 @@ bellDiv.addEventListener('click', () => {
 
 messageInp.addEventListener('keydown', (event: KeyboardEvent) => {
     autoComplete('@', allKnownUsernames(), event, messageInp, ' ')
-    autoComplete(':', getAllEmoteNames(), event, messageInp, ': ')
     getPlugins().forEach((plugin) => {
         if(plugin.isActive()) {
             plugin.onKeydown(event)
