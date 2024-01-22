@@ -84,7 +84,16 @@ export default class TypingEmojiPanelPlugin extends BasePlugin {
 
             this.insertEmoji(target.dataset.emojiName);
         });
+        document.addEventListener('click', (event) => this.onGlobalClick(event))
         this.renderList();
+    }
+
+    onGlobalClick(event: MouseEvent) {
+        const clickTarget: HTMLElement = event.target as HTMLElement
+
+        if (!this.typingEmojiPanel.contains(clickTarget) && event.target != this.messageInp) {
+            this.hide()
+        }
     }
 
     onDocumentKey(e: KeyboardEvent): void {
