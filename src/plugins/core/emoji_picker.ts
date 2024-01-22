@@ -101,7 +101,7 @@ class EmojiPickerPlugin extends BasePlugin {
             this.selectEmojiLeft()
         } else if (event.key === 'ArrowDown') {
             this.selectEmojiDown()
-        } else if (event.key === 'ArrowDown') {
+        } else if (event.key === 'ArrowUp') {
             this.selectEmojiUp()
         }
     }
