@@ -19,7 +19,7 @@ export const replacePings = (message: string): string => {
         )
     })
     // TODO: this also highlights user "foo" in the word "barfoos"
-    if(!highlightMessage) {
+    if (!highlightMessage) {
         message = message.replaceAll(new RegExp(getAccount().username, 'ig'), (m) => {
             highlightMessage = true
             return `<span class="ping">${m}</span>`
@@ -105,8 +105,10 @@ export const enrichText = (userinput: string): string => {
         }
     })
     userinput = userinput.replaceAll(
-        new RegExp('https?://[a-zA-Z0-9\\-_\\[\\]\\?\\#\\:\\&\\$\\+\\*\\%/\\.\\=\\@]+', 'ig'),
-        (url) => {
+        new RegExp(/(`{1,3})(.*?)(\1)|(https?:\/\/[a-zA-Z0-9\-_\[\]\?\#\:\&\$\+\*\%\/\.\=\@]+)/ig),
+        (match, openingBackticks, closingBackticks, textInBackticks, url) => {
+            if (url == undefined) { return match; }
+
             const isWhitelistedCdn: boolean =
                 url.startsWith("https://zillyhuhn.com/cs") ||
                 url.startsWith("https://raw.githubusercontent.com/") ||
@@ -189,7 +191,7 @@ export const enrichText = (userinput: string): string => {
             }
             if (line === '```') {
                 if (inCodeBlock !== null) {
-                    const codeHljs = hljs.highlight(currentCodeBlock, {language: inCodeBlock}).value
+                    const codeHljs = hljs.highlight(currentCodeBlock, { language: inCodeBlock }).value
                     mergedLines += `<pre class="multi-line-code-snippet code-snippet">${codeHljs}</pre>`
                     currentCodeBlock = ''
                     inCodeBlock = null
