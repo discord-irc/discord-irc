@@ -1,54 +1,54 @@
-import { getActiveChannel } from "./channels"
+import { getActiveChannel } from './channels'
 
 let unreadMessages: number = 0
 let unreadPings: number = 0
 let notificationsActive: boolean = false
 
 export const toggleNotifications = () => {
-    notificationsActive = !notificationsActive
+  notificationsActive = !notificationsActive
 }
 
 export const isNotificationsActive = (): boolean => {
-    return notificationsActive
+  return notificationsActive
 }
 
 export const desktopNotification = () => {
-    if (!notificationsActive) {
-        return
-    }
-    if (!Notification) {
-        return
-    }
-    if (Notification.permission !== 'granted') {
-        return
-    }
-    const notification = new Notification('chat.zillyhuhn.com', {
-        icon: 'https://ddnet.org/favicon.ico',
-        body: `New message in #${getActiveChannel()}`,
-    })
-    notification.onclick = () => {
-        // window.open('https://chat.zillyhuhn.com/')
-    }
+  if (!notificationsActive) {
+    return
+  }
+  if (!Notification) {
+    return
+  }
+  if (Notification.permission !== 'granted') {
+    return
+  }
+  const notification = new Notification('chat.zillyhuhn.com', {
+    icon: 'https://ddnet.org/favicon.ico',
+    body: `New message in #${getActiveChannel()}`
+  })
+  notification.onclick = () => {
+    // window.open('https://chat.zillyhuhn.com/')
+  }
 }
 
 export const addMessageNotification = () => {
-    unreadMessages++
-    const pingTxt = unreadPings > 0 ? `!${unreadPings}! ` : ''
-    document.title = `#${getActiveChannel()} ${pingTxt}(${unreadMessages}) `
+  unreadMessages++
+  const pingTxt = unreadPings > 0 ? `!${unreadPings}! ` : ''
+  document.title = `#${getActiveChannel()} ${pingTxt}(${unreadMessages}) `
 }
 
 export const addPingNotification = () => {
-    if (!document.hidden) {
-        return
-    }
-    unreadPings++
-    const pingTxt = unreadPings > 0 ? `!${unreadPings}! ` : ''
-    document.title = `#${getActiveChannel()} ${pingTxt}(${unreadMessages}) `
-    desktopNotification()
+  if (!document.hidden) {
+    return
+  }
+  unreadPings++
+  const pingTxt = unreadPings > 0 ? `!${unreadPings}! ` : ''
+  document.title = `#${getActiveChannel()} ${pingTxt}(${unreadMessages}) `
+  desktopNotification()
 }
 
 export const clearNotifications = () => {
-    unreadMessages = 0
-    unreadPings = 0
-    document.title = `#${getActiveChannel()}`
+  unreadMessages = 0
+  unreadPings = 0
+  document.title = `#${getActiveChannel()}`
 }

@@ -8,42 +8,42 @@ const userListDiscordDiv: HTMLElement = document.querySelector('.user-list-disco
     Including discord and webchat usernames
 */
 export const allKnownUsernames = (): string[] => {
-    return connectedUsers.concat(knownDiscordNames)
+  return connectedUsers.concat(knownDiscordNames)
 }
 
 export const updateUserList = () => {
-    userListDiv.innerHTML = ''
-    connectedUsers.forEach((user) => {
-        userListDiv.insertAdjacentHTML(
-            'beforeend',
+  userListDiv.innerHTML = ''
+  connectedUsers.forEach((user) => {
+    userListDiv.insertAdjacentHTML(
+      'beforeend',
             `<div>${user}</div>`
-        )
-    })
+    )
+  })
 }
 
 export const updateUserListDiscord = () => {
-    userListDiscordDiv.innerHTML = ""
-    knownDiscordNames.forEach((user) => {
-        userListDiscordDiv.insertAdjacentHTML(
-            'beforeend',
+  userListDiscordDiv.innerHTML = ''
+  knownDiscordNames.forEach((user) => {
+    userListDiscordDiv.insertAdjacentHTML(
+      'beforeend',
             `<div>${user}</div>`
-        )
-    })
+    )
+  })
 }
 
 export const addUser = (username: string, refresh: boolean = true) => {
-    connectedUsers.push(username)
-    if (refresh) {
-        updateUserList()
-    }
+  connectedUsers.push(username)
+  if (refresh) {
+    updateUserList()
+  }
 }
 
 export const removeUser = (username: string): boolean => {
-    const index = connectedUsers.indexOf(username)
-    if (index === -1) {
-        return false
-    }
-    connectedUsers.splice(index, 1)
-    updateUserList()
-    return true
+  const index = connectedUsers.indexOf(username)
+  if (index === -1) {
+    return false
+  }
+  connectedUsers.splice(index, 1)
+  updateUserList()
+  return true
 }

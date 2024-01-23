@@ -1,43 +1,43 @@
 class BasePlugin {
-    pluginName: string
-    active: boolean
+  pluginName: string
+  active: boolean
 
-    constructor(pluginName: string) {
-        this.pluginName = pluginName
-        this.active = false
-    }
+  constructor (pluginName: string) {
+    this.pluginName = pluginName
+    this.active = false
+  }
 
-    isActive(): boolean {
-        return this.active
-    }
+  isActive (): boolean {
+    return this.active
+  }
 
-    deactivate(): void {
-        this.active = false
-    }
+  deactivate (): void {
+    this.active = false
+  }
 
-    activate(): void {
-        this.active = true
-    }
+  activate (): void {
+    this.active = true
+  }
 
-    onInit(): void {
-    }
+  onInit (): void {
+  }
 
-    onTick(): void {
-    }
+  onTick (): void {
+  }
 
-    onPreEnrichText(text: string): string {
-        return text
-    }
+  onPreEnrichText (text: string): string {
+    return text
+  }
 
-    onEnrichUrl(url: string): string | null {
-        return null
-    }
+  onEnrichUrl (url: string): string | null {
+    return null
+  }
 
-    onSwitchChannel(oldServer: string, oldChannel: string, newServer: string, newChannel: string): void {
-    }
+  onSwitchChannel (oldServer: string, oldChannel: string, newServer: string, newChannel: string): void {
+  }
 
-    onKeydown(event: KeyboardEvent): void {
-    }
+  onKeydown (event: KeyboardEvent): void {
+  }
 }
 
 export default BasePlugin

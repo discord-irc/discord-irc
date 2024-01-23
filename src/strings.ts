@@ -6,7 +6,7 @@
  * @returns index of needle or -1 if not found
  */
 export const getLastIndex = (haystack: string, needle: string): number => {
-	return haystack.length - 1 - haystack.split('').reverse().indexOf(needle)
+  return haystack.length - 1 - haystack.split('').reverse().indexOf(needle)
 }
 
 /**
@@ -22,13 +22,13 @@ export const getLastIndex = (haystack: string, needle: string): number => {
  * @returns index of needle or -1 if not found
  */
 export const getLastIndexSpaced = (haystack: string, needle: string): number => {
-	for (let i = haystack.length - 1; i >= 0; i--) {
-		if (i > 0 && haystack[i - 1] !== ' ') {
-			continue
-		}
-		if (haystack[i] === needle) {
-			return i
-		}
-	}
-	return -1
+  for (let i = haystack.length - 1; i >= 0; i--) {
+    if (i > 0 && haystack[i - 1] !== ' ') {
+      continue
+    }
+    if (haystack[i] === needle) {
+      return i
+    }
+  }
+  return -1
 }
