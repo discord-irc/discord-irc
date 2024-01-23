@@ -69,6 +69,7 @@ export default class TypingEmojiPanelPlugin extends BasePlugin {
 
     onInit(): void {
         this.messageInp.addEventListener('input', () => {
+            this.update();
             const emojis = this.typingEmojiPanel.querySelectorAll<HTMLDivElement>('[data-emoji-name]');
 
             if (emojis.length > 0) {
@@ -115,7 +116,7 @@ export default class TypingEmojiPanelPlugin extends BasePlugin {
     }
 
     selectNextEmoji() {
-        let index = this.emojis.indexOf(this.currentEmoji);
+        const index = this.emojis.indexOf(this.currentEmoji);
 
         if (index + 1 != this.emojis.length) {
             this.currentEmoji = this.emojis[index + 1];
@@ -125,7 +126,7 @@ export default class TypingEmojiPanelPlugin extends BasePlugin {
     }
 
     selectPrevEmoji() {
-        let index = this.emojis.indexOf(this.currentEmoji);
+        const index = this.emojis.indexOf(this.currentEmoji);
 
         if (index == 0) {
             this.currentEmoji = this.emojis[this.emojis.length - 1];
@@ -135,7 +136,7 @@ export default class TypingEmojiPanelPlugin extends BasePlugin {
     }
 
     insertEmoji(emojiName: string) {
-        let inputValue = this.messageInp.value;
+        const inputValue = this.messageInp.value;
         emojiName = `:${emojiName}:`;
 
         this.messageInp.value = inputValue.substring(0, this.emojiStartPos) + emojiName + inputValue.substring(this.caretPosition);
@@ -148,7 +149,7 @@ export default class TypingEmojiPanelPlugin extends BasePlugin {
         this.caretPosition = this.messageInp.selectionStart;
 
         let emojiName: string = '';
-        let string = this.messageInp.value;
+        const string = this.messageInp.value;
 
         if (this.caretPosition > 0) {
             for (let i = this.caretPosition - 1; i >= 0; i--) {
@@ -164,7 +165,7 @@ export default class TypingEmojiPanelPlugin extends BasePlugin {
             }
         }
 
-        if (emojiName.length > 2) {
+        if (emojiName.length) {
             this.show()
         } else {
             this.hide()
