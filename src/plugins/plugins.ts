@@ -5,10 +5,12 @@ import EmojiPickerPlugin from "./core/emoji_picker"
 import InfiniteScrollPlugin from "./core/infinite_scroll"
 import TypingPlugin from "./core/typing"
 import TenorPlugin from "./core/tenor"
+import TypingEmojiPanelPlugin from "./core/typing_emoji_panel"
 
 const plugins: BasePlugin[] = []
 plugins.push(new TypingPlugin())
 plugins.push(new EmojiPickerPlugin())
+plugins.push(new TypingEmojiPanelPlugin())
 plugins.push(new InfiniteScrollPlugin())
 plugins.push(new AlertPopupPlugin())
 plugins.push(new TenorPlugin())

@@ -1,6 +1,6 @@
 import { AlertMessage } from "../../socket.io"
 import { getSocket } from "../../ws_connection"
-import BasePlugin from "../base_plugin" 
+import BasePlugin from "../base_plugin"
 
 import '../../css/plugins/alert_popup.css'
 
