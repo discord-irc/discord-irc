@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "ts-standard",
     "build": "webpack",
     "start": "webpack && serve dist",
     "watch": "webpack --watch --mode=development"
