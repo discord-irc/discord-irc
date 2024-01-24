@@ -106,7 +106,7 @@ export const enrichText = (userinput: string): string => {
   })
   userinput = userinput.replaceAll(
     new RegExp(/(`{1,3})(.*?)(\1)|(https?:\/\/[a-zA-Z0-9\-_\[\]\?\#\:\&\$\+\*\%\/\.\=\@]+)/ig),
-    (match, openingBackticks, closingBackticks, textInBackticks, url) => {
+    (match, _openingBackticks, _closingBackticks, _textInBackticks, url) => {
       if (url == undefined) { return match }
 
       const isWhitelistedCdn: boolean =
