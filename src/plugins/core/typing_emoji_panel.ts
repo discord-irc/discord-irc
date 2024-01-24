@@ -82,7 +82,7 @@ export default class TypingEmojiPanelPlugin extends BasePlugin {
     this.typingEmojiPanel.addEventListener('click', (e) => {
       let target: HTMLElement = e.target as HTMLDivElement
 
-      if (!target.dataset.emojiName) {
+      if (target.dataset.emojiName !== undefined) {
         target = target.parentElement
       }
 
@@ -92,22 +92,22 @@ export default class TypingEmojiPanelPlugin extends BasePlugin {
     this.renderList()
   }
 
-  onGlobalClick (event: MouseEvent) {
+  onGlobalClick (event: MouseEvent): void {
     const clickTarget: HTMLElement = event.target as HTMLElement
 
-    if (!this.typingEmojiPanel.contains(clickTarget) && event.target != this.messageInp) {
+    if (!this.typingEmojiPanel.contains(clickTarget) && event.target !== this.messageInp) {
       this.hide()
     }
   }
 
   onDocumentKey (e: KeyboardEvent): void {
-    if (e.key == 'ArrowUp') {
+    if (e.key === 'ArrowUp') {
       e.preventDefault()
       this.selectPrevEmoji()
-    } else if (e.key == 'ArrowDown') {
+    } else if (e.key === 'ArrowDown') {
       e.preventDefault()
       this.selectNextEmoji()
-    } else if (e.key == 'Tab' && this.isVisible) {
+    } else if (e.key === 'Tab' && this.isVisible) {
       e.preventDefault()
       this.insertEmoji(this.currentEmoji)
     }
@@ -115,27 +115,27 @@ export default class TypingEmojiPanelPlugin extends BasePlugin {
     this.update()
   }
 
-  selectNextEmoji () {
+  selectNextEmoji (): void {
     const index = this.emojis.indexOf(this.currentEmoji)
 
-    if (index + 1 != this.emojis.length) {
+    if (index + 1 !== this.emojis.length) {
       this.currentEmoji = this.emojis[index + 1]
     } else {
       this.currentEmoji = this.emojis[0]
     }
   }
 
-  selectPrevEmoji () {
+  selectPrevEmoji (): void {
     const index = this.emojis.indexOf(this.currentEmoji)
 
-    if (index == 0) {
+    if (index === 0) {
       this.currentEmoji = this.emojis[this.emojis.length - 1]
     } else {
       this.currentEmoji = this.emojis[index - 1]
     }
   }
 
-  insertEmoji (emojiName: string) {
+  insertEmoji (emojiName: string): void {
     const inputValue = this.messageInp.value
     emojiName = `:${emojiName}:`
 
@@ -153,19 +153,19 @@ export default class TypingEmojiPanelPlugin extends BasePlugin {
 
     if (this.caretPosition > 0) {
       for (let i = this.caretPosition - 1; i >= 0; i--) {
-        if (string[i] == ':') {
+        if (string[i] === ':') {
           emojiName = string.slice(i + 1, this.caretPosition)
           this.emojiStartPos = i
 
           break
         }
-        if (string[i] == ' ') {
+        if (string[i] === ' ') {
           break
         }
       }
     }
 
-    if (emojiName.length) {
+    if (emojiName.length > 0) {
       this.show()
     } else {
       this.hide()
@@ -179,7 +179,7 @@ export default class TypingEmojiPanelPlugin extends BasePlugin {
     this.typingEmojiPanel.innerHTML = ''
     this.emojis.forEach(emojiName => {
       this.typingEmojiPanel.insertAdjacentHTML('beforeend',
-                `<div class="typing-emoji-panel-emoji ${emojiName == this.currentEmoji ? 'emoji-selected' : ''}" data-emoji-name="${emojiName}">
+                `<div class="typing-emoji-panel-emoji ${emojiName === this.currentEmoji ? 'emoji-selected' : ''}" data-emoji-name="${emojiName}">
                      <div class="emote emote-${emojiName}"></div>
                      <span style="margin-left: 10px">:${emojiName}:</span>
                  </div>`

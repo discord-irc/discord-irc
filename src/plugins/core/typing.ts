@@ -51,7 +51,7 @@ class TypingPlugin extends BasePlugin {
     this.typingListDom.innerHTML = typers
   }
 
-  getTypersForCurrentChannel () {
+  getTypersForCurrentChannel (): void {
     fetch(`${backendUrl}/${getActiveServer()}/${getActiveChannel()}/typers`)
       .then(async data => await data.json())
       .then((users: string[]) => {

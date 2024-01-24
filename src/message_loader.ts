@@ -6,14 +6,14 @@ import { clearMessagesContainer, renderMessage } from './render_message'
 import { IrcMessage } from './socket.io'
 import { knownDiscordNames, updateUserListDiscord } from './users'
 
-const checkNotificationFromOtherChannel = (message: IrcMessage) => {
+const checkNotificationFromOtherChannel = (message: IrcMessage): void => {
   highlightNewMessageInChannel(message.channel)
   if (message.message.includes(getAccount().username)) {
     highlightNewPingInChannel(message.channel)
   }
 }
 
-export const addMessage = (message: IrcMessage, insertTop: boolean = false) => {
+export const addMessage = (message: IrcMessage, insertTop: boolean = false): void => {
   if (isRenderedMessageId(message.id)) {
     // TODO: let those through and update the old
     //       to enable message edits
@@ -39,7 +39,7 @@ export const addMessage = (message: IrcMessage, insertTop: boolean = false) => {
   }
 }
 
-export const reloadMessageBacklog = () => {
+export const reloadMessageBacklog = (): void => {
   fetch(`${backendUrl}/${getActiveServer()}/${getActiveChannel()}/messages?count=200`)
     .then(async data => await data.json())
     .then((messages: IrcMessage[]) => {

@@ -1,4 +1,4 @@
-import { IrcMessage, AuthResponse, LogoutMessage, TypingInfo } from './socket.io'
+import { IrcMessage, AuthResponse, LogoutMessage } from './socket.io'
 
 // import hljs from 'highlight.js' // works but is slow because it bloats in too many langs
 import hljs from 'highlight.js/lib/core'
@@ -19,7 +19,6 @@ import shell from 'highlight.js/lib/languages/shell'
 import './css/style.css'
 import './css/emotes.css'
 import 'highlight.js/styles/base16/solarized-dark.css'
-import { getAllEmoteNames } from './emotes'
 import { autoComplete } from './autocomplete'
 import { addUser, removeUser, allKnownUsernames, updateUserList } from './users'
 import { clearNotifications, toggleNotifications, isNotificationsActive } from './notifications'
@@ -73,12 +72,12 @@ const formPopupAlerts: HTMLElement = formPopup.querySelector('.alerts')
 const linkRegister: HTMLElement = document.querySelector('.link-register')
 const linkLogin: HTMLElement = document.querySelector('.link-login')
 
-const switchToLoginForm = () => {
+const switchToLoginForm = (): void => {
   loginForm.classList.add('active')
   registerForm.classList.remove('active')
 }
 
-const switchToRegisterForm = () => {
+const switchToRegisterForm = (): void => {
   loginForm.classList.remove('active')
   registerForm.classList.add('active')
 }
@@ -170,10 +169,10 @@ formPopup.querySelector('.login-form')
     const passwordInp: HTMLInputElement = loginForm.querySelector('#password-input')
     const username = usernameInp.value
     const password = passwordInp.value
-    if (!username) {
+    if (username === '') {
       return
     }
-    if (!password) {
+    if (password === '') {
       return
     }
     console.log(`requesting to join '${getActiveServer()}#${getActiveChannel()}'`)
@@ -197,10 +196,10 @@ formPopup.querySelector('.register-form')
     const username = usernameInp.value
     const password = passwordInp.value
     const token = tokenInp.value
-    if (!username) {
+    if (username === '') {
       return
     }
-    if (!password) {
+    if (password === '') {
       return
     }
     console.log(`requesting to register as '${username}'`)
@@ -218,7 +217,7 @@ document.querySelector('form.input-pane')
   .addEventListener('submit', (event) => {
     event.preventDefault()
     const message = messageInp.value
-    if (!message) {
+    if (message === '') {
       return
     }
     messageInp.value = ''
@@ -236,15 +235,15 @@ document.querySelector('form.input-pane')
     getSocket().emit('message', ircMessage)
   })
 
-const prefillLoginForm = () => {
+const prefillLoginForm = (): void => {
   const username = getCookie('username')
-  if (username) {
+  if (username !== '') {
     const usernameInp: HTMLInputElement = document.querySelector('#username-input')
     usernameInp.focus()
     usernameInp.value = username
   }
   const password = getCookie('password')
-  if (password) {
+  if (password !== '') {
     const passwordInp: HTMLInputElement = document.querySelector('#password-input')
     passwordInp.focus()
     passwordInp.value = password

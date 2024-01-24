@@ -15,8 +15,8 @@ class TenorPlugin extends BasePlugin {
       // do not double anchor tag the urls we inserted in the embedd
       return url
     }
-    const tenorMatch = url.match('https://tenor.com/view/[^ ]+\-([0-9]+)')
-    if (!tenorMatch) {
+    const tenorMatch = url.match('https://tenor.com/view/[^ ]+-([0-9]+)')
+    if (tenorMatch == null) {
       // console.log("url does not match!!!!!!!!!!! url=" + url)
       return null
     }

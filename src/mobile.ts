@@ -9,8 +9,8 @@ burgerMenu.addEventListener('click', () => {
   layoutDiv.classList.toggle('collapse-left-pane')
 })
 
-const collapseOnMobile = () => {
-  const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
+const collapseOnMobile = (): void => {
+  const width = window.innerWidth ?? document.documentElement.clientWidth ?? document.body.clientWidth
   if (width > 700) {
     layoutDiv.classList.remove('collapse-left-pane')
   } else {

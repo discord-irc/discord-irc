@@ -11,7 +11,7 @@ export const allKnownUsernames = (): string[] => {
   return connectedUsers.concat(knownDiscordNames)
 }
 
-export const updateUserList = () => {
+export const updateUserList = (): void => {
   userListDiv.innerHTML = ''
   connectedUsers.forEach((user) => {
     userListDiv.insertAdjacentHTML(
@@ -21,7 +21,7 @@ export const updateUserList = () => {
   })
 }
 
-export const updateUserListDiscord = () => {
+export const updateUserListDiscord = (): void => {
   userListDiscordDiv.innerHTML = ''
   knownDiscordNames.forEach((user) => {
     userListDiscordDiv.insertAdjacentHTML(
@@ -31,7 +31,7 @@ export const updateUserListDiscord = () => {
   })
 }
 
-export const addUser = (username: string, refresh: boolean = true) => {
+export const addUser = (username: string, refresh: boolean = true): void => {
   connectedUsers.push(username)
   if (refresh) {
     updateUserList()

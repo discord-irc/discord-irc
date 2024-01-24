@@ -4,7 +4,7 @@ let unreadMessages: number = 0
 let unreadPings: number = 0
 let notificationsActive: boolean = false
 
-export const toggleNotifications = () => {
+export const toggleNotifications = (): void => {
   notificationsActive = !notificationsActive
 }
 
@@ -12,7 +12,7 @@ export const isNotificationsActive = (): boolean => {
   return notificationsActive
 }
 
-export const desktopNotification = () => {
+export const desktopNotification = (): void => {
   if (!notificationsActive) {
     return
   }
@@ -31,13 +31,13 @@ export const desktopNotification = () => {
   }
 }
 
-export const addMessageNotification = () => {
+export const addMessageNotification = (): void => {
   unreadMessages++
   const pingTxt = unreadPings > 0 ? `!${unreadPings}! ` : ''
   document.title = `#${getActiveChannel()} ${pingTxt}(${unreadMessages}) `
 }
 
-export const addPingNotification = () => {
+export const addPingNotification = (): void => {
   if (!document.hidden) {
     return
   }
@@ -47,7 +47,7 @@ export const addPingNotification = () => {
   desktopNotification()
 }
 
-export const clearNotifications = () => {
+export const clearNotifications = (): void => {
   unreadMessages = 0
   unreadPings = 0
   document.title = `#${getActiveChannel()}`

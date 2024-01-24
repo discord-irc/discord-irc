@@ -42,7 +42,7 @@ export const isKnonwMessageId = (id: number): boolean => {
  * @returns is this message currently in the dom
  */
 export const isRenderedMessageId = (id: number): boolean => {
-  const found: HTMLElement | null = document.querySelector(`[data-message-id="${id}"]`) || null
+  const found: HTMLElement | null = (document.querySelector(`[data-message-id="${id}"]`) != null) || null
   return found !== null
 }
 

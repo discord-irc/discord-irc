@@ -6,13 +6,13 @@ let menuActive = false
 
 const menuContainer: HTMLElement = document.querySelector('.menu-todo-should-not-be-here')
 
-const deactivateMenu = () => {
+const deactivateMenu = (): void => {
   const pane: HTMLElement = document.querySelector('.channel-list-pane')
   pane.classList.remove('settings-active')
   menuContainer.innerHTML = ''
 }
 
-const activateMenu = () => {
+const activateMenu = (): void => {
   const pane: HTMLElement = document.querySelector('.channel-list-pane')
   pane.classList.add('settings-active')
   let menuContent = '<h1>plugins</h1>'
@@ -40,7 +40,7 @@ const activateMenu = () => {
   })
 }
 
-const toggleMenu = () => {
+const toggleMenu = (): void => {
   if (menuActive) {
     deactivateMenu()
   } else {

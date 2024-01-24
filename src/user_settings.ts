@@ -19,11 +19,11 @@ export const getDefaultUserSettings = (): UserSettings => {
 }
 
 export const getUserSettings = (): UserSettings => {
-  if (__userSettings) {
+  if (__userSettings != null) {
     return __userSettings
   }
   const currentSettings: string = getCookie('user_settings')
-  if (!currentSettings) {
+  if (currentSettings !== '') {
     const settings: UserSettings = getDefaultUserSettings()
     setCookie('user_settings', JSON.stringify(settings), 30)
     return settings
@@ -32,7 +32,7 @@ export const getUserSettings = (): UserSettings => {
   return __userSettings
 }
 
-export const setUserSettings = (settings: UserSettings) => {
+export const setUserSettings = (settings: UserSettings): void => {
   setCookie('user_settings', JSON.stringify(settings), 30)
   __userSettings = settings
 }

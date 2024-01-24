@@ -8,7 +8,7 @@ let autoScroll = true
 
 const messagesContainer: HTMLElement = document.querySelector('.message-pane')
 
-export const clearMessagesContainer = () => {
+export const clearMessagesContainer = (): void => {
   messagesContainer.innerHTML = ''
 }
 
@@ -18,7 +18,7 @@ messagesContainer.addEventListener('scroll', () => {
   autoScroll = scroll > maxScroll - 5
 })
 
-const xssSanitize = (userinput: string) => {
+const xssSanitize = (userinput: string): string => {
   // userinput = userinput.replaceAll('<', '&lt;')
   // userinput = userinput.replaceAll('>', '&gt;')
   return DOMPurify.sanitize(userinput)
@@ -43,8 +43,8 @@ const utcStrToNiceDate = (utc: string): string => {
 }
 
 const checkMergePrevMessage = (message: IrcMessage): HTMLElement | null => {
-  const prevMessage: HTMLElement = document.querySelector('.message:last-child')
-  if (!prevMessage) {
+  const prevMessage = document.querySelector('.message:last-child')
+  if (prevMessage === null) {
     return null
   }
   const prevAuthorDom: HTMLElement = prevMessage.querySelector('.message-author')
@@ -52,9 +52,9 @@ const checkMergePrevMessage = (message: IrcMessage): HTMLElement | null => {
   if (prevAuthor !== message.from) {
     return null
   }
-  if (prevMessage.querySelector('img') ||
-        prevMessage.querySelector('video') ||
-        prevMessage.querySelector('.multi-line-code-snippet') ||
+  if ((prevMessage.querySelector('img') != null) ||
+        (prevMessage.querySelector('video') != null) ||
+        (prevMessage.querySelector('.multi-line-code-snippet') != null) ||
         /*
             single-line-code-snippet
 
@@ -63,8 +63,8 @@ const checkMergePrevMessage = (message: IrcMessage): HTMLElement | null => {
             It might look nicer in some cases to actually merge the messages if
             it is just a single line snippet but its okayish
         */
-        prevMessage.querySelector('.single-line-code-snippet') ||
-        prevMessage.querySelector('.emote')) {
+        (prevMessage.querySelector('.single-line-code-snippet') != null) ||
+        (prevMessage.querySelector('.emote') != null)) {
     // never merge messages containing media
     // otherwise they get unhtmld and then the media is lost
     return null
@@ -115,7 +115,7 @@ const checkMergePrevMessage = (message: IrcMessage): HTMLElement | null => {
   return prevMessage
 }
 
-export const renderMessage = (message: IrcMessage, insertTop: boolean = false, isBridge = false) => {
+export const renderMessage = (message: IrcMessage, insertTop: boolean = false, isBridge = false): void => {
   // TODO: insertTop merges
   const mergeMessage: HTMLElement | null = insertTop ? null : checkMergePrevMessage(message)
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charCodeAt
@@ -136,7 +136,7 @@ export const renderMessage = (message: IrcMessage, insertTop: boolean = false, i
   } else if (code > 80) {
     profileId = 6
   }
-  if (mergeMessage) {
+  if (mergeMessage != null) {
     const mergeMessageText: HTMLElement = mergeMessage.querySelector('.message-text')
     mergeMessageText.innerHTML = mergeMessageText.innerHTML.replaceAll('<br>', '\n')
     // this is weird and i do not understand it

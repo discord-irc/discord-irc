@@ -21,7 +21,7 @@ class InfiniteScrollPlugin extends BasePlugin {
     })
   }
 
-  loadMoreMessages () {
+  loadMoreMessages (): void {
     if (getOldestMessageId() === 0) {
       console.log('infinite scroll reached the top')
       return

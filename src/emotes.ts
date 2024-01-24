@@ -150,7 +150,7 @@ export const getDiscordEmoteIdByName = (emoteName: string, type: string = 'custo
   if (type === 'animated') {
     lookupObj = animatedEmoteMappings
   }
-  return lookupObj[emoteName] || null
+  return lookupObj[emoteName] ?? null
 }
 
 /*
@@ -161,11 +161,11 @@ export const getDiscordEmoteNameById = (emoteId: string, type: string = 'custom'
   if (type === 'animated') {
     lookupObj = animatedEmoteMappings
   }
-  return Object.keys(lookupObj).find(key => lookupObj[key] === emoteId) || null
+  return Object.keys(lookupObj).find(key => lookupObj[key] === emoteId) ?? null
 }
 
 export const getUnicodeByName = (unicodeName: string): string | null => {
-  return unicodeEmoteMappings[unicodeName] || null
+  return unicodeEmoteMappings[unicodeName] ?? null
 }
 
 /**
