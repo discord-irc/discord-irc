@@ -3,21 +3,21 @@ let oldestMessageId: number = -1
 const knownMessageIds: number[] = []
 
 export const getLatestMessageId = (): number => {
-    return latestMessageId
+  return latestMessageId
 }
 export const getNextMessageId = (): number => {
-    latestMessageId++
-    return latestMessageId
+  latestMessageId++
+  return latestMessageId
 }
 
 export const trackNewMessageId = (id: number): void => {
-    knownMessageIds.push(id)
-    if (latestMessageId < id) {
-        latestMessageId = id
-    }
-    if (id < oldestMessageId || oldestMessageId === -1) {
-        oldestMessageId = id
-    }
+  knownMessageIds.push(id)
+  if (latestMessageId < id) {
+    latestMessageId = id
+  }
+  if (id < oldestMessageId || oldestMessageId === -1) {
+    oldestMessageId = id
+  }
 }
 
 /**
@@ -32,7 +32,7 @@ export const trackNewMessageId = (id: number): void => {
  * @returns did we ever receive that message
  */
 export const isKnonwMessageId = (id: number): boolean => {
-    return knownMessageIds.includes(id)
+  return knownMessageIds.includes(id)
 }
 
 /**
@@ -42,13 +42,13 @@ export const isKnonwMessageId = (id: number): boolean => {
  * @returns is this message currently in the dom
  */
 export const isRenderedMessageId = (id: number): boolean => {
-    const found: HTMLElement | null = document.querySelector(`[data-message-id="${id}"]`) ?? null;
-    return found !== null
+  const found: HTMLElement | null = document.querySelector(`[data-message-id="${id}"]`) ?? null
+  return found !== null
 }
 
 export const getOldestMessageId = (): number => {
-    return oldestMessageId
+  return oldestMessageId
 }
 export const setOldestMessageId = (id: number): void => {
-    oldestMessageId = id
+  oldestMessageId = id
 }
