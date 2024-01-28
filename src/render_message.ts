@@ -43,7 +43,7 @@ const utcStrToNiceDate = (utc: string): string => {
 }
 
 const checkMergePrevMessage = (message: IrcMessage): HTMLElement | null => {
-  const prevMessage = document.querySelector('.message:last-child')
+  const prevMessage = document.querySelector<HTMLElement>('.message:last-child')
   if (prevMessage === null) {
     return null
   }

@@ -10,6 +10,6 @@
       "allowJs": true,
       "moduleResolution": "node",
       "lib": ["es2021", "dom"],
-      "strictNullChecks": true,
+      //"strictNullChecks": true,
     }
 }

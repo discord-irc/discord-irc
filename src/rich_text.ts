@@ -105,9 +105,7 @@ export const enrichText = (userinput: string): string => {
     }
   })
   userinput = userinput.replaceAll(
-    // new RegExp(/(`{1,3})(.*?)(\1)|(https?:\/\/[a-zA-Z0-9-_[\]?#:&$+*%.=@]+)/ig),
     /(`{1,3})(.*?)(\1)|(https?:\/\/[a-zA-Z0-9\-_[\]?#:&$+*%/.=@]+)/ig,
-    // new RegExp(/(`{1,3})(.*?)(\1)|(https?:\/\/[a-zA-Z0-9\-_\[\]\?\#\:\&\$\+\*\%\/\.\=\@]+)/ig),
     (match, _openingBackticks, _closingBackticks, _textInBackticks, url: string | undefined) => {
       if (url === undefined) { return match }
 
