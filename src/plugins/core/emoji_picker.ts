@@ -91,7 +91,7 @@ class EmojiPickerPlugin extends BasePlugin {
     // TODO: select on hover
   }
 
-  onDocumentKey (event: KeyboardEvent) {
+  onDocumentKey (event: KeyboardEvent): void {
     if (event.key === 'Escape') {
       this.hide()
     } else if (event.key === 'ArrowRight') {
@@ -105,7 +105,7 @@ class EmojiPickerPlugin extends BasePlugin {
     }
   }
 
-  toggle () {
+  toggle (): void {
     if (this.emojiPaneDom.classList.contains('active')) {
       this.hide()
     } else {
@@ -113,7 +113,7 @@ class EmojiPickerPlugin extends BasePlugin {
     }
   }
 
-  hide () {
+  hide (): void {
     if (!this.emojiPaneDom.classList.contains('active')) {
       return
     }
@@ -121,18 +121,18 @@ class EmojiPickerPlugin extends BasePlugin {
     this.messageInp.focus()
   }
 
-  show () {
+  show (): void {
     this.emojiPaneDom.classList.add('active')
     this.emojiSearchInput.focus()
   }
 
-  onGlobalClick (event: MouseEvent) {
+  onGlobalClick (event: MouseEvent): void {
     // cast EventTarget to HTMLElement
-    const clickTarget: HTMLElement = event.target as HTMLElement
-    if (!clickTarget) {
+    const clickTarget: HTMLElement | null = event.target as HTMLElement | null
+    if (clickTarget == null) {
       return
     }
-    if (!clickTarget.innerHTML) {
+    if (clickTarget.innerHTML === '') {
       return
     }
     if (!this.emojiPickerDom.contains(clickTarget)) {
@@ -143,7 +143,7 @@ class EmojiPickerPlugin extends BasePlugin {
     }
   }
 
-  clickList (event: MouseEvent) {
+  clickList (event: MouseEvent): void {
     // cast EventTarget to HTMLElement
     const emojiDiv: HTMLElement = event.target as HTMLElement
     if (!emojiDiv.classList.contains('emote')) {
@@ -153,7 +153,7 @@ class EmojiPickerPlugin extends BasePlugin {
     this.messageInp.value += `:${emojiName}: `
   }
 
-  onSearchKey (event: KeyboardEvent) {
+  onSearchKey (event: KeyboardEvent): void {
     // do not reset list while arrow key selecting elements
     if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
       return
@@ -162,10 +162,10 @@ class EmojiPickerPlugin extends BasePlugin {
     this.renderList(search.toLowerCase())
   }
 
-  onSearchSubmit (event: SubmitEvent) {
+  onSearchSubmit (event: SubmitEvent): void {
     event.preventDefault()
     const currentSelection: HTMLElement | null = this.emojiListDom.querySelector('.emoji-selected')
-    if (!currentSelection) {
+    if (currentSelection == null) {
       // for example when we search for a term that is not found
       return
     }
@@ -173,46 +173,46 @@ class EmojiPickerPlugin extends BasePlugin {
     this.messageInp.value += `:${emojiName}: `
   }
 
-  selectFirstEmoji () {
+  selectFirstEmoji (): void {
     const emojis: NodeListOf<HTMLElement> = this.emojiListDom.querySelectorAll('.emote')
     const currentSelection: HTMLElement | null = this.emojiListDom.querySelector('.emoji-selected')
-    if (currentSelection) {
+    if (currentSelection != null) {
       currentSelection.classList.remove('emoji-selected')
     }
-    if (emojis.length > 0 && emojis[0]) {
+    if (emojis.length > 0) {
       emojis[0].classList.add('emoji-selected')
     }
   }
 
-  selectEmojiRight () {
+  selectEmojiRight (): void {
     const currentSelection: HTMLElement | null = this.emojiListDom.querySelector('.emoji-selected')
-    if (!currentSelection) {
+    if (currentSelection == null) {
       return
     }
     const next: HTMLElement | null = currentSelection.nextElementSibling as HTMLElement | null
-    if (!next) {
+    if (next == null) {
       return
     }
     currentSelection.classList.remove('emoji-selected')
     next.classList.add('emoji-selected')
   }
 
-  selectEmojiLeft () {
+  selectEmojiLeft (): void {
     const currentSelection: HTMLElement | null = this.emojiListDom.querySelector('.emoji-selected')
-    if (!currentSelection) {
+    if (currentSelection == null) {
       return
     }
     const next: HTMLElement | null = currentSelection.previousElementSibling as HTMLElement | null
-    if (!next) {
+    if (next == null) {
       return
     }
     currentSelection.classList.remove('emoji-selected')
     next.classList.add('emoji-selected')
   }
 
-  selectEmojiOffset (offset: number) {
+  selectEmojiOffset (offset: number): void {
     const currentSelection: HTMLElement | null = this.emojiListDom.querySelector('.emoji-selected')
-    if (!currentSelection) {
+    if (currentSelection == null) {
       return
     }
     const emojis: NodeListOf<HTMLElement> = this.emojiListDom.querySelectorAll('.emote')
@@ -225,8 +225,8 @@ class EmojiPickerPlugin extends BasePlugin {
       return
     }
     const newIndex: number = index + offset
-    const target: HTMLElement | null = emojis[newIndex] || null
-    if (!target) {
+    const target: HTMLElement | null = emojis[newIndex] ?? null
+    if (target === null) {
       // end of list
       return
     }
@@ -234,11 +234,11 @@ class EmojiPickerPlugin extends BasePlugin {
     target.classList.add('emoji-selected')
   }
 
-  selectEmojiDown () {
+  selectEmojiDown (): void {
     this.selectEmojiOffset(this.numEmojiColumns)
   }
 
-  selectEmojiUp () {
+  selectEmojiUp (): void {
     this.selectEmojiOffset(-this.numEmojiColumns)
   }
 

@@ -1,3 +1,4 @@
+/* eslint-disable */
 // source: https://tenor.com/embed.js
 // the code in this file belongs to tenor.com
 // edited by ChillerDragon to reduce tracking

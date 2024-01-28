@@ -1,5 +1,5 @@
 {
-    "compilerOptions": {
+  "compilerOptions": {
       "outDir": "./dist/",
       "sourceMap": true,
       "noImplicitAny": true,
@@ -9,6 +9,7 @@
       "jsx": "react",
       "allowJs": true,
       "moduleResolution": "node",
-      "lib": ["es2021", "dom"]
+      "lib": ["es2021", "dom"],
+      //"strictNullChecks": true,
     }
-  }
+}

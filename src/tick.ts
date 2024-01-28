@@ -3,7 +3,7 @@ import { getPlugins } from './plugins/plugins'
 /**
  * Run every second
  */
-const OnTick = () => {
+const OnTick = (): void => {
   getPlugins().forEach((plugin) => {
     if (plugin.isActive()) {
       plugin.onTick()
@@ -11,6 +11,6 @@ const OnTick = () => {
   })
 }
 
-export const startGameLoop = () => {
+export const startGameLoop = (): void => {
   setInterval(OnTick, 1000)
 }

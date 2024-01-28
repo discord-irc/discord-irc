@@ -42,9 +42,9 @@ export const autoComplete = (
   event: KeyboardEvent,
   inputField: HTMLInputElement,
   suffix: string = ''
-) => {
+): void => {
   const end: number = inputField.value.length
-  const compState: CompletionState = completionStates[prefix] || {
+  const compState: CompletionState = completionStates[prefix] ?? {
     tabNameIndex: 0,
     tabAppendLen: 0,
     isAutocompleteTabbing: false

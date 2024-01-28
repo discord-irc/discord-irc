@@ -40,14 +40,14 @@ export const replacePings = (message: string): string => {
 */
 export const translateEmotes = (message: string): string => {
   message = message.replaceAll(
-    new RegExp(':([a-zA-Z0-9\\+\\-_]+):', 'ig'),
-    (m, $1) => {
+    /:([a-zA-Z0-9\\+\\-_]+):/ig,
+    (m: string, $1: string) => {
       const emoteId: string | null = getDiscordEmoteIdByName($1)
-      if (emoteId) {
+      if (emoteId !== null && emoteId !== '') {
         return `<:${$1}:${emoteId}>`
       }
       const unicodeEmote: string | null = getUnicodeByName($1)
-      if (unicodeEmote) {
+      if (unicodeEmote !== null && unicodeEmote !== '') {
         return unicodeEmote
       }
       return m
@@ -60,11 +60,11 @@ const replaceEmotes = (message: string): string => {
   // discord rich presence animated emotes for example:
   // <a:Catxplosion:1082715870893195274>
   message = message.replaceAll(
-    new RegExp('(<|&lt;)a:([a-zA-Z0-9]+):([0-9]+)(>|&gt;)', 'ig'),
+    /(<|&lt;)a:([a-zA-Z0-9]+):([0-9]+)(>|&gt;)/ig,
     (m, $1, $2, $3) => {
       const emoteId: string = $3
       const emoteName: string | null = getDiscordEmoteNameById(emoteId, 'animated')
-      if (!emoteName) {
+      if (emoteName === null || emoteName === '') {
         return m
       }
       const gifUrl = `https://cdn.discordapp.com/emojis/${emoteId}.gif?size=80&quality=lossless`
@@ -74,10 +74,10 @@ const replaceEmotes = (message: string): string => {
   // discord rich presence emotes for example:
   // <:hisnail:768893210726367232>
   message = message.replaceAll(
-    new RegExp('(<|&lt;):([a-zA-Z0-9_]+):([0-9]+)(>|&gt;)', 'ig'),
+    /(<|&lt;):([a-zA-Z0-9_]+):([0-9]+)(>|&gt;)/ig,
     (m, $1, $2, $3) => {
       const emoteName: string | null = getDiscordEmoteNameById($3)
-      if (!emoteName) {
+      if (emoteName === null || emoteName === '') {
         return m
       }
       return `<span class="emote emote-${emoteName}"></span>`
@@ -86,10 +86,10 @@ const replaceEmotes = (message: string): string => {
   // simple emotes for example:
   // :justatest:
   message = message.replaceAll(
-    new RegExp(':([a-zA-Z0-9_]+):', 'ig'),
-    (m, $1) => {
+    /:([a-zA-Z0-9_]+):/ig,
+    (m: string, $1: string) => {
       const emoteId: string | null = getDiscordEmoteIdByName($1)
-      if (emoteId) {
+      if (emoteId !== null && emoteId !== '') {
         return `<span class="emote emote-${$1}"></span>`
       }
       return m
@@ -105,9 +105,9 @@ export const enrichText = (userinput: string): string => {
     }
   })
   userinput = userinput.replaceAll(
-    new RegExp(/(`{1,3})(.*?)(\1)|(https?:\/\/[a-zA-Z0-9\-_\[\]\?\#\:\&\$\+\*\%\/\.\=\@]+)/ig),
-    (match, _openingBackticks, _closingBackticks, _textInBackticks, url) => {
-      if (url == undefined) { return match }
+    /(`{1,3})(.*?)(\1)|(https?:\/\/[a-zA-Z0-9\-_[\]?#:&$+*%/.=@]+)/ig,
+    (match, _openingBackticks, _closingBackticks, _textInBackticks, url: string | undefined) => {
+      if (url === undefined) { return match }
 
       const isWhitelistedCdn: boolean =
                 url.startsWith('https://zillyhuhn.com/cs') ||
@@ -129,8 +129,8 @@ export const enrichText = (userinput: string): string => {
         url = url.split('?')[0]
       }
 
-      const isImageUrl: boolean = new RegExp('\\.(png|jpg|jpeg|webp|svg|gif)$', 'i').test(url)
-      const isVideoUrl: boolean = new RegExp('\\.(mp4)$', 'i').test(url)
+      const isImageUrl: boolean = /\.(png|jpg|jpeg|webp|svg|gif)$/i.test(url)
+      const isVideoUrl: boolean = /\.(mp4)$/i.test(url)
       if (isWhitelistedCdn) {
         if (isImageUrl) {
           return `<img class="embed-img" src="${url}">`
@@ -148,7 +148,7 @@ export const enrichText = (userinput: string): string => {
         }
       })
       // console.log(`url = ${url}`)
-      if (pluginUrl) {
+      if (pluginUrl !== null) {
         console.log(` plugin: ${pluginUrl}`)
         return pluginUrl
       }
@@ -220,7 +220,7 @@ export const enrichText = (userinput: string): string => {
   //     (m, $1) => hljs.highlight($1, {language: 'c'}).value
   // )
   userinput = userinput.replaceAll(
-    new RegExp('```(.*)```', 'g'),
+    /```(.*)```/g,
     (m, $1) => {
       return `<span class="single-line-code-snippet code-snippet">${hljs.highlightAuto($1).value}</span>`
     }
@@ -245,13 +245,13 @@ export const enrichText = (userinput: string): string => {
     return res
   }
   userinput = userinput.replaceAll(
-    new RegExp('``(.*)``', 'g'),
+    /``(.*)``/g,
     (m, $1) => {
       return codeSnipAnnotater('``', $1)
     }
   )
   userinput = userinput.replaceAll(
-    new RegExp('`(.*)`', 'g'),
+    /`(.*)`/g,
     (m, $1) => {
       // do not pack ``` as a single ` in code
       // because its most of the time a tripple code block

@@ -6,7 +6,7 @@ import { getSocket } from './ws_connection'
 
 let currentChannelName: string | null = null
 let currentServerName: string | null = null
-const nameDom: HTMLElement = document.querySelector('.channel-name')
+const nameDom = document.querySelector<HTMLDivElement>('.channel-name')
 const messageInp: HTMLInputElement = document.querySelector('#message-input')
 const textChannelsDom: HTMLElement = document.querySelector('.text-channels')
 
@@ -27,8 +27,8 @@ interface ServerInfo {
 */
 const connectedServers: Record<string, ServerInfo> = {}
 
-const updateChannelInfo = (serverName: string, channelNames: string[]) => {
-  if (!connectedServers[serverName]) {
+const updateChannelInfo = (serverName: string, channelNames: string[]): void => {
+  if (!(serverName in connectedServers)) {
     connectedServers[serverName] = {
       name: serverName,
       channels: []
@@ -43,7 +43,7 @@ const updateChannelInfo = (serverName: string, channelNames: string[]) => {
   connectedServers[serverName].channels = channels
 }
 
-const requestSwitchChannel = (serverName: string, channelName: string) => {
+const requestSwitchChannel = (serverName: string, channelName: string): void => {
   const joinRequest: JoinChannel = {
     channel: channelName,
     server: serverName,
@@ -52,7 +52,7 @@ const requestSwitchChannel = (serverName: string, channelName: string) => {
   getSocket().emit('joinChannel', joinRequest)
 }
 
-const switchChannel = (serverName: string, channelName: string) => {
+const switchChannel = (serverName: string, channelName: string): void => {
   // console.log(`Switching to channel ${serverName}#${channelName}`)
   const oldServer = getActiveServer()
   const oldChannel = getActiveChannel()
@@ -74,18 +74,18 @@ getSocket().on('joinChannelResponse', (response: JoinChannelResponse) => {
   console.log('failed to switch channel! todo error toast in ui')
 })
 
-export const highlightNewMessageInChannel = (channel: string) => {
+export const highlightNewMessageInChannel = (channel: string): void => {
   const channelDom: HTMLElement | null = document.querySelector(`[data-channel-name="${channel}"]`)
-  if (!channelDom) {
+  if (channelDom == null) {
     console.log(`[!] WARNING! failed to find channel with name '${channel}'`)
     return
   }
   channelDom.classList.add('new-messages')
 }
 
-export const highlightNewPingInChannel = (channel: string) => {
+export const highlightNewPingInChannel = (channel: string): void => {
   const channelDom: HTMLElement | null = document.querySelector(`[data-channel-name="${channel}"]`)
-  if (!channelDom) {
+  if (channelDom == null) {
     console.log(`[!] WARNING! failed to find channel with name '${channel}'`)
     return
   }
@@ -95,9 +95,9 @@ export const highlightNewPingInChannel = (channel: string) => {
   numPingsDom.innerHTML = (numPings + 1).toString()
 }
 
-const renderChannelList = (serverName: string) => {
+const renderChannelList = (serverName: string): void => {
   textChannelsDom.innerHTML = ''
-  if (!connectedServers[serverName]) {
+  if (!(serverName in connectedServers)) {
     return
   }
   connectedServers[serverName].channels.forEach((channel: ChannelInfo) => {
@@ -129,7 +129,7 @@ const renderChannelList = (serverName: string) => {
 
 // channel
 
-export const setActiveChannel = (channelName: string) => {
+export const setActiveChannel = (channelName: string): void => {
   currentChannelName = channelName
   nameDom.innerHTML = channelName
   messageInp.placeholder = `Message #${channelName}`
@@ -137,9 +137,9 @@ export const setActiveChannel = (channelName: string) => {
 }
 
 export const getActiveChannel = (): string => {
-  if (!currentChannelName) {
+  if (currentChannelName === '' || currentChannelName === null) {
     const params = new URLSearchParams(document.location.search)
-    currentChannelName = params.get('c') || 'developer'
+    currentChannelName = params.get('c') ?? 'developer'
     setActiveChannel(currentChannelName)
   }
   return currentChannelName
@@ -147,15 +147,15 @@ export const getActiveChannel = (): string => {
 
 // server
 
-export const setActiveServer = (serverName: string) => {
+export const setActiveServer = (serverName: string): void => {
   currentServerName = serverName
   // TODO: highlight icon on the left
 }
 
 export const getActiveServer = (): string => {
-  if (!currentServerName) {
+  if (currentServerName === '' || currentServerName === null) {
     const params = new URLSearchParams(document.location.search)
-    currentServerName = params.get('s') || 'ddnet'
+    currentServerName = params.get('s') ?? 'ddnet'
     setActiveServer(currentServerName)
   }
   return currentServerName

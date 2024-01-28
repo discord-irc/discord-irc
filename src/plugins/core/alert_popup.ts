@@ -32,14 +32,14 @@ class AlertPopupPlugin extends BasePlugin {
     }
   }
 
-  updateAlertList () {
+  updateAlertList (): void {
     this.alertPopupsList.innerHTML = ''
     this.alerts.forEach((msg) => {
       this.alertPopupsList.insertAdjacentHTML('beforeend', `<div class="alert-popup-top-left alert">${msg.message}</div>`)
     })
   }
 
-  onAlert (msg: AlertMessage) {
+  onAlert (msg: AlertMessage): void {
     msg.expire = new Date(new Date().valueOf() + msg.expire).valueOf()
     this.alerts.push(msg)
     this.updateAlertList()

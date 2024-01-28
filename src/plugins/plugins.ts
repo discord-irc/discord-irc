@@ -24,14 +24,14 @@ export const isPluginActive = (pluginName: string): boolean => {
   return settings.active_plugins.includes(pluginName)
 }
 
-export const deactivatePlugin = (pluginName: string) => {
+export const deactivatePlugin = (pluginName: string): void => {
   const settings = getUserSettings()
   const newPlugins = settings.active_plugins.filter((plugin) => plugin !== pluginName)
   settings.active_plugins = newPlugins
   setUserSettings(settings)
 }
 
-export const activatePlugin = (pluginName: string) => {
+export const activatePlugin = (pluginName: string): void => {
   const settings = getUserSettings()
   settings.active_plugins.push(pluginName)
   setUserSettings(settings)
