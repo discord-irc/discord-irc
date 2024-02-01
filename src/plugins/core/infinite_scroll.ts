@@ -1,9 +1,10 @@
 import { backendUrl } from '../../backend'
 import { getActiveServer, getActiveChannel } from '../../channels'
 import { getOldestMessageId } from '../../message_ids'
-import { addMessage } from '../../message_loader'
 import { IrcMessage } from '../../socket.io'
 import BasePlugin from '../base_plugin'
+import { getPluginByName } from '../plugins'
+import MessageLoaderPlugin from './message_loader'
 
 class InfiniteScrollPlugin extends BasePlugin {
   messagesContainer: HTMLElement = document.querySelector('.message-pane')
@@ -38,7 +39,10 @@ class InfiniteScrollPlugin extends BasePlugin {
       .then(async data => await data.json())
       .then((messages: IrcMessage[]) => {
         messages.reverse().forEach((message: IrcMessage) => {
-          addMessage(message, true)
+          // TODO: do not use getPluginByName() use giveMePluginThatImplements() instead
+          //       https://github.com/discord-irc/discord-irc/issues/34
+          const messageLoader: MessageLoaderPlugin = getPluginByName('message_loader') as MessageLoaderPlugin
+          messageLoader.addMessage(message, true)
         })
         this.pendingLoad = false
       })

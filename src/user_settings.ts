@@ -9,6 +9,7 @@ let __userSettings: UserSettings | null = null
 export const getDefaultUserSettings = (): UserSettings => {
   return {
     active_plugins: [
+      'message_loader',
       'alert_popup',
       'emoji_picker',
       'typing_emoji_panel',

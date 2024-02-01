@@ -27,7 +27,6 @@ import { translateEmotes } from './rich_text'
 import { getCookie, setCookie } from './cookies'
 import { getActiveChannel, getActiveServer } from './channels'
 import { backendUrl } from './backend'
-import { addMessage, reloadMessageBacklog } from './message_loader'
 import { getSocket } from './ws_connection'
 import { startGameLoop } from './tick'
 import { getPlugins, isPluginActive } from './plugins/plugins'
@@ -60,7 +59,13 @@ getSocket().on('connect', () => {
 })
 
 getSocket().on('message', (message: IrcMessage) => {
-  addMessage(message)
+  for (const plugin of getPlugins()) {
+    if (plugin.isActive()) {
+      if (plugin.onMessage(message)) {
+        return
+      }
+    }
+  }
 })
 
 const loginForm: HTMLElement = document.querySelector('.login-form')
@@ -293,7 +298,6 @@ messageInp.addEventListener('keydown', (event: KeyboardEvent) => {
 startGameLoop()
 clearNotifications()
 prefillLoginForm()
-reloadMessageBacklog()
 getPlugins().forEach((plugin) => {
   plugin.active = isPluginActive(plugin.pluginName)
   if (plugin.isActive()) {

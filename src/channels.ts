@@ -1,5 +1,4 @@
 import { backendUrl } from './backend'
-import { reloadMessageBacklog } from './message_loader'
 import { getPlugins } from './plugins/plugins'
 import { JoinChannel, JoinChannelResponse } from './socket.io'
 import { getSocket } from './ws_connection'
@@ -58,7 +57,6 @@ const switchChannel = (serverName: string, channelName: string): void => {
   const oldChannel = getActiveChannel()
   setActiveServer(serverName)
   setActiveChannel(channelName)
-  reloadMessageBacklog()
   getPlugins().forEach((plugin) => {
     if (plugin.isActive()) {
       plugin.onSwitchChannel(oldServer, oldChannel, serverName, channelName)
