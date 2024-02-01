@@ -14,8 +14,14 @@ class InfiniteScrollPlugin extends BasePlugin {
     super('infinite_scroll')
 
     this.pendingLoad = false
+  }
+
+  onInit(): void {
     this.messagesContainer = document.querySelector('.message-pane')
     this.messagesContainer.addEventListener('scroll', () => {
+      if (!this.isActive()) {
+        return
+      }
       if (this.messagesContainer.scrollTop < 2) {
         this.loadMoreMessages()
       }

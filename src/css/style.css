@@ -397,6 +397,7 @@ input[type=text], input[type=password], input[type=submit] {
     max-width: 600px;
 }
 
+/* TODO: rename to reusable toggle-form */
 .login-form {
     display: none;
 }

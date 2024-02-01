@@ -1,0 +1,17 @@
+.server-settings-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  height: 100%;
+}
+
+.server-settings-side-bar {
+  background-color: #292b2f;
+}
+
+.webhook-form {
+  background-color: #292b2f;
+  display: none;
+}
+.webhook-form.active {
+  display: block;
+}

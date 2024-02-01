@@ -2,7 +2,7 @@ import { AlertMessage } from "../socket.io";
 import BasePlugin from "./base_plugin";
 import { getPluginThatImplements, getPlugins } from "./plugins";
 
-export type PluginImplementation = 'alert' | 'emoji_completion'
+export type PluginImplementation = 'alert' | 'emoji_completion' | 'server_details'
 
 export class AlertPluginImplementation extends BasePlugin {
   constructor(pluginName: string) {
@@ -21,6 +21,24 @@ export class EmojiCompletionPluginImplementation extends BasePlugin {
   }
 }
 
+export class ServerDetailsPluginImplementation extends BasePlugin {
+  constructor(pluginName: string) {
+    super(pluginName)
+    this.implementations.push('server_details')
+  }
+
+  /**
+   * registerListEntry
+   *
+   * Plugins implementing an list item are supposed to call this
+   *
+   * @param displayName is used to display the entry in the list
+   * @param clickCallback will be called if the user clicks the item in the list
+   */
+    registerListEntry (displayName: string, clickCallback: EventListenerOrEventListenerObject) {
+    }
+}
+
 export const getPluginThatImplementsAlert = (): AlertPluginImplementation | null => {
   return getPluginThatImplements('alert') as AlertPluginImplementation | null
 }
@@ -29,7 +47,13 @@ export const getPluginThatImplementsEmojiCompletion = (): EmojiCompletionPluginI
   return getPluginThatImplements('emoji_completion') as EmojiCompletionPluginImplementation | null
 }
 
+export const getPluginThatImplementsServerDetails = (): ServerDetailsPluginImplementation | null => {
+  return getPluginThatImplements('server_details') as ServerDetailsPluginImplementation | null
+}
+
+
 export type IPluginImplementation =
   EmojiCompletionPluginImplementation |
   AlertPluginImplementation |
+  ServerDetailsPluginImplementation |
   BasePlugin

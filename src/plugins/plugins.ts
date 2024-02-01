@@ -12,6 +12,7 @@ import MessageLoaderPlugin from './core/message_loader'
 import { IPluginImplementation, PluginImplementation, getPluginThatImplementsAlert } from './plugin_implementations'
 import { popupAlert } from '../popups'
 import EmojiTabCompletePlugin from './core/emoji_tab_complete'
+import ServerSettingsPlugin from './core/server_settings'
 
 const plugins: BasePlugin[] = []
 plugins.push(new CrashLoggerPlugin()) // Keep it here! Load crash logger as first plugin!
@@ -24,6 +25,7 @@ plugins.push(new AlertPopupPlugin())
 plugins.push(new TenorPlugin())
 plugins.push(new ServerDetailsPlugin())
 plugins.push(new EmojiTabCompletePlugin())
+plugins.push(new ServerSettingsPlugin())
 
 export const getPlugins = (): BasePlugin[] => {
   return plugins
