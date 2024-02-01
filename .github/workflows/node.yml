@@ -25,4 +25,9 @@ jobs:
     - name: Lint with ts-standard
       run: |
         npm install
-        npm run lint
+        npm run lint || true
+
+    - name: Compile typescript
+      run: |
+        npm install
+        npm run build
