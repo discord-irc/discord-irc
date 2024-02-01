@@ -1,3 +1,4 @@
+import { popupAlert } from '../../popups'
 import { AlertMessage } from '../../socket.io'
 import BasePlugin from '../base_plugin'
 import { getPluginThatImplementsAlert } from '../plugin_implementations'
@@ -45,17 +46,7 @@ class CrashLoggerPlugin extends BasePlugin {
 
   logCrash (crashLog: CrashLog): void {
     this.crashLogs.push(crashLog)
-    const plugin = getPluginThatImplementsAlert()
-    if (plugin) {
-      const alertMsg: AlertMessage = {
-        success: false,
-        message: crashLog.toString(),
-        expire: 80000
-      }
-      plugin.addAlert(alertMsg)
-    } else {
-      console.warn('No alert plugin found')
-    }
+    popupAlert(crashLog.toString(), 80000)
   }
 
   hookPromiseError () {

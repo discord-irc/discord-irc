@@ -1,9 +1,9 @@
 import { getDiscordEmoteNames } from '../../emotes'
-import BasePlugin from '../base_plugin'
+import { EmojiCompletionPluginImplementation } from '../plugin_implementations'
 
 import '../../css/plugins/typing_emoji_panel.css'
 
-export default class TypingEmojiPanelPlugin extends BasePlugin {
+export default class TypingEmojiPanelPlugin extends EmojiCompletionPluginImplementation {
   /**
      * the main div holding basically the whole view port
      *

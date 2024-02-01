@@ -20,7 +20,7 @@ const completionStates: Record<string, CompletionState> = {}
 /**
  * generic autocompletion for input fields
  *
- * example:
+ * @example
  *
  * messageInp.addEventListener('keydown', (event: KeyboardEvent) => {
  *   autoComplete('/', ["help", "info"], event, document.querySelector('input'))

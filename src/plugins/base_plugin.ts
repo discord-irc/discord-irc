@@ -41,7 +41,16 @@ class BasePlugin {
   onSwitchChannel (oldServer: string, oldChannel: string, newServer: string, newChannel: string): void {
   }
 
-  onKeydown (event: KeyboardEvent): void {
+  /**
+   * onKeydownMessageInput
+   *
+   * Triggered when a user types in the main chat box
+   * the input field to send a message
+   *
+   * @param event the javascript keydown KeyboardEvent on messageInp
+   * @param messageInp the input dom element
+   */
+  onKeydownMessageInput (event: KeyboardEvent, messageInp: HTMLInputElement): void {
   }
 
   /**

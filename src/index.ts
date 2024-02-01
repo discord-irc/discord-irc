@@ -296,7 +296,7 @@ messageInp.addEventListener('keydown', (event: KeyboardEvent) => {
   autoComplete('@', allKnownUsernames(), event, messageInp, ' ')
   getPlugins().forEach((plugin) => {
     if (plugin.isActive()) {
-      plugin.onKeydown(event)
+      plugin.onKeydownMessageInput(event, messageInp)
     }
   })
 })

@@ -27,7 +27,7 @@ class TypingPlugin extends BasePlugin {
     this.getTypersForCurrentChannel()
   }
 
-  onKeydown (_event: KeyboardEvent): void {
+  onKeydownMessageInput (_event: KeyboardEvent, _messageInp: HTMLInputElement): void {
     this.sendTyping(true)
   }
 

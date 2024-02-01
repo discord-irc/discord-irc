@@ -9,7 +9,9 @@ import TypingEmojiPanelPlugin from './core/typing_emoji_panel'
 import ServerDetailsPlugin from './core/server_details'
 import CrashLoggerPlugin from './core/crash_logger'
 import MessageLoaderPlugin from './core/message_loader'
-import { IPluginImplementation, PluginImplementation } from './plugin_implementations'
+import { IPluginImplementation, PluginImplementation, getPluginThatImplementsAlert } from './plugin_implementations'
+import { popupAlert } from '../popups'
+import EmojiTabCompletePlugin from './core/emoji_tab_complete'
 
 const plugins: BasePlugin[] = []
 plugins.push(new CrashLoggerPlugin()) // Keep it here! Load crash logger as first plugin!
@@ -21,6 +23,7 @@ plugins.push(new InfiniteScrollPlugin())
 plugins.push(new AlertPopupPlugin())
 plugins.push(new TenorPlugin())
 plugins.push(new ServerDetailsPlugin())
+plugins.push(new EmojiTabCompletePlugin())
 
 export const getPlugins = (): BasePlugin[] => {
   return plugins
@@ -28,11 +31,11 @@ export const getPlugins = (): BasePlugin[] => {
 
 // TODO: also add and prefer to use getPluginThatImplements()
 //       https://github.com/discord-irc/discord-irc/issues/34
-export const getPluginByName = (pluginName: string): BasePlugin | null => {
+export const getPluginByName = (pluginName: string, active: boolean = true): BasePlugin | null => {
   // TODO: performance ... I assume filter() would be faster but watever
   console.warn('[!] Warning: getPluginByName() is deprecated! Use getPluginThatImplements() instead!!!')
   for (const plugin of getPlugins()) {
-    if (plugin.isActive() && plugin.pluginName === pluginName) {
+    if (plugin.isActive() === active && plugin.pluginName === pluginName) {
       return plugin
     }
   }
@@ -64,4 +67,21 @@ export const activatePlugin = (pluginName: string): void => {
   const settings = getUserSettings()
   settings.active_plugins.push(pluginName)
   setUserSettings(settings)
+
+  // TODO: never add plugin hot reloading
+  //       or this line breaks
+  //       also the order of plugins loaded would be messed
+  //       either way page reload is the way to go
+  //       to properly reload all plugins
+  const plugin = getPluginByName(pluginName, false) || getPluginByName(pluginName, true)
+  if(plugin === null) {
+    console.warn(`Activated plugin '${pluginName}' but did not find plugin`)
+    return
+  }
+  for (const implementation of plugin.implementations) {
+    const conflictingPlugin = getPluginThatImplements(implementation)
+    if(conflictingPlugin !== null && conflictingPlugin.pluginName !== pluginName) {
+      popupAlert(`Plugin '${pluginName}' conflicts with '${conflictingPlugin.pluginName}' both implement '${implementation}'`)
+    }
+  }
 }
