@@ -1,4 +1,6 @@
+import { AlertMessage } from '../../socket.io'
 import BasePlugin from '../base_plugin'
+import { getPluginThatImplementsAlert } from '../plugin_implementations'
 
 class CrashLog {
   event: Event | string
@@ -17,8 +19,9 @@ class CrashLog {
     this.colno = colno
   }
 
-  // TODO: add some nice toString() and toHtml() methods here
-  //       and then display it somewhere as a UI popup
+  toString () {
+    return `[crash] ${this.event} ${this.source}:${this.lineno}:${this.colno}`
+  }
 }
 
 class CrashLoggerPlugin extends BasePlugin {
@@ -37,9 +40,19 @@ class CrashLoggerPlugin extends BasePlugin {
     }
     window.onerror = (message, file, line, column, error) => {
       console.log(`[crash_logger] ${error}`)
-      this.crashLogs.push(
-        new CrashLog(message, file, line, column, error)
-      )
+      const crashLog = new CrashLog(message, file, line, column, error)
+      this.crashLogs.push(crashLog)
+      const plugin = getPluginThatImplementsAlert()
+      if (plugin) {
+        const alertMsg: AlertMessage = {
+          success: false,
+          message: crashLog.toString(),
+          expire: 8000
+        }
+        plugin.addAlert(alertMsg)
+      } else {
+        console.warn('No alert plugin found')
+      }
     }
   }
 }

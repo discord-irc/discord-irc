@@ -9,6 +9,7 @@ import TypingEmojiPanelPlugin from './core/typing_emoji_panel'
 import ServerDetailsPlugin from './core/server_details'
 import CrashLoggerPlugin from './core/crash_logger'
 import MessageLoaderPlugin from './core/message_loader'
+import { IPluginImplementation, PluginImplementation } from './plugin_implementations'
 
 const plugins: BasePlugin[] = []
 plugins.push(new CrashLoggerPlugin()) // Keep it here! Load crash logger as first plugin!
@@ -25,13 +26,22 @@ export const getPlugins = (): BasePlugin[] => {
   return plugins
 }
 
-// TODO: also add and prefer to use giveMePluginThatImplements()
+// TODO: also add and prefer to use getPluginThatImplements()
 //       https://github.com/discord-irc/discord-irc/issues/34
 export const getPluginByName = (pluginName: string): BasePlugin | null => {
   // TODO: performance ... I assume filter() would be faster but watever
-  console.warn('[!] Warning: getPluginByName() is deprecated! Use giveMePluginThatImplements() instead!!!')
+  console.warn('[!] Warning: getPluginByName() is deprecated! Use getPluginThatImplements() instead!!!')
   for (const plugin of getPlugins()) {
     if (plugin.isActive() && plugin.pluginName === pluginName) {
+      return plugin
+    }
+  }
+  return null
+}
+
+export const getPluginThatImplements = (implementation: PluginImplementation): IPluginImplementation | null => {
+  for (const plugin of getPlugins()) {
+    if (plugin.isActive() && plugin.implementations.includes(implementation)) {
       return plugin
     }
   }

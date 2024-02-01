@@ -1,4 +1,4 @@
-import { IrcMessage, AuthResponse, LogoutMessage } from './socket.io'
+import { IrcMessage, AuthResponse, LogoutMessage, AlertMessage } from './socket.io'
 
 // import hljs from 'highlight.js' // works but is slow because it bloats in too many langs
 import hljs from 'highlight.js/lib/core'
@@ -29,10 +29,11 @@ import { getActiveChannel, getActiveServer } from './channels'
 import { backendUrl } from './backend'
 import { getSocket } from './ws_connection'
 import { startGameLoop } from './tick'
-import { getPlugins, isPluginActive } from './plugins/plugins'
+import { getPluginThatImplements, getPlugins, isPluginActive } from './plugins/plugins'
 import { getNextMessageId } from './message_ids'
 import './settings_menu'
 import './mobile'
+import { AlertPluginImplementation, getPluginThatImplementsAlert } from './plugins/plugin_implementations'
 hljs.registerLanguage('plaintext', plaintext)
 hljs.registerLanguage('javascript', javascript)
 hljs.registerLanguage('python', python)
@@ -66,6 +67,15 @@ getSocket().on('message', (message: IrcMessage) => {
       }
     }
   }
+})
+
+getSocket().on('alert', (msg: AlertMessage) => {
+  const plugin = getPluginThatImplementsAlert()
+  if (!plugin) {
+    console.warn('No alert plugin found')
+    return
+  }
+  plugin.addAlert(msg)
 })
 
 const loginForm: HTMLElement = document.querySelector('.login-form')

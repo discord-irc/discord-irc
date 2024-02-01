@@ -1,11 +1,14 @@
-import { IrcMessage } from '../socket.io'
+import { IrcMessage } from "../socket.io"
+import { PluginImplementation } from "./plugin_implementations"
 
 class BasePlugin {
   pluginName: string
   active: boolean
+  implementations: PluginImplementation[]
 
-  constructor (pluginName: string) {
+  constructor (pluginName: string, implementations: PluginImplementation[] = []) {
     this.pluginName = pluginName
+    this.implementations = implementations
     this.active = false
   }
 

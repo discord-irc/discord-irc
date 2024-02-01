@@ -1,10 +1,10 @@
 import { AlertMessage } from '../../socket.io'
 import { getSocket } from '../../ws_connection'
-import BasePlugin from '../base_plugin'
+import { AlertPluginImplementation } from '../plugin_implementations'
 
 import '../../css/plugins/alert_popup.css'
 
-class AlertPopupPlugin extends BasePlugin {
+class AlertPopupPlugin extends AlertPluginImplementation {
   pluginPopups: HTMLElement
   alertPopupsList: HTMLElement
   alerts: AlertMessage[]
@@ -19,8 +19,6 @@ class AlertPopupPlugin extends BasePlugin {
     )
     this.alertPopupsList = this.pluginPopups.querySelector('.alert-popups-list')
     this.alerts = []
-
-    getSocket().on('alert', (msg: AlertMessage) => this.onAlert(msg))
   }
 
   onTick (): void {
@@ -39,7 +37,7 @@ class AlertPopupPlugin extends BasePlugin {
     })
   }
 
-  onAlert (msg: AlertMessage): void {
+  addAlert (msg: AlertMessage): void {
     msg.expire = new Date(new Date().valueOf() + msg.expire).valueOf()
     this.alerts.push(msg)
     this.updateAlertList()
