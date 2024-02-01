@@ -50,7 +50,7 @@ class CrashLoggerPlugin extends BasePlugin {
       const alertMsg: AlertMessage = {
         success: false,
         message: crashLog.toString(),
-        expire: 8000
+        expire: 80000
       }
       plugin.addAlert(alertMsg)
     } else {
@@ -64,9 +64,6 @@ class CrashLoggerPlugin extends BasePlugin {
     }
     window.onunhandledrejection = (event: PromiseRejectionEvent) => {
       // promise reaon
-      console.log(`[crash_logger] ${event}`)
-      console.log(event.reason)
-      console.log(typeof event.reason)
       const crashLog = new CrashLog(event, JSON.stringify(event.promise), null, null, event.reason)
       this.logCrash(crashLog)
     }
@@ -77,7 +74,6 @@ class CrashLoggerPlugin extends BasePlugin {
       throw new Error(`[crash_logger] failed to set window.onerror. Not overwriting the following callback: ${window.onerror}`)
     }
     window.onerror = (message, file, line, column, error) => {
-      console.log(`[crash_logger] ${error}`)
       // TODO: support source maps from webpack omg
       const crashLog = new CrashLog(message, file, line, column, error)
       this.logCrash(crashLog)
