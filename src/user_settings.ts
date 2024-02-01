@@ -26,7 +26,7 @@ export const getUserSettings = (): UserSettings => {
     return __userSettings
   }
   const currentSettings: string = getCookie('user_settings')
-  if (currentSettings !== '') {
+  if (!currentSettings) {
     const settings: UserSettings = getDefaultUserSettings()
     setCookie('user_settings', JSON.stringify(settings), 30)
     return settings
