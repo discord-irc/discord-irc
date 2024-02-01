@@ -7,8 +7,10 @@ import TypingPlugin from './core/typing'
 import TenorPlugin from './core/tenor'
 import TypingEmojiPanelPlugin from './core/typing_emoji_panel'
 import ServerDetailsPlugin from './core/server_details'
+import CrashLoggerPlugin from './core/crash_logger'
 
 const plugins: BasePlugin[] = []
+plugins.push(new CrashLoggerPlugin())
 plugins.push(new TypingPlugin())
 plugins.push(new EmojiPickerPlugin())
 plugins.push(new TypingEmojiPanelPlugin())
