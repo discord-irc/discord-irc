@@ -11,7 +11,8 @@ class TypingPlugin extends BasePlugin {
   typingListDom: HTMLElement
 
   constructor () {
-    super('typing')
+    super()
+    this.pluginName = this.classNameToSnake(this.constructor.name)
 
     this.typingListDom = document.querySelector('.typing-users')
     this.isTyping = false

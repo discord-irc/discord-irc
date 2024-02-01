@@ -4,7 +4,8 @@ class ServerDetailsPlugin extends BasePlugin {
   toggleButton: HTMLElement
 
   constructor () {
-    super('server_details')
+    super()
+    this.pluginName = this.classNameToSnake(this.constructor.name)
 
     this.toggleButton = document.querySelector('.server-details-desktop-toggle')
   }

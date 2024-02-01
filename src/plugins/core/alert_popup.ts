@@ -10,7 +10,8 @@ class AlertPopupPlugin extends AlertPluginImplementation {
   alerts: AlertMessage[]
 
   constructor () {
-    super('alert_popup')
+    super()
+    this.pluginName = this.classNameToSnake(this.constructor.name)
 
     this.pluginPopups = document.querySelector('.plugin-popups')
     this.pluginPopups.insertAdjacentHTML(

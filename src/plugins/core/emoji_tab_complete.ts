@@ -4,7 +4,8 @@ import { EmojiCompletionPluginImplementation } from '../plugin_implementations'
 
 class EmojiTabCompletePlugin extends EmojiCompletionPluginImplementation {
   constructor () {
-    super('emoji_tab_complete')
+    super()
+    this.pluginName = this.classNameToSnake(this.constructor.name)
   }
 
   onKeydownMessageInput(event: KeyboardEvent, messageInp: HTMLInputElement): void {

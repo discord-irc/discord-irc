@@ -9,7 +9,8 @@ import BasePlugin from '../base_plugin'
 
 class MessageLoaderPlugin extends BasePlugin {
   constructor () {
-    super('message_loader')
+    super()
+    this.pluginName = this.classNameToSnake(this.constructor.name)
   }
 
   onInit (): void {

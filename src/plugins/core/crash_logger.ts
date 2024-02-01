@@ -33,7 +33,8 @@ class CrashLoggerPlugin extends BasePlugin {
   crashLogs: CrashLog[]
 
   constructor () {
-    super('crash_logger')
+    super()
+    this.pluginName = this.classNameToSnake(this.constructor.name)
 
     this.crashLogs = []
   }

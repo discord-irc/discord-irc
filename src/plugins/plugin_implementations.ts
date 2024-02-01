@@ -5,8 +5,8 @@ import { getPluginThatImplements, getPlugins } from "./plugins";
 export type PluginImplementation = 'alert' | 'emoji_completion'
 
 export class AlertPluginImplementation extends BasePlugin {
-  constructor(pluginName: string) {
-    super(pluginName)
+  constructor() {
+    super()
     this.implementations.push('alert')
   }
 
@@ -15,8 +15,8 @@ export class AlertPluginImplementation extends BasePlugin {
 }
 
 export class EmojiCompletionPluginImplementation extends BasePlugin {
-  constructor(pluginName: string) {
-    super(pluginName)
+  constructor() {
+    super()
     this.implementations.push('emoji_completion')
   }
 }

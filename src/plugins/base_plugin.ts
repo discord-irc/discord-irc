@@ -6,10 +6,15 @@ class BasePlugin {
   active: boolean
   implementations: PluginImplementation[]
 
-  constructor (pluginName: string, implementations: PluginImplementation[] = []) {
-    this.pluginName = pluginName
+  constructor (implementations: PluginImplementation[] = []) {
     this.implementations = implementations
     this.active = false
+  }
+
+  classNameToSnake (pluginClassName: string): string {
+    console.log(`[snake] ${pluginClassName}`)
+    return 'todo'
+    // return pluginClassName.slice(0, pluginClassName.length - 'Plugin'.length).match(/[A-Z][^A-Z]+/g).map((word) => word.toLowerCase()).join('_')
   }
 
   isActive (): boolean {

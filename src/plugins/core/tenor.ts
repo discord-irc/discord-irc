@@ -2,7 +2,8 @@ import BasePlugin from '../base_plugin'
 
 class TenorPlugin extends BasePlugin {
   constructor () {
-    super('tenor')
+    super()
+    this.pluginName = this.classNameToSnake(this.constructor.name)
   }
 
   onInit (): void {

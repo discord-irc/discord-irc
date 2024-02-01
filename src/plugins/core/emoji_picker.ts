@@ -47,7 +47,8 @@ class EmojiPickerPlugin extends BasePlugin {
   numEmojiColumns: number
 
   constructor () {
-    super('emoji_picker')
+    super()
+    this.pluginName = this.classNameToSnake(this.constructor.name)
   }
 
   onInit (): void {

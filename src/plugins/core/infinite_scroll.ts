@@ -11,9 +11,11 @@ class InfiniteScrollPlugin extends BasePlugin {
   pendingLoad: boolean
 
   constructor () {
-    super('infinite_scroll')
+    super()
+    this.pluginName = this.classNameToSnake(this.constructor.name)
 
     this.pendingLoad = false
+    // TODO: this should not be in the constructor
     this.messagesContainer = document.querySelector('.message-pane')
     this.messagesContainer.addEventListener('scroll', () => {
       if (this.messagesContainer.scrollTop < 2) {

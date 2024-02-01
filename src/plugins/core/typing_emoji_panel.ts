@@ -46,7 +46,8 @@ export default class TypingEmojiPanelPlugin extends EmojiCompletionPluginImpleme
   isVisible: boolean
 
   constructor () {
-    super('typing_emoji_panel')
+    super()
+    this.pluginName = this.classNameToSnake(this.constructor.name)
 
     this.currentEmoji = ''
     this.emojis = []
