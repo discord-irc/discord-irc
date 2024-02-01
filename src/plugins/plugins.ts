@@ -6,6 +6,7 @@ import InfiniteScrollPlugin from './core/infinite_scroll'
 import TypingPlugin from './core/typing'
 import TenorPlugin from './core/tenor'
 import TypingEmojiPanelPlugin from './core/typing_emoji_panel'
+import ServerDetailsPlugin from './core/server_details'
 
 const plugins: BasePlugin[] = []
 plugins.push(new TypingPlugin())
@@ -14,6 +15,7 @@ plugins.push(new TypingEmojiPanelPlugin())
 plugins.push(new InfiniteScrollPlugin())
 plugins.push(new AlertPopupPlugin())
 plugins.push(new TenorPlugin())
+plugins.push(new ServerDetailsPlugin())
 
 export const getPlugins = (): BasePlugin[] => {
   return plugins

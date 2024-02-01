@@ -11,9 +11,11 @@ export const getDefaultUserSettings = (): UserSettings => {
     active_plugins: [
       'alert_popup',
       'emoji_picker',
+      'typing_emoji_panel',
       'infinite_scroll',
       'typing',
-      'tenor'
+      'tenor',
+      'server_details'
     ]
   }
 }
