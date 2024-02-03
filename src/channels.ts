@@ -1,6 +1,6 @@
 import { backendUrl } from './backend'
 import { getPlugins } from './plugins/plugins'
-import { JoinChannel, JoinChannelResponse } from './socket.io'
+import { ChannelInfo, JoinChannel, JoinChannelResponse } from './socket.io'
 import { getSocket } from './ws_connection'
 
 let currentChannelName: string | null = null
@@ -8,10 +8,6 @@ let currentServerName: string | null = null
 const nameDom = document.querySelector<HTMLDivElement>('.channel-name')
 const messageInp: HTMLInputElement = document.querySelector('#message-input')
 const textChannelsDom: HTMLElement = document.querySelector('.text-channels')
-
-interface ChannelInfo {
-  name: string
-}
 
 interface ServerInfo {
   name: string
@@ -26,20 +22,18 @@ interface ServerInfo {
 */
 const connectedServers: Record<string, ServerInfo> = {}
 
-const updateChannelInfo = (serverName: string, channelNames: string[]): void => {
+const updateChannelInfo = (serverName: string, channels: ChannelInfo[]): void => {
   if (!(serverName in connectedServers)) {
     connectedServers[serverName] = {
       name: serverName,
       channels: []
     }
   }
-  const channels: ChannelInfo[] = channelNames.map((name) => {
-    const channelInfo: ChannelInfo = {
-      name
-    }
-    return channelInfo
-  })
   connectedServers[serverName].channels = channels
+}
+
+export const getChannelInfo = (serverName: string, channelName: string): ChannelInfo | null => {
+  return connectedServers[serverName].channels.find((channelInfo) => channelInfo.name === channelName) || null
 }
 
 const requestSwitchChannel = (serverName: string, channelName: string): void => {
@@ -163,7 +157,7 @@ export const getActiveServer = (): string => {
 
 fetch(`${backendUrl}/${getActiveServer()}/channels`)
   .then(async data => await data.json())
-  .then((channels: string[]) => {
+  .then((channels: ChannelInfo[]) => {
     updateChannelInfo(getActiveServer(), channels)
     renderChannelList(getActiveServer())
   })

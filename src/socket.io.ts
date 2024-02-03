@@ -1,5 +1,22 @@
 import { Socket } from 'socket.io'
 
+// shared types
+
+export interface WebhookObject {
+  id: number | bigint
+  type: number
+  channel_id: number | bigint
+  name: string
+  avatar: string | null
+  application_id: number | null
+}
+
+export interface ChannelInfo {
+  id: number | bigint
+  name: string
+  description: string
+}
+
 export interface IrcMessage {
   id: number
   from: string
@@ -9,6 +26,8 @@ export interface IrcMessage {
   date: string
   token?: string
 }
+
+// socket.io types
 
 export interface RegisterRequest {
   username: string

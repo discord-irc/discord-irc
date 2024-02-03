@@ -2,6 +2,10 @@ import BasePlugin from '../base_plugin'
 import { getPluginThatImplementsServerDetails } from '../plugin_implementations'
 
 import '../../css/plugins/server_settings.css'
+import { getActiveChannel, getActiveServer, getChannelInfo } from '../../channels'
+import { backendUrl } from '../../backend'
+import { WebhookObject } from '../../socket.io'
+import { getBearerToken } from '../../tokens'
 
 class SettingsEntry {
   displayName: string
@@ -55,7 +59,10 @@ class ServerSettingsPlugin extends BasePlugin {
       <input type="text" name="name" id="webhook-channel-input" placeholder="Channel">
       <input type="submit" value="Create" class="btn">
     </form>
+    <div class="webhook-list">
+    </div>
     `
+    const webhookList: HTMLElement = document.querySelector('.webhook-list')
     const form: HTMLElement = document.querySelector('.webhook-form')
     document.querySelector('.new-webhook').addEventListener('click', () => {
       console.log('clicked new webhook!')
@@ -67,6 +74,27 @@ class ServerSettingsPlugin extends BasePlugin {
 
       console.log('submittin webhook form ..')
     })
+
+    const channel = getChannelInfo(getActiveServer(), getActiveChannel())
+    console.log(channel)
+    fetch(`${backendUrl}/channels/${channel.id}/webhooks`, {
+      headers: {
+        authorization: `Bearer ${getBearerToken()}`
+      }
+    })
+      .then(async data => await data.json())
+      .then((webhooks: WebhookObject[]) => {
+        // TODO: error checking here
+        //       the backend can throw a bunch of auth errors here
+        //       also channel not found
+        console.log(webhooks)
+        webhooks.forEach((webhook) => {
+          webhookList.insertAdjacentHTML(
+            'beforeend',
+            `<div>${webhook.name}</div>`
+          )
+        })
+      })
   }
 
   openServerSettings (): void {
