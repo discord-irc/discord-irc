@@ -35,6 +35,7 @@ export interface JoinChannelResponse {
   success: boolean
   channel: string
   server: string
+  channelId: number | bigint
 }
 
 export interface LogoutMessage {
