@@ -114,4 +114,5 @@ export interface ClientToServerEvents {
   joinChannel: (join: JoinChannel) => void
   typingInfo: (typingInfo: TypingInfo) => void
   webhooksRequest: (serverId: number | bigint) => void
+  newWebhookRequest: (webhook: WebhookObject) => void
 }

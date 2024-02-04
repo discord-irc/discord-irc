@@ -2,11 +2,12 @@ import BasePlugin from '../base_plugin'
 import { getPluginThatImplementsServerDetails } from '../plugin_implementations'
 
 import '../../css/plugins/server_settings.css'
-import { getActiveChannel, getActiveServer, getActiveServerId, getChannelInfo } from '../../channels'
+import { getActiveChannel, getActiveChannelInfo, getActiveServer, getActiveServerId, getChannelInfo } from '../../channels'
 import { backendUrl } from '../../backend'
 import { WebhookObject } from '../../socket.io'
 import { getBearerToken } from '../../tokens'
 import { getSocket } from '../../ws_connection'
+import { popupAlert } from '../../popups'
 
 class SettingsEntry {
   displayName: string
@@ -90,6 +91,32 @@ class ServerSettingsPlugin extends BasePlugin {
       event.preventDefault()
 
       console.log('submittin webhook form ..')
+
+      const name = (document.querySelector('#webhook-name-input') as HTMLInputElement).value
+      const channelName = (document.querySelector('#webhook-channel-input') as HTMLInputElement).value
+      const channel = getChannelInfo(getActiveServer(), channelName)
+
+      if(!channel) {
+        popupAlert('invalid channel')
+        return
+      }
+      if(!name) {
+        popupAlert('invalid name')
+        return
+      }
+
+      getSocket().emit('newWebhookRequest', {
+        id: 0, // TODO: this is bullshit
+        name: name,
+        channel_id: channel.id,
+        avatar: '',
+        application_id: 0,
+        type: 0
+      })
+      const activeServerId = getActiveServerId()
+      // give the backend 1s time to insert the webhook into the database lmao
+      // and then list all webhooks
+      setTimeout(() => { getSocket().emit('webhooksRequest', activeServerId) }, 1000)
     })
 
     const activeServerId = getActiveServerId()

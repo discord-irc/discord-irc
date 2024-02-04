@@ -40,6 +40,10 @@ export const getChannelInfo = (serverName: string, channelName: string): Channel
   return connectedServers[serverName].channels.find((channelInfo) => channelInfo.name === channelName) || null
 }
 
+export const getActiveChannelInfo = (): ChannelInfo | null => {
+  return getChannelInfo(getActiveServer(), getActiveChannel())
+}
+
 const requestSwitchChannel = (serverName: string, channelName: string): void => {
   const joinRequest: JoinChannel = {
     channel: channelName,
