@@ -2,12 +2,12 @@ import BasePlugin from '../base_plugin'
 import { getPluginThatImplementsServerDetails } from '../plugin_implementations'
 
 import '../../css/plugins/server_settings.css'
-import { getActiveChannel, getActiveChannelInfo, getActiveServer, getActiveServerId, getChannelInfo } from '../../channels'
+import { getActiveChannel, getActiveChannelInfo, getActiveServer, getActiveServerId, getChannelById, getChannelInfo } from '../../channels'
 import { backendUrl } from '../../backend'
 import { WebhookObject } from '../../socket.io'
 import { getBearerToken } from '../../tokens'
 import { getSocket } from '../../ws_connection'
-import { popupAlert } from '../../popups'
+import { popupAlert, popupNotice } from '../../popups'
 import { getAccount } from '../../account'
 
 class SettingsEntry {
@@ -60,29 +60,71 @@ class ServerSettingsPlugin extends BasePlugin {
     }
     webhookList.innerHTML = ''
     webhooks.forEach((webhook) => {
+      const channel = getChannelById(webhook.channel_id)
+      const webhookUrl = `${backendUrl}/webhooks/${webhook.id}/${webhook.token}`
+      const sampleCurl = `curl -X POST -H 'Content-Type: application/json' --data '{"content": "hello world"}' ${webhookUrl}`
       webhookList.insertAdjacentHTML(
         'beforeend',
-        `<div>${webhook.name}</div>`
+        `<form action="" class="card webhook-form webhook-form-update">
+          <div>
+            <label for="webhook-name-input-update-update">NAME</label>
+            <input value="${webhook.name}" type="text" name="name" id="webhook-name-input-update">
+          </div>
+          <div>
+            <label for="webhook-channel-input-update">CHANNEL</label>
+            <input value="${channel.name}" type="text" name="name" id="webhook-channel-input-update">
+          </div>
+          <div data-url="${webhookUrl}" class="btn-secondary" id="copy-webhook-url-${webhook.id}">Copy Webhook URL</div>
+          <div data-curl="${encodeURIComponent(sampleCurl)}" class="btn-secondary" id="copy-webhook-curl-${webhook.id}">Copy sample curl command</div>
+        </form>`
       )
+      const copyUrl = document.querySelector(`#copy-webhook-url-${webhook.id}`) as HTMLElement
+      copyUrl.addEventListener('click', () => {
+        navigator.clipboard.writeText(copyUrl.dataset.url)
+        popupNotice('copied webhook url to clipboard!')
+        const oldText = copyUrl.innerHTML
+        copyUrl.innerHTML = 'Copied!'
+        copyUrl.classList.add('clicked')
+        setTimeout(() => {
+          copyUrl.innerHTML = oldText
+          copyUrl.classList.remove('clicked')
+        }, 3000)
+      })
+      const copyCurl = document.querySelector(`#copy-webhook-curl-${webhook.id}`) as HTMLElement
+      copyCurl.addEventListener('click', () => {
+        navigator.clipboard.writeText(decodeURIComponent(copyCurl.dataset.curl))
+        popupNotice('copied sample webhook curl command to clipboard!')
+        const oldText = copyCurl.innerHTML
+        copyCurl.innerHTML = 'Copied!'
+        copyCurl.classList.add('clicked')
+        setTimeout(() => {
+          copyCurl.innerHTML = oldText
+          copyCurl.classList.remove('clicked')
+        }, 3000)
+      })
     })
   }
 
   settingIntegrations (): void {
     console.log('should show integrations settings now ...')
     document.querySelector('.server-settings-content').innerHTML = `
-    <h1>Integrations</h1>
+    <h1>Integrations &gt; <span style="color: white">Webhooks</span></h1>
 
     <div class="btn new-webhook">New Webhook</div>
-    <form action="" class="webhook-form">
-      <label for="webhook-name-input">NAME</label>
-      <input type="text" name="name" id="webhook-name-input" placeholder="Name">
-      <label for="webhook-channel-input">CHANNEL</label>
-      <input type="text" name="name" id="webhook-channel-input" placeholder="Channel">
+    <form action="" class="card toggle-block webhook-form webhook-form-new">
+      <div>
+        <label for="webhook-name-input">NAME</label>
+        <input type="text" name="name" id="webhook-name-input" placeholder="Name">
+      </div>
+      <div>
+        <label for="webhook-channel-input">CHANNEL</label>
+        <input type="text" name="name" id="webhook-channel-input" placeholder="Channel">
+      </div>
       <input type="submit" value="Create" class="btn">
     </form>
     <div class="webhook-list">loading ...</div>
     `
-    const form: HTMLElement = document.querySelector('.webhook-form')
+    const form: HTMLElement = document.querySelector('.webhook-form-new')
     document.querySelector('.new-webhook').addEventListener('click', () => {
       console.log('clicked new webhook!')
       form.classList.add('active')
@@ -108,6 +150,7 @@ class ServerSettingsPlugin extends BasePlugin {
 
       getSocket().emit('newWebhookRequest', {
         id: 0, // TODO: this is bullshit
+        token: '',
         name: name,
         channel_id: channel.id,
         avatar: '',

@@ -300,7 +300,21 @@ input[type=text], input[type=password], input[type=submit] {
     padding-left: 5px;
     margin: 8px;
     box-sizing: border-box;
+    border-radius: 3px;
 }
+
+.card {
+    background-color: #292b2f;
+    border-radius: 3px;
+    padding: 8px;
+    color: #c3c5c9;
+    margin: 8px;
+}
+.card input[type=text], .card input[type=password] {
+    background-color: #1e2024;
+    color: #c5c7cb;
+}
+
 
 .embed-img {
     max-height: 500px;
@@ -365,6 +379,7 @@ input[type=text], input[type=password], input[type=submit] {
 }
 
 .alert {
+    z-index: 10;
     color: rgb(90, 1, 1);
     background-color: rgb(223, 48, 48);
     border: 10px solid rgb(230, 78, 78);
@@ -373,6 +388,7 @@ input[type=text], input[type=password], input[type=submit] {
 }
 
 .notice {
+    z-index: 10;
     color: rgb(255, 255, 255);
     background-color: rgb(151, 142, 14);
     border: 10px solid rgb(207, 226, 102);
@@ -397,7 +413,14 @@ input[type=text], input[type=password], input[type=submit] {
     max-width: 600px;
 }
 
-/* TODO: rename to reusable toggle-form */
+.toggle-block {
+    display: none;
+}
+.toggle-block.active {
+    display: block;
+}
+
+/* TODO: use toggle-block */
 .login-form {
     display: none;
 }
@@ -413,12 +436,31 @@ input[type=text], input[type=password], input[type=submit] {
 }
 
 .btn {
+    border-radius: 3px;
     color: white;
     background-color: #7389da;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+}
+
+.btn-secondary {
+    border-radius: 3px;
+    color: white;
+    background-color: #5c5c60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.btn-secondary.clicked {
+    background-color: #329752;
+}
+
+.btn-secondary:hover {
+    background-color: #57575c;
 }
 
 a, a:visited {

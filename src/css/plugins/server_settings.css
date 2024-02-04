@@ -9,9 +9,6 @@
 }
 
 .webhook-form {
-  background-color: #292b2f;
-  display: none;
-}
-.webhook-form.active {
-  display: block;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }

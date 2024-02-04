@@ -4,6 +4,10 @@ import { Socket } from 'socket.io'
 
 export interface WebhookObject {
   id: number | bigint
+
+  // `token` is non discord api.
+  // And intentionally non optional to avoid ! in frontend when consuming it
+  token: string
   type: number
   channel_id: number | bigint
   name: string

@@ -75,7 +75,7 @@ getSocket().on('alert', (msg: AlertMessage) => {
     console.warn('No alert plugin found')
     return
   }
-  plugin.addAlert(msg)
+  plugin.addFlash(msg)
 })
 
 const loginForm: HTMLElement = document.querySelector('.login-form')

@@ -36,6 +36,13 @@ const updateChannelInfo = (serverName: string, channels: ChannelInfo[]): void =>
   setActiveServerId(channels[0].serverId) // TODO: OMG THIS IS HORRIBLE
 }
 
+export const getChannelById = (channelId: number | bigint): ChannelInfo | null => {
+  for(const server of Object.values(connectedServers)) {
+    return server.channels.find((channel) => channel.id === channelId)
+  }
+  return null
+}
+
 export const getChannelInfo = (serverName: string, channelName: string): ChannelInfo | null => {
   return connectedServers[serverName].channels.find((channelInfo) => channelInfo.name === channelName) || null
 }

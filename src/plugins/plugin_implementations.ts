@@ -10,7 +10,7 @@ export class AlertPluginImplementation extends BasePlugin {
     this.implementations.push('alert')
   }
 
-  addAlert (msg: AlertMessage): void {
+  addFlash (msg: AlertMessage): void {
   }
 }
 
