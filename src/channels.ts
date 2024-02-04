@@ -33,7 +33,7 @@ const updateChannelInfo = (serverName: string, channels: ChannelInfo[]): void =>
     }
   }
   connectedServers[serverName].channels = channels
-  setActiveServerId(channels[0].id) // TODO: OMG THIS IS HORRIBLE
+  setActiveServerId(channels[0].serverId) // TODO: OMG THIS IS HORRIBLE
 }
 
 export const getChannelInfo = (serverName: string, channelName: string): ChannelInfo | null => {

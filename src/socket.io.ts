@@ -96,6 +96,11 @@ export interface ServerToClientEvents {
   joinChannelResponse: (reponse: JoinChannelResponse) => void
   typingUsers: (state: TypingState) => void
   alert: (msg: AlertMessage) => void
+  // TODO: using some callback with timeout would be cleaner
+  //       than having this second untied response
+  //       but whatever
+  //       https://socket.io/docs/v4/tutorial/api-overview
+  webhooks: (webhooks: WebhookObject[]) => void
 }
 
 export interface ClientToServerEvents {
@@ -108,4 +113,5 @@ export interface ClientToServerEvents {
   authRequest: (auth: AuthRequest) => void
   joinChannel: (join: JoinChannel) => void
   typingInfo: (typingInfo: TypingInfo) => void
+  webhooksRequest: (serverId: number | bigint) => void
 }

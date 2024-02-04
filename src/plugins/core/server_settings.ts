@@ -6,6 +6,7 @@ import { getActiveChannel, getActiveServer, getActiveServerId, getChannelInfo } 
 import { backendUrl } from '../../backend'
 import { WebhookObject } from '../../socket.io'
 import { getBearerToken } from '../../tokens'
+import { getSocket } from '../../ws_connection'
 
 class SettingsEntry {
   displayName: string
@@ -44,6 +45,24 @@ class ServerSettingsPlugin extends BasePlugin {
     listPlugin.registerListEntry('Server Settings', () => { this.openServerSettings() })
     this.settingsEntries = []
     this.settingsEntries.push(new SettingsEntry('Integrations', () => { this.settingIntegrations() }))
+
+    getSocket().on('webhooks', (webhooks: WebhookObject[]) => {
+      this.listWebhooks(webhooks)
+    })
+  }
+
+  listWebhooks (webhooks: WebhookObject[]): void {
+    const webhookList: HTMLElement = document.querySelector('.webhook-list')
+    if (!webhookList) {
+      return
+    }
+    webhookList.innerHTML = ''
+    webhooks.forEach((webhook) => {
+      webhookList.insertAdjacentHTML(
+        'beforeend',
+        `<div>${webhook.name}</div>`
+      )
+    })
   }
 
   settingIntegrations (): void {
@@ -59,10 +78,8 @@ class ServerSettingsPlugin extends BasePlugin {
       <input type="text" name="name" id="webhook-channel-input" placeholder="Channel">
       <input type="submit" value="Create" class="btn">
     </form>
-    <div class="webhook-list">
-    </div>
+    <div class="webhook-list">loading ...</div>
     `
-    const webhookList: HTMLElement = document.querySelector('.webhook-list')
     const form: HTMLElement = document.querySelector('.webhook-form')
     document.querySelector('.new-webhook').addEventListener('click', () => {
       console.log('clicked new webhook!')
@@ -75,28 +92,13 @@ class ServerSettingsPlugin extends BasePlugin {
       console.log('submittin webhook form ..')
     })
 
-    console.log(`active server id: ${getActiveServerId()}`)
-
-    const channel = getChannelInfo(getActiveServer(), getActiveChannel())
-    console.log(channel)
-    fetch(`${backendUrl}/channels/${channel.id}/webhooks`, {
-      headers: {
-        authorization: `Bearer ${getBearerToken()}`
-      }
-    })
-      .then(async data => await data.json())
-      .then((webhooks: WebhookObject[]) => {
-        // TODO: error checking here
-        //       the backend can throw a bunch of auth errors here
-        //       also channel not found
-        console.log(webhooks)
-        webhooks.forEach((webhook) => {
-          webhookList.insertAdjacentHTML(
-            'beforeend',
-            `<div>${webhook.name}</div>`
-          )
-        })
-      })
+    const activeServerId = getActiveServerId()
+    if (!activeServerId) {
+      console.warn(`Could not list webhooks because did not find active server id!`)
+    } else {
+      console.log(`requesting webhooks for active server: ${activeServerId}`)
+      getSocket().emit('webhooksRequest', activeServerId)
+    }
   }
 
   openServerSettings (): void {
