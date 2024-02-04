@@ -34,8 +34,14 @@ export class ServerDetailsPluginImplementation extends BasePlugin {
    *
    * @param displayName is used to display the entry in the list
    * @param clickCallback will be called if the user clicks the item in the list
+   * @param displayCallback return true or falls in here to show and hide the entry in the list
+   *                        this is used to hide buttons that are admin only
+   *                        for unauthorized users
    */
-    registerListEntry (displayName: string, clickCallback: EventListenerOrEventListenerObject) {
+    registerListEntry (
+      displayName: string,
+      clickCallback: EventListenerOrEventListenerObject,
+      displayCallback: () => boolean) {
     }
 }
 

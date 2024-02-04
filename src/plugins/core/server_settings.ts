@@ -8,6 +8,7 @@ import { WebhookObject } from '../../socket.io'
 import { getBearerToken } from '../../tokens'
 import { getSocket } from '../../ws_connection'
 import { popupAlert } from '../../popups'
+import { getAccount } from '../../account'
 
 class SettingsEntry {
   displayName: string
@@ -43,7 +44,7 @@ class ServerSettingsPlugin extends BasePlugin {
       console.warn(`[${this.pluginName}] Could not register. No active server details plugin found.`)
       return
     }
-    listPlugin.registerListEntry('Server Settings', () => { this.openServerSettings() })
+    listPlugin.registerListEntry('Server Settings', () => { this.openServerSettings() }, () => getAccount().admin)
     this.settingsEntries = []
     this.settingsEntries.push(new SettingsEntry('Integrations', () => { this.settingIntegrations() }))
 

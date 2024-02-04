@@ -3,6 +3,12 @@ import BasePlugin from '../base_plugin'
 import '../../css/plugins/server_details.css'
 import { ServerDetailsPluginImplementation } from '../plugin_implementations'
 
+interface serverDetailsListEntry {
+  displayName: string
+  clickCallback: EventListenerOrEventListenerObject
+  displayCallback: () => boolean
+}
+
 /**
  * ServerDetailsPlugin
  *
@@ -30,12 +36,14 @@ class ServerDetailsPlugin extends ServerDetailsPluginImplementation {
   toggleButton: HTMLElement
   pluginPopups: HTMLElement
   serverDetailsList: HTMLElement
-  numListItems: number
+  listItems: serverDetailsListEntry[]
+  listCollapsed: boolean
 
   constructor () {
     super('server_details')
 
-    this.numListItems = 0
+    this.listItems = []
+    this.listCollapsed = true
   }
 
   onInit (): void {
@@ -56,8 +64,7 @@ class ServerDetailsPlugin extends ServerDetailsPluginImplementation {
     this.serverDetailsList = this.pluginPopups.querySelector('.server-details-popup-top-left')
 
     // adding entries
-    // this.registerListEntry('test', () => { console.log('test called') })
-    // this.registerListEntry('foo', () => { console.log('foo called') })
+    this.registerListEntry('add your entries here', () => { console.log('foo called') }, () => true)
   }
 
   /**
@@ -67,19 +74,46 @@ class ServerDetailsPlugin extends ServerDetailsPluginImplementation {
    *
    * @param displayName is used to display the entry in the list
    * @param clickCallback will be called if the user clicks the item in the list
+   * @param displayCallback return true or falls in here to show and hide the entry in the list
+   *                        this is used to hide buttons that are admin only
+   *                        for unauthorized users
    */
-  registerListEntry (displayName: string, clickCallback: EventListenerOrEventListenerObject) {
-    this.numListItems++
-    const entryId = `details-entry-${this.numListItems}`
-    this.serverDetailsList.insertAdjacentHTML(
-      'beforeend',
-      `<div class="server-details-entry" id="${entryId}">${displayName}</div>`
-    )
-    document.querySelector(`#${entryId}`).addEventListener('click', clickCallback)
+  registerListEntry (
+    displayName: string,
+    clickCallback: EventListenerOrEventListenerObject,
+    displayCallback: () => boolean) {
+    this.listItems.push({
+      displayName: displayName,
+      clickCallback: clickCallback,
+      displayCallback: displayCallback
+    })
+  }
+
+  buildList (): void {
+    this.serverDetailsList.innerHTML = ''
+    let index = 1
+    this.listItems.forEach((listItem) => {
+      const entryId = `details-entry-${index++}`
+      if(!listItem.displayCallback()) {
+        return
+      }
+      this.serverDetailsList.insertAdjacentHTML(
+        'beforeend',
+        `<div class="server-details-entry" id="${entryId}">${listItem.displayName}</div>`
+      )
+      // TODO: do we have to delete event listeners too?
+      //       or does wiping the elements they are attached to do that for us?
+      document.querySelector(`#${entryId}`).addEventListener('click', listItem.clickCallback)
+    })
   }
 
   toggleDropDown (): void {
-    console.log('toggeling server details')
+    // console.log(`toggeling server details => ${this.listCollapsed ? 'opening' : 'closing'}`)
+    this.serverDetailsList.innerHTML = ''
+    if(this.listCollapsed) {
+      this.buildList()
+    }
+    this.listCollapsed = !this.listCollapsed
   }
 }
 

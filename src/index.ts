@@ -167,6 +167,7 @@ const onLogout = (): void => {
 
 const onLogin = (authResponse: AuthResponse): void => {
   getAccount().username = authResponse.username
+  getAccount().admin = authResponse.admin
   getAccount().loggedIn = true
   getAccount().sessionToken = authResponse.token
   const passwordInp: HTMLInputElement = document.querySelector('#password-input')

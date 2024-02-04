@@ -45,6 +45,7 @@ export interface AuthRequest {
 
 export interface AuthResponse {
   username: string
+  admin: boolean
   token: string
   message: string
   success: boolean
