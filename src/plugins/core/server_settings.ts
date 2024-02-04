@@ -44,11 +44,7 @@ class ServerSettingsPlugin extends BasePlugin {
       console.warn(`[${this.pluginName}] Could not register. No active server details plugin found.`)
       return
     }
-    listPlugin.registerListEntry('Server Settings', () => { this.openServerSettings() }, () => {
-      console.log('display callback called!')
-      console.log(getAccount())
-      return getAccount().admin
-    })
+    listPlugin.registerListEntry('Server Settings', () => { this.openServerSettings() }, () => getAccount().admin)
     this.settingsEntries = []
     this.settingsEntries.push(new SettingsEntry('Integrations', () => { this.settingIntegrations() }))
 

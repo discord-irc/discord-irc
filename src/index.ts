@@ -170,8 +170,6 @@ const onLogin = (authResponse: AuthResponse): void => {
   getAccount().admin = authResponse.admin
   getAccount().loggedIn = true
   getAccount().sessionToken = authResponse.token
-  console.log('logged in!')
-  console.log(getAccount())
   const passwordInp: HTMLInputElement = document.querySelector('#password-input')
   setCookie('username', authResponse.username, 30)
   setCookie('password', passwordInp.value, 30)
