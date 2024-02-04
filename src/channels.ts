@@ -5,11 +5,13 @@ import { getSocket } from './ws_connection'
 
 let currentChannelName: string | null = null
 let currentServerName: string | null = null
+let currentServerId: number | bigint | null = null
 const nameDom = document.querySelector<HTMLDivElement>('.channel-name')
 const messageInp: HTMLInputElement = document.querySelector('#message-input')
 const textChannelsDom: HTMLElement = document.querySelector('.text-channels')
 
 interface ServerInfo {
+  id: number | bigint
   name: string
   channels: ChannelInfo[]
 }
@@ -26,10 +28,12 @@ const updateChannelInfo = (serverName: string, channels: ChannelInfo[]): void =>
   if (!(serverName in connectedServers)) {
     connectedServers[serverName] = {
       name: serverName,
+      id: channels[0].serverId, // TODO: OMG THIS IS HORRIBLE
       channels: []
     }
   }
   connectedServers[serverName].channels = channels
+  setActiveServerId(channels[0].id) // TODO: OMG THIS IS HORRIBLE
 }
 
 export const getChannelInfo = (serverName: string, channelName: string): ChannelInfo | null => {
@@ -45,12 +49,16 @@ const requestSwitchChannel = (serverName: string, channelName: string): void => 
   getSocket().emit('joinChannel', joinRequest)
 }
 
-const switchChannel = (serverName: string, channelName: string): void => {
+const switchChannel = (response: JoinChannelResponse): void => {
   // console.log(`Switching to channel ${serverName}#${channelName}`)
   const oldServer = getActiveServer()
   const oldChannel = getActiveChannel()
+  const serverName = response.server
+  const channelName = response.channel
   setActiveServer(serverName)
   setActiveChannel(channelName)
+  connectedServers[serverName].id = response.serverId
+  setActiveServerId(response.serverId)
   getPlugins().forEach((plugin) => {
     if (plugin.isActive()) {
       plugin.onSwitchChannel(oldServer, oldChannel, serverName, channelName)
@@ -60,7 +68,7 @@ const switchChannel = (serverName: string, channelName: string): void => {
 
 getSocket().on('joinChannelResponse', (response: JoinChannelResponse) => {
   if (response.success) {
-    switchChannel(response.server, response.channel)
+    switchChannel(response)
     return
   }
   console.log('failed to switch channel! todo error toast in ui')
@@ -151,6 +159,16 @@ export const getActiveServer = (): string => {
     setActiveServer(currentServerName)
   }
   return currentServerName
+}
+
+export const setActiveServerId = (serverId: number | bigint): void => {
+  currentServerId = serverId
+  // TODO: call setActiveServer and rename to setActiveServerName even better delete the whole legacy name based thing
+  // TODO: highlight icon on the left
+}
+
+export const getActiveServerId = (): number | bigint | null => {
+  return currentServerId
 }
 
 // get info

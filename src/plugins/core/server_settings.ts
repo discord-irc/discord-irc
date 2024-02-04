@@ -2,7 +2,7 @@ import BasePlugin from '../base_plugin'
 import { getPluginThatImplementsServerDetails } from '../plugin_implementations'
 
 import '../../css/plugins/server_settings.css'
-import { getActiveChannel, getActiveServer, getChannelInfo } from '../../channels'
+import { getActiveChannel, getActiveServer, getActiveServerId, getChannelInfo } from '../../channels'
 import { backendUrl } from '../../backend'
 import { WebhookObject } from '../../socket.io'
 import { getBearerToken } from '../../tokens'
@@ -74,6 +74,8 @@ class ServerSettingsPlugin extends BasePlugin {
 
       console.log('submittin webhook form ..')
     })
+
+    console.log(`active server id: ${getActiveServerId()}`)
 
     const channel = getChannelInfo(getActiveServer(), getActiveChannel())
     console.log(channel)

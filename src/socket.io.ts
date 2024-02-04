@@ -13,6 +13,7 @@ export interface WebhookObject {
 
 export interface ChannelInfo {
   id: number | bigint
+  serverId: number | bigint
   name: string
   description: string
 }
@@ -55,6 +56,7 @@ export interface JoinChannelResponse {
   channel: string
   server: string
   channelId: number | bigint
+  serverId: number | bigint
 }
 
 export interface LogoutMessage {
