@@ -14,12 +14,14 @@
     width: 40px;
     top: 8px;
     right: 10px;
-    background-image: url("../../img/rofl_grey.svg");
+    filter: grayscale(1);
+    opacity: .6;
+    background-image: url("../../img/rofl.svg");
 }
 
 .emoji-picker-toggle:hover {
-    background-image: url("../../img/rofl.svg");
-
+    filter: none;
+    opacity: 1;
 }
 
 .emoji-picker-pane.active {
