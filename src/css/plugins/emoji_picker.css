@@ -15,7 +15,6 @@
     top: 8px;
     right: 10px;
     background-image: url("../../img/rofl_grey.svg");
-    position: absolute;
 }
 
 .emoji-picker-toggle:hover {
@@ -47,7 +46,7 @@
         this is set by javascript
         if you want to change the columns go to
         emoji_picker.ts and change the line
-        
+
         this.numEmojiColumns = 9
     */
 

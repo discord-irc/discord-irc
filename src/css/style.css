@@ -235,10 +235,16 @@ html, body {
     border-radius: 10px;
 }
 
-.input-pane {
-    grid-row: 3;
-    grid-column: 3;
-    position: relative; /* needed to align buttons inside the input */
+.input-pane__inner {
+    display: flex;
+    background-color: #43464c;
+    margin: 8px;
+    border-radius: 3px;
+}
+
+.input-pane__inner > #message-input {
+    margin: 0;
+    height:  auto;
 }
 
 .user-list-pane {
