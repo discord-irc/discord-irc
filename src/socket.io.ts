@@ -92,6 +92,7 @@ export interface AlertMessage {
 }
 
 export interface ServerInfo {
+  id: number | bigint
   channels: ChannelInfo[]
   name: string
   iconUrl: string
