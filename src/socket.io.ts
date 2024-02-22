@@ -91,6 +91,13 @@ export interface AlertMessage {
   expire: number
 }
 
+export interface ServerInfo {
+  channels: ChannelInfo[]
+  name: string
+  iconUrl: string
+  bannerUrl: string
+}
+
 export interface ServerToClientEvents {
   // irc-websockets
   message: (message: IrcMessage) => void
@@ -106,6 +113,7 @@ export interface ServerToClientEvents {
   //       but whatever
   //       https://socket.io/docs/v4/tutorial/api-overview
   webhooks: (webhooks: WebhookObject[]) => void
+  connectedServerListResponse: (servers: ServerInfo[]) => void
 }
 
 export interface ClientToServerEvents {
@@ -120,4 +128,5 @@ export interface ClientToServerEvents {
   typingInfo: (typingInfo: TypingInfo) => void
   webhooksRequest: (serverId: number | bigint) => void
   newWebhookRequest: (webhook: WebhookObject) => void
+  connectedServerListRequest: () => void
 }

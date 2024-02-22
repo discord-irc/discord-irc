@@ -33,7 +33,9 @@ import { getPluginThatImplements, getPlugins, isPluginActive } from './plugins/p
 import { getNextMessageId } from './message_ids'
 import './settings_menu'
 import './mobile'
+import './servers'
 import { AlertPluginImplementation, getPluginThatImplementsAlert } from './plugins/plugin_implementations'
+import { requestServerList } from './servers'
 hljs.registerLanguage('plaintext', plaintext)
 hljs.registerLanguage('javascript', javascript)
 hljs.registerLanguage('python', python)
@@ -176,6 +178,8 @@ const onLogin = (authResponse: AuthResponse): void => {
   const overlay: HTMLElement = document.querySelector('.overlay')
   overlay.style.display = 'none'
   formPopup.style.display = 'none'
+
+  requestServerList()
 }
 
 formPopup.querySelector('.login-form')
