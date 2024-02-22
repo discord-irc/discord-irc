@@ -3,7 +3,7 @@ import { getElementOrThrow } from "./dom"
 import { ServerInfo } from "./socket.io"
 import { getSocket } from "./ws_connection"
 
-let connectedServers: ServerInfo[] = []
+export let connectedServers: ServerInfo[] = []
 
 const getServerById = (serverId: number): ServerInfo | null => {
   return connectedServers.find((server) => server.id === serverId)
@@ -61,6 +61,7 @@ getSocket().on('connectedServerListResponse', (servers: ServerInfo[]) => {
     )
   })
   registerServerIconListeners()
+  listChannelsOfCurrentServer()
 })
 
 export const requestServerList = () => {

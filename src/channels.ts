@@ -1,6 +1,9 @@
 import { backendUrl } from './backend'
+import { getElementOrThrow } from './dom'
 import { getPlugins } from './plugins/plugins'
-import { ChannelInfo, JoinChannel, JoinChannelResponse } from './socket.io'
+import { popupAlert } from './popups'
+import { connectedServers } from './servers'
+import { ChannelInfo, JoinChannel, JoinChannelResponse, ServerInfo } from './socket.io'
 import { getSocket } from './ws_connection'
 
 let currentChannelName: string | null = null
@@ -8,47 +11,21 @@ let currentServerName: string | null = null
 let currentServerId: number | bigint | null = null
 const nameDom = document.querySelector<HTMLDivElement>('.channel-name')
 const messageInp: HTMLInputElement = document.querySelector('#message-input')
-const textChannelsDom: HTMLElement = document.querySelector('.text-channels')
-
-interface ServerInfo {
-  id: number | bigint
-  name: string
-  channels: ChannelInfo[]
-}
-
-/*
-    connectedServers
-
-    key: server name
-    value: ServerInfo
-*/
-const connectedServers: Record<string, ServerInfo> = {}
-
-const updateChannelInfo = (serverName: string, channels: ChannelInfo[]): void => {
-  if(channels.length === 0) {
-    // this will crash on the TODO OMG THIS IS HORRIBLE part xd
-    console.warn(`The server '${serverName}' has no channels!`)
-  }
-  if (!(serverName in connectedServers)) {
-    connectedServers[serverName] = {
-      name: serverName,
-      id: channels[0].serverId, // TODO: OMG THIS IS HORRIBLE
-      channels: []
-    }
-  }
-  connectedServers[serverName].channels = channels
-  setActiveServerId(channels[0].serverId) // TODO: OMG THIS IS HORRIBLE
-}
+const textChannelsDom: HTMLElement = getElementOrThrow('.text-channels')
 
 export const getChannelById = (channelId: number | bigint): ChannelInfo | null => {
-  for(const server of Object.values(connectedServers)) {
+  for(const server of connectedServers) {
     return server.channels.find((channel) => channel.id === channelId)
   }
   return null
 }
 
+export const getServerInfoByName = (serverName: string): ServerInfo  | null => {
+  return connectedServers.find((server) => server.name === serverName)
+}
+
 export const getChannelInfo = (serverName: string, channelName: string): ChannelInfo | null => {
-  return connectedServers[serverName].channels.find((channelInfo) => channelInfo.name === channelName) || null
+  return getServerInfoByName(serverName).channels.find((channelInfo) => channelInfo.name === channelName) || null
 }
 
 export const getActiveChannelInfo = (): ChannelInfo | null => {
@@ -72,16 +49,6 @@ const switchChannel = (response: JoinChannelResponse): void => {
   const channelName = response.channel
   setActiveServer(serverName)
   setActiveChannel(channelName)
-  // new server
-  if (!connectedServers[serverName]) {
-    connectedServers[serverName] = {
-      id: response.serverId,
-      name: response.server,
-      channels: [] // TODO: remove connectedServers
-    }
-  } else {
-    connectedServers[serverName].id = response.serverId
-  }
   setActiveServerId(response.serverId)
   getPlugins().forEach((plugin) => {
     if (plugin.isActive()) {
@@ -99,7 +66,9 @@ getSocket().on('joinChannelResponse', (response: JoinChannelResponse) => {
     switchChannel(response)
     return
   }
-  console.log('failed to switch channel! todo error toast in ui')
+  console.warn('failed to switch channel:')
+  console.warn(response)
+  popupAlert(response.message)
 })
 
 export const highlightNewMessageInChannel = (channel: string): void => {
@@ -125,10 +94,14 @@ export const highlightNewPingInChannel = (channel: string): void => {
 
 const renderChannelList = (serverName: string): void => {
   textChannelsDom.innerHTML = ''
-  if (!(serverName in connectedServers)) {
-    return
+  const serverInfo = getServerInfoByName(serverName)
+  if(!serverInfo) {
+    throw `Failed to get server info for '${serverName}'`
   }
-  connectedServers[serverName].channels.forEach((channel: ChannelInfo) => {
+  if(serverInfo.channels.length === 0) {
+    console.warn(`Server '${serverName}' has no channels`)
+  }
+  serverInfo.channels.forEach((channel: ChannelInfo) => {
     const active = channel.name === getActiveChannel() ? ' active' : ''
     textChannelsDom.innerHTML +=
             `<div class="channel-name-box clickable${active}" data-channel-name="${channel.name}">
@@ -208,9 +181,6 @@ export const listChannelsOfCurrentServer = () => {
   fetch(`${backendUrl}/${getActiveServer()}/channels`)
     .then(async data => await data.json())
     .then((channels: ChannelInfo[]) => {
-      updateChannelInfo(getActiveServer(), channels)
       renderChannelList(getActiveServer())
     })
 }
-
-listChannelsOfCurrentServer()
