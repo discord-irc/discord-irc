@@ -267,12 +267,16 @@ html, body {
     color: #888d93;
 }
 
-.ddnet-server {
+.server-icon {
     height: 64px;
     width: 64px;
     background-image: url("../img/ddnet-logo.png");
     background-size: cover;
     margin: auto;
+}
+
+.server-ddnet {
+    background-image: url("../img/ddnet-logo.png");
 }
 
 .users-icon {
