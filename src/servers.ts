@@ -1,3 +1,5 @@
+import { listChannelsOfCurrentServer, requestSwitchChannel, setActiveChannel, setActiveServer } from "./channels"
+import { getElementOrThrow } from "./dom"
 import { ServerInfo } from "./socket.io"
 import { getSocket } from "./ws_connection"
 
@@ -15,6 +17,9 @@ const onClickServerIcon = (server: HTMLElement) => {
 
   console.log("trying to set active server to:")
   console.log(serverInfo)
+
+  // TODO: remember last active channel of every server
+  requestSwitchChannel(serverInfo.name, serverInfo.channels[0].name)
 }
 
 const registerServerIconListeners = () => {
@@ -31,10 +36,7 @@ getSocket().on('connectedServerListResponse', (servers: ServerInfo[]) => {
   console.log(servers)
   connectedServers = servers
 
-  const serverListDiv: HTMLElement | null = document.querySelector('.menu-servers')
-  if(serverListDiv === null) {
-    throw 'Element not found: .menu-servers'
-  }
+  const serverListDiv = getElementOrThrow('.menu-servers')
 
   servers.forEach((server) => {
     const serverNameSlug = server.name.toLowerCase().replaceAll(/[^a-z]/gi, '-')

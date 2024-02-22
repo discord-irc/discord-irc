@@ -25,6 +25,10 @@ interface ServerInfo {
 const connectedServers: Record<string, ServerInfo> = {}
 
 const updateChannelInfo = (serverName: string, channels: ChannelInfo[]): void => {
+  if(channels.length === 0) {
+    // this will crash on the TODO OMG THIS IS HORRIBLE part xd
+    console.warn(`The server '${serverName}' has no channels!`)
+  }
   if (!(serverName in connectedServers)) {
     connectedServers[serverName] = {
       name: serverName,
@@ -51,7 +55,7 @@ export const getActiveChannelInfo = (): ChannelInfo | null => {
   return getChannelInfo(getActiveServer(), getActiveChannel())
 }
 
-const requestSwitchChannel = (serverName: string, channelName: string): void => {
+export const requestSwitchChannel = (serverName: string, channelName: string): void => {
   const joinRequest: JoinChannel = {
     channel: channelName,
     server: serverName,
@@ -68,13 +72,26 @@ const switchChannel = (response: JoinChannelResponse): void => {
   const channelName = response.channel
   setActiveServer(serverName)
   setActiveChannel(channelName)
-  connectedServers[serverName].id = response.serverId
+  // new server
+  if (!connectedServers[serverName]) {
+    connectedServers[serverName] = {
+      id: response.serverId,
+      name: response.server,
+      channels: [] // TODO: remove connectedServers
+    }
+  } else {
+    connectedServers[serverName].id = response.serverId
+  }
   setActiveServerId(response.serverId)
   getPlugins().forEach((plugin) => {
     if (plugin.isActive()) {
       plugin.onSwitchChannel(oldServer, oldChannel, serverName, channelName)
     }
   })
+
+  if (oldServer !== getActiveServer()) {
+    listChannelsOfCurrentServer()
+  }
 }
 
 getSocket().on('joinChannelResponse', (response: JoinChannelResponse) => {
@@ -127,6 +144,9 @@ const renderChannelList = (serverName: string): void => {
     channel.addEventListener('click', () => {
       const channelNameDom: HTMLElement | null = channel.querySelector('.channel-name')
       const oldActive: HTMLElement = document.querySelector('.text-channels .active')
+      if (!oldActive) {
+        throw 'No active channel found. There always has to be an active channel'
+      }
       const numPingsDom: HTMLElement = channel.querySelector('.num-pings')
       oldActive.classList.remove('active')
       oldActive.classList.remove('new-messages')
@@ -184,9 +204,13 @@ export const getActiveServerId = (): number | bigint | null => {
 
 // get info
 
-fetch(`${backendUrl}/${getActiveServer()}/channels`)
-  .then(async data => await data.json())
-  .then((channels: ChannelInfo[]) => {
-    updateChannelInfo(getActiveServer(), channels)
-    renderChannelList(getActiveServer())
-  })
+export const listChannelsOfCurrentServer = () => {
+  fetch(`${backendUrl}/${getActiveServer()}/channels`)
+    .then(async data => await data.json())
+    .then((channels: ChannelInfo[]) => {
+      updateChannelInfo(getActiveServer(), channels)
+      renderChannelList(getActiveServer())
+    })
+}
+
+listChannelsOfCurrentServer()
