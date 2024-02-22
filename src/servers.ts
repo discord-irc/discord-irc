@@ -14,13 +14,21 @@ getSocket().on('connectedServerListResponse', (servers: ServerInfo[]) => {
 
   servers.forEach((server) => {
     const serverNameSlug = server.name.toLowerCase().replaceAll(/[^a-z]/gi, '-')
+    let styleBg = `style="background-image: url('${server.iconUrl}');"`
+    if(!server.iconUrl || server.iconUrl.startsWith('..')) {
+      // webpack messes up relative urls anyways
+      // so either use https:// image urls
+      // or fallback to the class names css kicking in
+      // there is css for server-ddnet and server-teeworlds
+      styleBg = ''
+    }
 
     serverListDiv.insertAdjacentHTML(
       'beforeend',
       `
       <div
         class="server-icon server-${serverNameSlug}"
-        style="background-image: url('${server.iconUrl}');">
+        ${styleBg}>
       </div>
       `
     )
