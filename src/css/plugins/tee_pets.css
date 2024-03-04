@@ -13,16 +13,30 @@
 
   padding-bottom: 5px;
   padding-right: 10px;
-  border: 10px solid green;
+}
+
+@keyframes pet-walk-anim {
+  0%   { right: 8px; }
+  25%  { right: 80px; }
+  50%  { right: 400px; }
+  75%  { right: 300px; }
+  100% { right: 200px; }
 }
 
 .tee-pet {
   position: absolute;
-  top: 10;
-  right: 10;
-  border: 10px solid yellow;
+  bottom: 0px;
+  right: 10px;
+
+  animation-name: pet-walk-anim;
+  animation-duration: 20s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+
   height: 64px;
   width: 64px;
+
   /*
     WTF WHY DOES THIS NOT WORK?!
     IT LOOKS FAKIN GOOD IN MY BROWSER FFS
