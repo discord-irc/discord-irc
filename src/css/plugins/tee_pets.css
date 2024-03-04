@@ -1,0 +1,25 @@
+.tee-pets-world {
+  /* overlaps the message-pane */
+  grid-row: 2;
+  grid-column: 3;
+  padding-bottom: 5px;
+  padding-right: 10px;
+  border: 10px solid green;
+}
+
+.tee-pet {
+  z-index: 100;
+  position: absolute;
+  top: 10;
+  right: 10;
+  border: 10px solid yellow;
+  height: 64px;
+  width: 64px;
+  /*
+    WTF WHY DOES THIS NOT WORK?!
+    IT LOOKS FAKIN GOOD IN MY BROWSER FFS
+    IDK WHAT EVER IM USING A URL NOW FUCK
+  */
+  /* background-image: url("../../img/teeworlds-logo.png"); */
+  background-image: url("https://www.kog.tw/other/logo_black_short.svg");
+}
