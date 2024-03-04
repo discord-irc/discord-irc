@@ -2,13 +2,21 @@
   /* overlaps the message-pane */
   grid-row: 2;
   grid-column: 3;
+
+  /*
+    message background is z-index 1
+    and messages are at 10
+    so the world is behind the messages text
+  */
+  z-index: 1;
+  position: relative;
+
   padding-bottom: 5px;
   padding-right: 10px;
   border: 10px solid green;
 }
 
 .tee-pet {
-  z-index: 100;
   position: absolute;
   top: 10;
   right: 10;

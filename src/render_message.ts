@@ -6,7 +6,7 @@ import { enrichText } from './rich_text'
 
 let autoScroll = true
 
-const messagesContainer: HTMLElement = document.querySelector('.message-pane')
+const messagesContainer: HTMLElement = document.querySelector('.message-pane-foreground')
 
 export const clearMessagesContainer = (): void => {
   messagesContainer.innerHTML = ''

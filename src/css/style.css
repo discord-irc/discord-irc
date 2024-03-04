@@ -231,6 +231,27 @@ html, body {
     overflow-y: auto;
 }
 
+.message-pane-background {
+    /* overlaps the message-pane */
+    grid-row: 2;
+    grid-column: 3;
+
+    z-index: 1;
+    position: relative;
+}
+
+.message-pane-foreground {
+    /* overlaps the message-pane */
+    grid-row: 2;
+    grid-column: 3;
+
+    z-index: 10;
+    position: relative;
+
+    overflow-y: auto;
+    background-color: transparent;
+}
+
 .ui-box-rounding {
     border-radius: 10px;
 }
@@ -374,11 +395,11 @@ input[type=text], input[type=password], input[type=submit] {
     bottom: 0;
     right: 0;
     background-color: rgba(0,0,0,0.5);
-    z-index: 2;
+    z-index: 14;
 }
 
 .form-popup {
-    z-index: 3;
+    z-index: 15;
     display: none;
 }
 
@@ -529,7 +550,7 @@ a:hover {
 }
 
 /* let the message pane flow into the collapsed left pane */
-.collapse-left-pane .message-pane {
+.collapse-left-pane .message-pane, .collapse-left-pane .message-pane-foreground, .collapse-left-pane .message-pane-background {
     grid-row: 2;
     grid-column: 2 / 4;
 }

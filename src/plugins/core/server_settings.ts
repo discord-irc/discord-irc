@@ -38,7 +38,7 @@ class ServerSettingsPlugin extends BasePlugin {
   }
 
   onInit (): void {
-    this.messagesContainer = document.querySelector('.message-pane')
+    this.messagesContainer = document.querySelector('.message-pane-foreground')
     const listPlugin = getPluginThatImplementsServerDetails()
     if(!listPlugin) {
       console.warn(`[${this.pluginName}] Could not register. No active server details plugin found.`)

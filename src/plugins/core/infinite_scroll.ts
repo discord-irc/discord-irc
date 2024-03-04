@@ -7,7 +7,7 @@ import { getPluginByName } from '../plugins'
 import MessageLoaderPlugin from './message_loader'
 
 class InfiniteScrollPlugin extends BasePlugin {
-  messagesContainer: HTMLElement = document.querySelector('.message-pane')
+  messagesContainer: HTMLElement = document.querySelector('.message-pane-foreground')
   pendingLoad: boolean
 
   constructor () {
@@ -17,7 +17,7 @@ class InfiniteScrollPlugin extends BasePlugin {
   }
 
   onInit(): void {
-    this.messagesContainer = document.querySelector('.message-pane')
+    this.messagesContainer = document.querySelector('.message-pane-foreground')
     this.messagesContainer.addEventListener('scroll', () => {
       if (!this.isActive()) {
         return
