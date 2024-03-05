@@ -1,5 +1,5 @@
 .emoji-picker-pane {
-    /* overlaps the message-pane */
+    /* overlaps the message-pane-foreground */
     grid-row: 2;
     grid-column: 3;
     padding-bottom: 5px;

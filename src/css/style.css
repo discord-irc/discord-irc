@@ -225,14 +225,7 @@ html, body {
     background-image: url("../img/ui/cogwheel_light.svg");
 }
 
-.message-pane {
-    grid-row: 2;
-    grid-column: 3;
-    overflow-y: auto;
-}
-
 .message-pane-background {
-    /* overlaps the message-pane */
     grid-row: 2;
     grid-column: 3;
 
@@ -241,7 +234,7 @@ html, body {
 }
 
 .message-pane-foreground {
-    /* overlaps the message-pane */
+    /* overlaps the message-pane-background */
     grid-row: 2;
     grid-column: 3;
 
@@ -550,7 +543,7 @@ a:hover {
 }
 
 /* let the message pane flow into the collapsed left pane */
-.collapse-left-pane .message-pane, .collapse-left-pane .message-pane-foreground, .collapse-left-pane .message-pane-background {
+.collapse-left-pane .message-pane-foreground, .collapse-left-pane .message-pane-background {
     grid-row: 2;
     grid-column: 2 / 4;
 }

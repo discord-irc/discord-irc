@@ -65,16 +65,14 @@
                 <div class="settings-button"></div>
             </div> <!-- profile-and-settings-bar -->
         </div> <!-- channel-list-pane -->
-        <div class="message-pane">
-            <!--
-                uses z-index to overlap
-                the foreground is transparent
-                so plugins can place their content behind text
-                without interfering with message scrolling
-            -->
-            <div class="message-pane-background"></div> <!-- sets the background color has lower z-index than foreground but overlaps -->
-            <div class="message-pane-foreground">connecting to server ...</div> <!-- messages go here (background is transparent)-->
-        </div> <!-- message-pane -->
+        <!--
+            uses z-index to overlap
+            the foreground is transparent
+            so plugins can place their content behind text
+            without interfering with message scrolling
+        -->
+        <div class="message-pane-background"></div> <!-- sets the background color has lower z-index than foreground but overlaps -->
+        <div class="message-pane-foreground">connecting to server ...</div> <!-- messages go here (background is transparent)-->
         <form class="input-pane" action="">
             <div class="input-pane__inner">
                 <input type="text" name="message" class="ui-box-rounding" id="message-input" placeholder="Message #developer" autocomplete="off">

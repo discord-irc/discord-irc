@@ -1,5 +1,5 @@
 .tee-pets-world {
-  /* overlaps the message-pane */
+  /* overlaps the message-pane-background */
   grid-row: 2;
   grid-column: 3;
 
