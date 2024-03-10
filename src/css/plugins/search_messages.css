@@ -2,6 +2,15 @@
     /* overlaps the message-pane-foreground */
     grid-row: 2;
     grid-column: 3;
+
+    /*
+        message-pane-foreground is at 10
+        so z-index: 9 would allow for scrolling but overlap the text
+        so we go with 11 to be in the foreground
+    */
+    z-index: 11;
+    position: relative;
+
     padding-bottom: 5px;
     padding-right: 10px;
     align-items: flex-end;
