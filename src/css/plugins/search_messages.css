@@ -1,0 +1,51 @@
+.search-messages-pane {
+    /* overlaps the message-pane-foreground */
+    grid-row: 2;
+    grid-column: 3;
+    padding-bottom: 5px;
+    padding-right: 10px;
+    align-items: flex-end;
+    justify-content: flex-end;
+    display: none;
+}
+
+.search-messages-toggle {
+    height: 40px;
+    width: 40px;
+    top: 8px;
+    right: 10px;
+    filter: grayscale(1);
+    opacity: .6;
+    background-image: url("../../img/rofl.svg");
+}
+
+.search-messages-toggle:hover {
+    filter: none;
+    opacity: 1;
+}
+
+.search-messages-pane.active {
+    display: flex;
+}
+
+.search-messages-box {
+    /*
+        the big box holding the input field
+    */
+    background-color: #303136;
+    height: 455px;
+    width: 414px;
+}
+
+.results-preview {
+    display: grid;
+    padding: 5px;
+    gap: 5px;
+    width: fit-content;
+}
+
+#search-messages-input {
+    border-radius: 4px;
+    background-color: #212226;
+}
+

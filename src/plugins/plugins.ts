@@ -14,6 +14,7 @@ import { popupAlert } from '../popups'
 import EmojiTabCompletePlugin from './core/emoji_tab_complete'
 import ServerSettingsPlugin from './core/server_settings'
 import TeePetsPlugin from './core/tee_pets'
+import SearchMessagesPlugin from './core/search_messages'
 
 const plugins: BasePlugin[] = []
 plugins.push(new CrashLoggerPlugin()) // Keep it here! Load crash logger as first plugin!
@@ -28,6 +29,7 @@ plugins.push(new ServerDetailsPlugin())
 plugins.push(new EmojiTabCompletePlugin())
 plugins.push(new ServerSettingsPlugin())
 plugins.push(new TeePetsPlugin())
+plugins.push(new SearchMessagesPlugin())
 
 export const getPlugins = (): BasePlugin[] => {
   return plugins
