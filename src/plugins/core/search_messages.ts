@@ -1,6 +1,10 @@
 import BasePlugin from '../base_plugin'
 
 import '../../css/plugins/search_messages.css'
+import { backendUrl } from '../../backend'
+import { getActiveServer, getActiveChannel } from '../../channels'
+import { IrcMessage } from '../../socket.io'
+import { xssSanitizeRaw } from '../../render_message'
 
 class SearchMessagesPlugin extends BasePlugin {
   /**
@@ -42,6 +46,7 @@ class SearchMessagesPlugin extends BasePlugin {
   searchForm: HTMLInputElement
   toggleButton: HTMLElement
   messageInp: HTMLInputElement
+  resultsPreview: HTMLInputElement
 
   constructor () {
     super('search_messages')
@@ -71,6 +76,7 @@ class SearchMessagesPlugin extends BasePlugin {
     this.searchForm = document.querySelector('.search-messages-form')
     this.toggleButton = document.querySelector('.search-messages-toggle')
     this.messageInp = document.querySelector('#message-input')
+    this.resultsPreview = document.querySelector('.results-preview')
 
     this.searchForm.addEventListener('submit', (event) => this.onSearchSubmit(event))
     this.searchInput.addEventListener('keyup', (event) => this.onSearchKey(event))
@@ -123,6 +129,21 @@ class SearchMessagesPlugin extends BasePlugin {
     }
   }
 
+  search(searchStr: string): void {
+    fetch(`${backendUrl}/${getActiveServer()}/${getActiveChannel()}/messages?count=200&search=${searchStr}`)
+      .then(async data => await data.json())
+      .then((messages: IrcMessage[]) => {
+        this.resultsPreview.innerHTML = ''
+        messages.forEach((message) => {
+          console.log(messages)
+          this.resultsPreview.insertAdjacentHTML(
+            'beforeend',
+            `<div>${xssSanitizeRaw(message.from)}: ${xssSanitizeRaw(message.message)}</div>`
+          )
+        })
+      })
+  }
+
   onSearchKey (event: KeyboardEvent): void {
     // do not reset list while arrow key selecting elements
     if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
@@ -130,11 +151,13 @@ class SearchMessagesPlugin extends BasePlugin {
     }
     const search: string = this.searchInput.value
     console.log(`searching for: ${search}`)
+    this.search(search)
   }
 
   onSearchSubmit (event: SubmitEvent): void {
     event.preventDefault()
     const search: string = this.searchInput.value
+    this.search(search)
     console.log(`todo do we even need this searching for: ${search}`)
   }
 }

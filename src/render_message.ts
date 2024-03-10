@@ -18,9 +18,13 @@ messagesContainer.addEventListener('scroll', () => {
   autoScroll = scroll > maxScroll - 5
 })
 
-const xssSanitize = (userinput: string): string => {
-  // userinput = userinput.replaceAll('<', '&lt;')
-  // userinput = userinput.replaceAll('>', '&gt;')
+export const xssSanitizeRaw = (userinput: string): string => {
+  userinput = userinput.replaceAll('<', '&lt;')
+  userinput = userinput.replaceAll('>', '&gt;')
+  return DOMPurify.sanitize(userinput)
+}
+
+export const xssSanitize = (userinput: string): string => {
   return DOMPurify.sanitize(userinput)
 }
 
