@@ -110,7 +110,8 @@ export const enrichText = (userinput: string): string => {
       if (url === undefined) { return match }
 
       const isWhitelistedCdn: boolean =
-                url.startsWith('https://zillyhuhn.com/cs') ||
+                url.startsWith('https://scrumplex.rocks/img/') ||
+                url.startsWith('https://zillyhuhn.com/cs/') ||
                 url.startsWith('https://tube.zillyhuhn.com/videos/users/') ||
                 url.startsWith('https://raw.githubusercontent.com/') ||
                 url.startsWith('https://user-images.githubusercontent.com/') ||
