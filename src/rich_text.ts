@@ -19,9 +19,9 @@ export const replacePings = (message: string): string => {
             }
     )
   })
-  // TODO: this also highlights user "foo" in the word "barfoos"
+  // TODO: this also highlights user "foo" in the url 'http://bar.com/foo/'
   if (!highlightMessage) {
-    message = message.replaceAll(new RegExp(getAccount().username, 'ig'), (m) => {
+    message = message.replaceAll(new RegExp(`\\b${getAccount().username}\\b`, 'ig'), (m) => {
       highlightMessage = true
       return `<span class="ping">${m}</span>`
     })
