@@ -15,6 +15,7 @@ import EmojiTabCompletePlugin from './core/emoji_tab_complete'
 import ServerSettingsPlugin from './core/server_settings'
 import TeePetsPlugin from './core/tee_pets'
 import SearchMessagesPlugin from './core/search_messages'
+import RichTextPlugin from './core/rich_text'
 
 const plugins: BasePlugin[] = []
 plugins.push(new CrashLoggerPlugin()) // Keep it here! Load crash logger as first plugin!
@@ -30,6 +31,7 @@ plugins.push(new EmojiTabCompletePlugin())
 plugins.push(new ServerSettingsPlugin())
 plugins.push(new TeePetsPlugin())
 plugins.push(new SearchMessagesPlugin())
+plugins.push(new RichTextPlugin())
 
 export const getPlugins = (): BasePlugin[] => {
   return plugins

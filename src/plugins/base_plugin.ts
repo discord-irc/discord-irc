@@ -38,6 +38,20 @@ class BasePlugin {
     return null
   }
 
+  /**
+   * onEnrichText
+   *
+   * You can also use onMessage() to operate on the entire message object
+   * this method is only called on the text that is being displayed to the user
+   *
+   * @returns text that will be rendered
+   *
+   * @param text is only the message payload
+   */
+  onEnrichText (text: string): string {
+    return text
+  }
+
   onSwitchChannel (oldServer: string, oldChannel: string, newServer: string, newChannel: string): void {
   }
 
