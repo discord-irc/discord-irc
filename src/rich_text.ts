@@ -1,10 +1,9 @@
-import hljs from 'highlight.js'
-
 import { getAccount } from './account'
 import { getDiscordEmoteIdByName, getDiscordEmoteNameById, getUnicodeByName } from './emotes'
 import { addPingNotification } from './notifications'
 import { allKnownUsernames } from './users'
 import { getPlugins } from './plugins/plugins'
+import { getHljs } from './highlight'
 
 export const replacePings = (message: string): string => {
   let highlightMessage = false
@@ -118,7 +117,7 @@ export const enrichText = (userinput: string): string => {
   userinput = userinput.replaceAll(
     /```(.*)```/g,
     (m, $1) => {
-      return `<span class="single-line-code-snippet code-snippet">${hljs.highlightAuto($1).value}</span>`
+      return `<span class="single-line-code-snippet code-snippet">${getHljs().highlightAuto($1).value}</span>`
     }
   )
   const codeSnipAnnotater = (sep: string, codesnip: string): string => {

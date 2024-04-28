@@ -1,8 +1,7 @@
 // merge multi line code snippets into one big block
 
-import hljs from 'highlight.js'
-
 import BasePlugin from '../base_plugin'
+import { getHljs } from '../../highlight'
 
 class MultiLinePlugin extends BasePlugin {
   constructor () {
@@ -47,7 +46,7 @@ class MultiLinePlugin extends BasePlugin {
         }
         if (line === '```') {
           if (inCodeBlock !== null) {
-            const codeHljs = hljs.highlight(currentCodeBlock, { language: inCodeBlock }).value
+            const codeHljs = getHljs().highlight(currentCodeBlock, { language: inCodeBlock }).value
             mergedLines += `<pre class="multi-line-code-snippet code-snippet">${codeHljs}</pre>`
             currentCodeBlock = ''
             inCodeBlock = null
