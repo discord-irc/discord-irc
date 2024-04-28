@@ -19,9 +19,10 @@ export const replacePings = (message: string): string => {
             }
     )
   })
-  // TODO: this also highlights user "foo" in the url 'http://bar.com/foo/'
   if (!highlightMessage) {
-    message = message.replaceAll(new RegExp(`\\b${getAccount().username}\\b`, 'ig'), (m) => {
+    // negative look behind for https://
+    // so we do not break the url rich text with name highlight rich text
+    message = message.replaceAll(new RegExp(`(?<!https?://[^ ]*)\\b${getAccount().username}\\b`, 'ig'), (m) => {
       highlightMessage = true
       return `<span class="ping">${m}</span>`
     })
