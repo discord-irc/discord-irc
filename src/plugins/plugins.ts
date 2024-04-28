@@ -16,6 +16,7 @@ import ServerSettingsPlugin from './core/server_settings'
 import TeePetsPlugin from './core/tee_pets'
 import SearchMessagesPlugin from './core/search_messages'
 import RichTextPlugin from './core/rich_text'
+import MultiLinePlugin from './core/multi_line'
 
 const plugins: BasePlugin[] = []
 plugins.push(new CrashLoggerPlugin()) // Keep it here! Load crash logger as first plugin!
@@ -32,6 +33,7 @@ plugins.push(new ServerSettingsPlugin())
 plugins.push(new TeePetsPlugin())
 plugins.push(new SearchMessagesPlugin())
 plugins.push(new RichTextPlugin())
+plugins.push(new MultiLinePlugin())
 
 export const getPlugins = (): BasePlugin[] => {
   return plugins

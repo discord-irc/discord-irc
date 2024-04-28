@@ -1,4 +1,5 @@
 import hljs from 'highlight.js'
+
 import { getAccount } from './account'
 import { getDiscordEmoteIdByName, getDiscordEmoteNameById, getUnicodeByName } from './emotes'
 import { addPingNotification } from './notifications'
@@ -109,65 +110,6 @@ export const enrichText = (userinput: string): string => {
       userinput = plugin.onEnrichText(userinput)
     }
   })
-  // multi line message!
-  if (userinput.includes('\n')) {
-    const lines = userinput.split('\n')
-    let mergedLines = ''
-    let inCodeBlock: null | string = null
-    let currentCodeBlock = ''
-    lines.forEach((line) => {
-      const languages = [
-        'c', 'rust',
-        'c++', 'cpp',
-        'python', 'javascript',
-        'xml', 'html', 'css',
-        'dockerfile', 'yaml', 'json',
-        'bash', 'shell'
-      ]
-      let isCodeBlockOpenLine: boolean = false
-      if (inCodeBlock === null) {
-        languages.forEach((lang) => {
-          if (line === '```' + lang) {
-            inCodeBlock = lang
-          } else if (line === '```rs' || line === '```edlang') {
-            inCodeBlock = 'rust'
-          } else if (line === '```') {
-            inCodeBlock = 'plaintext'
-          } else {
-            return
-          }
-          isCodeBlockOpenLine = true
-        })
-      }
-      if (isCodeBlockOpenLine) {
-        return
-      }
-      if (line === '```') {
-        if (inCodeBlock !== null) {
-          const codeHljs = hljs.highlight(currentCodeBlock, { language: inCodeBlock }).value
-          mergedLines += `<pre class="multi-line-code-snippet code-snippet">${codeHljs}</pre>`
-          currentCodeBlock = ''
-          inCodeBlock = null
-        } else {
-          console.log('WARNING UNEXPECTED ```')
-        }
-      } else if (inCodeBlock !== null) {
-        currentCodeBlock += line + '\n'
-      } else {
-        mergedLines += line + '\n'
-      }
-    })
-    userinput = mergedLines
-    if (inCodeBlock) {
-      userinput += '```'
-      if (inCodeBlock !== 'plaintext') {
-        userinput += inCodeBlock + '\n'
-      } else {
-        userinput += '\n'
-      }
-      userinput += currentCodeBlock
-    }
-  }
   // userinput = userinput.replaceAll(
   //     new RegExp('`(.*)`', 'ig'),
   //     (m, $1) => hljs.highlight($1, {language: 'c'}).value
