@@ -60,6 +60,7 @@ export interface JoinChannelResponse {
   success: boolean
   channel: string
   server: string
+  unredMsgId: number | bigint | null
   channelId: number | bigint
   serverId: number | bigint
 }
