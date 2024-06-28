@@ -18,7 +18,7 @@ import { getNextMessageId } from './message_ids'
 import './settings_menu'
 import './mobile'
 import './servers'
-import { AlertPluginImplementation, getPluginThatImplementsAlert } from './plugins/plugin_implementations'
+import { AlertPluginImplementation, getPluginThatImplementsAlert, getPluginThatImplementsMessageLoader } from './plugins/plugin_implementations'
 import { requestServerList } from './servers'
 
 const messageInp: HTMLInputElement = document.querySelector('#message-input')
@@ -149,6 +149,12 @@ const onLogin = (authResponse: AuthResponse): void => {
   overlay.style.display = 'none'
   formPopup.style.display = 'none'
 
+  const loader = getPluginThatImplementsMessageLoader()
+  if(loader) {
+    loader.reloadMessageBacklog()
+  } else {
+    console.warn('no plugin found that implements message loading')
+  }
   requestServerList()
 }
 

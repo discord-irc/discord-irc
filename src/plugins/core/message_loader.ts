@@ -5,15 +5,18 @@ import { isRenderedMessageId, trackNewMessageId } from '../../message_ids'
 import { clearMessagesContainer, renderMessage } from '../../render_message'
 import { IrcMessage } from '../../socket.io'
 import { knownDiscordNames, updateUserListDiscord } from '../../users'
-import BasePlugin from '../base_plugin'
+import { MessageLoaderPluginImplementation } from '../plugin_implementations'
 
-class MessageLoaderPlugin extends BasePlugin {
+class MessageLoaderPlugin extends MessageLoaderPluginImplementation {
   constructor () {
     super('message_loader')
   }
 
   onInit (): void {
-    this.reloadMessageBacklog()
+    // this used to preview messages in the login screen
+    // which no longer works because requesting messages requires credentials
+
+    // this.reloadMessageBacklog()
   }
 
   onSwitchChannel (oldServer: string, oldChannel: string, newServer: string, newChannel: string): void {

@@ -2,7 +2,17 @@ import { AlertMessage } from "../socket.io";
 import BasePlugin from "./base_plugin";
 import { getPluginThatImplements, getPlugins } from "./plugins";
 
-export type PluginImplementation = 'alert' | 'emoji_completion' | 'server_details'
+export type PluginImplementation = 'alert' | 'emoji_completion' | 'server_details' | 'message_loader'
+
+export class MessageLoaderPluginImplementation extends BasePlugin {
+  constructor(pluginName: string) {
+    super(pluginName)
+    this.implementations.push('message_loader')
+  }
+
+  reloadMessageBacklog (): void {
+  }
+}
 
 export class AlertPluginImplementation extends BasePlugin {
   constructor(pluginName: string) {
@@ -45,6 +55,10 @@ export class ServerDetailsPluginImplementation extends BasePlugin {
     }
 }
 
+export const getPluginThatImplementsMessageLoader = (): MessageLoaderPluginImplementation | null => {
+  return getPluginThatImplements('message_loader') as MessageLoaderPluginImplementation | null
+}
+
 export const getPluginThatImplementsAlert = (): AlertPluginImplementation | null => {
   return getPluginThatImplements('alert') as AlertPluginImplementation | null
 }
@@ -59,6 +73,7 @@ export const getPluginThatImplementsServerDetails = (): ServerDetailsPluginImple
 
 
 export type IPluginImplementation =
+  MessageLoaderPluginImplementation |
   EmojiCompletionPluginImplementation |
   AlertPluginImplementation |
   ServerDetailsPluginImplementation |
