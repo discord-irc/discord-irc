@@ -1,3 +1,4 @@
+import { getAccount } from '../../account'
 import { backendUrl } from '../../backend'
 import { getActiveServer, getActiveChannel } from '../../channels'
 import { getOldestMessageId } from '../../message_ids'
@@ -41,7 +42,7 @@ class InfiniteScrollPlugin extends BasePlugin {
     const stepSize: number = 10
     const fromId: number = Math.max(0, getOldestMessageId() - stepSize)
     console.log(`Requesting ${stepSize} messages starting from id ${fromId} (oldest known id = ${getOldestMessageId()})`)
-    fetch(`${backendUrl}/${getActiveServer()}/${getActiveChannel()}/messages?count=${stepSize}&from=${fromId}`)
+    fetch(`${backendUrl}/${getActiveServer()}/${getActiveChannel()}/messages?count=${stepSize}&from=${fromId}&sessionToken=${getAccount().sessionToken}`)
       .then(async data => await data.json())
       .then((messages: IrcMessage[]) => {
         messages.reverse().forEach((message: IrcMessage) => {

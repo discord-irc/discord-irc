@@ -59,7 +59,7 @@ class MessageLoaderPlugin extends BasePlugin {
   }
 
   reloadMessageBacklog (): void {
-    fetch(`${backendUrl}/${getActiveServer()}/${getActiveChannel()}/messages?count=200`)
+    fetch(`${backendUrl}/${getActiveServer()}/${getActiveChannel()}/messages?count=200&sessionToken=${getAccount().sessionToken}`)
       .then(async data => await data.json())
       .then((messages: IrcMessage[]) => {
         // clears the loading message

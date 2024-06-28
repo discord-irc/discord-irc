@@ -5,6 +5,7 @@ import { backendUrl } from '../../backend'
 import { getActiveServer, getActiveChannel } from '../../channels'
 import { IrcMessage } from '../../socket.io'
 import { xssSanitizeRaw } from '../../render_message'
+import { getAccount } from '../../account'
 
 class SearchMessagesPlugin extends BasePlugin {
   /**
@@ -130,7 +131,7 @@ class SearchMessagesPlugin extends BasePlugin {
   }
 
   search(searchStr: string): void {
-    fetch(`${backendUrl}/${getActiveServer()}/${getActiveChannel()}/messages?count=200&search=${searchStr}`)
+    fetch(`${backendUrl}/${getActiveServer()}/${getActiveChannel()}/messages?count=200&search=${searchStr}&sessionToken=${getAccount().sessionToken}`)
       .then(async data => await data.json())
       .then((messages: IrcMessage[]) => {
         this.resultsPreview.innerHTML = ''
