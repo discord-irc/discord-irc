@@ -59,9 +59,11 @@ class RichTextPlugin extends BasePlugin {
         // https://cdn.discordapp.com/attachments/293493549758939136/1173302166967034018/image.png?ex=656375cb&is=655100cb&hm=a20e57298b3c9a8e468d674ba3d9f8cc167736c8bd4480271fed882b219137d0&
         // it works without them so lets get rid of all of them
         // and then we can also easily check for .png image extension again
-        if (url.startsWith('https://cdn.discordapp.com/attachments/') || url.startsWith('https://media.discordapp.net/attachments/')) {
-          url = url.split('?')[0]
-        }
+        //
+        // they are now needed otherwise the images don't load ._.
+        // if (url.startsWith('https://cdn.discordapp.com/attachments/') || url.startsWith('https://media.discordapp.net/attachments/')) {
+        //   url = url.split('?')[0]
+        // }
 
         const isImageUrl: boolean = /\.(png|jpg|jpeg|webp|svg|gif)$/i.test(url)
         const isVideoUrl: boolean = /\.(mp4)$/i.test(url) || isGithubMp4UrlWithJwt(url)
