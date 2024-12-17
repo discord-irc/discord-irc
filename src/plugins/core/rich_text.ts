@@ -65,8 +65,8 @@ class RichTextPlugin extends BasePlugin {
         //   url = url.split('?')[0]
         // }
 
-        const isImageUrl: boolean = /\.(png|jpg|jpeg|webp|svg|gif)$/i.test(url)
-        const isVideoUrl: boolean = /\.(mp4)$/i.test(url) || isGithubMp4UrlWithJwt(url)
+        const isImageUrl: boolean = /\.(png|jpg|jpeg|webp|svg|gif)(\?.*)$/i.test(url)
+        const isVideoUrl: boolean = /\.(mp4)(\?.*)$/i.test(url) || isGithubMp4UrlWithJwt(url)
 
         if (isWhitelistedCdn) {
           if (isImageUrl) {
