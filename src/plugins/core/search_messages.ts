@@ -130,18 +130,40 @@ class SearchMessagesPlugin extends BasePlugin {
     }
   }
 
+  buildMessageDetails(message: IrcMessage) {
+    const dateYmd = new Date(message.date).toISOString().split('T')[0]
+    return `
+    <div class="msg-details">
+      <a href="https://github.com/TeeworldsDB/irclogs/blob/master/ddnet/${dateYmd}.log">
+      TeeworldsDB
+      </a>
+      <a href="https://ddnet.org/irclogs/${dateYmd}.log">
+      ddnet
+      </a>
+    </div>
+    `
+  }
+
   search(searchStr: string): void {
     fetch(`${backendUrl}/${getActiveServer()}/${getActiveChannel()}/messages?count=200&search=${searchStr}&sessionToken=${getAccount().sessionToken}`)
       .then(async data => await data.json())
       .then((messages: IrcMessage[]) => {
         this.resultsPreview.innerHTML = ''
         messages.forEach((message) => {
-          console.log(messages)
+          const msgId = `search-msg-${message.id}`
           this.resultsPreview.insertAdjacentHTML(
             'beforeend',
-            `<div>${xssSanitizeRaw(message.from)}: ${xssSanitizeRaw(message.message)}</div>`
+            `<div id="${msgId}">
+              ${xssSanitizeRaw(message.from)}: ${xssSanitizeRaw(message.message)}
+             </div>`
           )
         })
+        const msgDetails = document.querySelector(`#${msgId}`)
+        if (msgDetails) {
+          msgDetails.addEventListener('click', () => {
+            msgDetails.classList.remove('hide')
+          })
+        }
       })
   }
 
