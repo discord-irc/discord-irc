@@ -30,7 +30,7 @@ do
 		continue
 	fi
 	match=0
-	if [[ "$line" =~ ^\ *"'"(.*)"'":\ "'"([0-9]+)"'", ]]
+	if [[ "$line" =~ ^\ *"'"?([^"'"]+)"'"?:\ "'"([0-9]+)"'"(,|$) ]]
 	then
 		emote_name="${BASH_REMATCH[1]}"
 		emote_id="${BASH_REMATCH[2]}"

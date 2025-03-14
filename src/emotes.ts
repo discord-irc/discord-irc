@@ -68,7 +68,8 @@ const emoteMappings: Record<string, string> = {
   mmm: '395753965410582538',
   tee_thinking: '478629518358085653',
   owo: '1154794204871008397',
-  pepeW: '1132828868982624256'
+  pepeW: '1132828868982624256',
+  deen_star: '1322627615906992149'
 }
 
 /*

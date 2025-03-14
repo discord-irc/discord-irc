@@ -160,6 +160,9 @@
 .emote.emote-pepeW {
     background-image: url("../img/emotes/pepeW.png");
 }
+.emote.emote-deen_star {
+    background-image: url("../img/emotes/deen_star.png");
+}
 
 /* TODO: rocket is unused */
 .emote.emote-rocket {
