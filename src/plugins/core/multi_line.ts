@@ -20,7 +20,7 @@ class MultiLinePlugin extends BasePlugin {
       lines.forEach((line) => {
         const languages = [
           'c', 'rust',
-          'c++', 'cpp',
+          'c++', 'cpp', 'C++',
           'python', 'javascript',
           'xml', 'html', 'css',
           'dockerfile', 'yaml', 'json',
