@@ -78,7 +78,7 @@ class ServerSettingsPlugin extends BasePlugin {
           <div data-curl="${encodeURIComponent(sampleCurl)}" class="btn-secondary" id="copy-webhook-curl-${webhook.id}">Copy sample curl command</div>
         </form>`
       )
-      const copyUrl = document.querySelector(`#copy-webhook-url-${webhook.id}`)
+      const copyUrl: HTMLElement = document.querySelector(`#copy-webhook-url-${webhook.id}`)
       copyUrl.addEventListener('click', () => {
         navigator.clipboard.writeText(copyUrl.dataset.url)
         popupNotice('copied webhook url to clipboard!')
@@ -90,7 +90,7 @@ class ServerSettingsPlugin extends BasePlugin {
           copyUrl.classList.remove('clicked')
         }, 3000)
       })
-      const copyCurl = document.querySelector(`#copy-webhook-curl-${webhook.id}`)
+      const copyCurl: HTMLElement = document.querySelector(`#copy-webhook-curl-${webhook.id}`)
       copyCurl.addEventListener('click', () => {
         navigator.clipboard.writeText(decodeURIComponent(copyCurl.dataset.curl))
         popupNotice('copied sample webhook curl command to clipboard!')
@@ -135,8 +135,8 @@ class ServerSettingsPlugin extends BasePlugin {
 
       console.log('submittin webhook form ..')
 
-      const name = (document.querySelector('#webhook-name-input')).value
-      const channelName = (document.querySelector('#webhook-channel-input')).value
+      const name = (document.querySelector('#webhook-name-input') as HTMLInputElement).value
+      const channelName = (document.querySelector('#webhook-channel-input') as HTMLInputElement).value
       const channel = getChannelInfo(getActiveServer(), channelName)
 
       if (!channel) {
