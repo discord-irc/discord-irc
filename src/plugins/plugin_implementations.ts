@@ -1,8 +1,13 @@
 import { AlertMessage } from "../socket.io";
 import BasePlugin from "./base_plugin";
-import { getPluginThatImplements, getPlugins } from "./plugins";
+import { getPluginThatImplements } from "./plugins";
 
-export type PluginImplementation = 'alert' | 'emoji_completion' | 'server_details' | 'message_loader'
+export type PluginImplementation = 
+  'alert' |
+  'emoji_completion' |
+  'custom_emotes' |
+  'server_details' |
+  'message_loader'
 
 export class MessageLoaderPluginImplementation extends BasePlugin {
   constructor(pluginName: string) {
@@ -27,6 +32,17 @@ export class AlertPluginImplementation extends BasePlugin {
 export class EmojiCompletionPluginImplementation extends BasePlugin {
   constructor(pluginName: string) {
     super(pluginName)
+    this.implementations.push('emoji_completion')
+  }
+}
+
+export class CustomEmotesPluginImplementation extends BasePlugin {
+  constructor(pluginName: string) {
+    super(pluginName)
+    this.implementations.push('custom_emotes')
+
+    // TODO: not sure yet if we want to complete or not
+    //       if we do we should set this to conflict
     this.implementations.push('emoji_completion')
   }
 }
@@ -67,6 +83,10 @@ export const getPluginThatImplementsEmojiCompletion = (): EmojiCompletionPluginI
   return getPluginThatImplements('emoji_completion') as EmojiCompletionPluginImplementation | null
 }
 
+export const getPluginThatImplementsCustomEmotes = (): CustomEmotesPluginImplementation | null => {
+  return getPluginThatImplements('custom_emotes') as CustomEmotesPluginImplementation | null
+}
+
 export const getPluginThatImplementsServerDetails = (): ServerDetailsPluginImplementation | null => {
   return getPluginThatImplements('server_details') as ServerDetailsPluginImplementation | null
 }
@@ -75,6 +95,7 @@ export const getPluginThatImplementsServerDetails = (): ServerDetailsPluginImple
 export type IPluginImplementation =
   MessageLoaderPluginImplementation |
   EmojiCompletionPluginImplementation |
+  CustomEmotesPluginImplementation |
   AlertPluginImplementation |
   ServerDetailsPluginImplementation |
   BasePlugin

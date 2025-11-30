@@ -12,6 +12,7 @@ import MessageLoaderPlugin from './core/message_loader'
 import { IPluginImplementation, PluginImplementation, getPluginThatImplementsAlert } from './plugin_implementations'
 import { popupAlert } from '../popups'
 import EmojiTabCompletePlugin from './core/emoji_tab_complete'
+import CustomEmotesPlugin from './core/custom_emotes'
 import ServerSettingsPlugin from './core/server_settings'
 import TeePetsPlugin from './core/tee_pets'
 import SearchMessagesPlugin from './core/search_messages'
@@ -24,6 +25,7 @@ plugins.push(new MessageLoaderPlugin())
 plugins.push(new TypingPlugin())
 plugins.push(new EmojiPickerPlugin())
 plugins.push(new TypingEmojiPanelPlugin())
+plugins.push(new CustomEmotesPlugin())
 plugins.push(new InfiniteScrollPlugin())
 plugins.push(new AlertPopupPlugin())
 plugins.push(new TenorPlugin())
