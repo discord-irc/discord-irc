@@ -97,4 +97,3 @@ class RichTextPlugin extends BasePlugin {
 }
 
 export default RichTextPlugin
-

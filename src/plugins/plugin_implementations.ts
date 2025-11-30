@@ -1,8 +1,8 @@
-import { AlertMessage } from "../socket.io";
-import BasePlugin from "./base_plugin";
-import { getPluginThatImplements } from "./plugins";
+import { AlertMessage } from '../socket.io'
+import BasePlugin from './base_plugin'
+import { getPluginThatImplements } from './plugins'
 
-export type PluginImplementation = 
+export type PluginImplementation =
   'alert' |
   'emoji_completion' |
   'custom_emotes' |
@@ -10,7 +10,7 @@ export type PluginImplementation =
   'message_loader'
 
 export class MessageLoaderPluginImplementation extends BasePlugin {
-  constructor(pluginName: string) {
+  constructor (pluginName: string) {
     super(pluginName)
     this.implementations.push('message_loader')
   }
@@ -20,7 +20,7 @@ export class MessageLoaderPluginImplementation extends BasePlugin {
 }
 
 export class AlertPluginImplementation extends BasePlugin {
-  constructor(pluginName: string) {
+  constructor (pluginName: string) {
     super(pluginName)
     this.implementations.push('alert')
   }
@@ -30,14 +30,14 @@ export class AlertPluginImplementation extends BasePlugin {
 }
 
 export class EmojiCompletionPluginImplementation extends BasePlugin {
-  constructor(pluginName: string) {
+  constructor (pluginName: string) {
     super(pluginName)
     this.implementations.push('emoji_completion')
   }
 }
 
 export class CustomEmotesPluginImplementation extends BasePlugin {
-  constructor(pluginName: string) {
+  constructor (pluginName: string) {
     super(pluginName)
     this.implementations.push('custom_emotes')
 
@@ -48,7 +48,7 @@ export class CustomEmotesPluginImplementation extends BasePlugin {
 }
 
 export class ServerDetailsPluginImplementation extends BasePlugin {
-  constructor(pluginName: string) {
+  constructor (pluginName: string) {
     super(pluginName)
     this.implementations.push('server_details')
   }
@@ -64,11 +64,11 @@ export class ServerDetailsPluginImplementation extends BasePlugin {
    *                        this is used to hide buttons that are admin only
    *                        for unauthorized users
    */
-    registerListEntry (
-      displayName: string,
-      clickCallback: EventListenerOrEventListenerObject,
-      displayCallback: () => boolean) {
-    }
+  registerListEntry (
+    displayName: string,
+    clickCallback: EventListenerOrEventListenerObject,
+    displayCallback: () => boolean) {
+  }
 }
 
 export const getPluginThatImplementsMessageLoader = (): MessageLoaderPluginImplementation | null => {
@@ -90,7 +90,6 @@ export const getPluginThatImplementsCustomEmotes = (): CustomEmotesPluginImpleme
 export const getPluginThatImplementsServerDetails = (): ServerDetailsPluginImplementation | null => {
   return getPluginThatImplements('server_details') as ServerDetailsPluginImplementation | null
 }
-
 
 export type IPluginImplementation =
   MessageLoaderPluginImplementation |

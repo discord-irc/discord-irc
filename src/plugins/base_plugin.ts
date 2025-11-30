@@ -1,5 +1,5 @@
-import { IrcMessage } from "../socket.io"
-import { PluginImplementation } from "./plugin_implementations"
+import { IrcMessage } from '../socket.io'
+import { PluginImplementation } from './plugin_implementations'
 
 class BasePlugin {
   pluginName: string

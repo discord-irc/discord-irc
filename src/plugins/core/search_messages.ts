@@ -130,7 +130,7 @@ class SearchMessagesPlugin extends BasePlugin {
     }
   }
 
-  search(searchStr: string): void {
+  search (searchStr: string): void {
     fetch(`${backendUrl}/${getActiveServer()}/${getActiveChannel()}/messages?count=200&search=${searchStr}&sessionToken=${getAccount().sessionToken}`)
       .then(async data => await data.json())
       .then((messages: IrcMessage[]) => {

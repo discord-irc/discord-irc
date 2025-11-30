@@ -83,9 +83,9 @@ class ServerDetailsPlugin extends ServerDetailsPluginImplementation {
     clickCallback: EventListenerOrEventListenerObject,
     displayCallback: () => boolean) {
     this.listItems.push({
-      displayName: displayName,
-      clickCallback: clickCallback,
-      displayCallback: displayCallback
+      displayName,
+      clickCallback,
+      displayCallback
     })
   }
 
@@ -94,7 +94,7 @@ class ServerDetailsPlugin extends ServerDetailsPluginImplementation {
     let index = 1
     this.listItems.forEach((listItem) => {
       const entryId = `details-entry-${index++}`
-      if(!listItem.displayCallback()) {
+      if (!listItem.displayCallback()) {
         return
       }
       this.serverDetailsList.insertAdjacentHTML(
@@ -110,7 +110,7 @@ class ServerDetailsPlugin extends ServerDetailsPluginImplementation {
   toggleDropDown (): void {
     // console.log(`toggeling server details => ${this.listCollapsed ? 'opening' : 'closing'}`)
     this.serverDetailsList.innerHTML = ''
-    if(this.listCollapsed) {
+    if (this.listCollapsed) {
       this.buildList()
     }
     this.listCollapsed = !this.listCollapsed

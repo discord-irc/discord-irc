@@ -14,13 +14,13 @@ const messageInp: HTMLInputElement = document.querySelector('#message-input')
 const textChannelsDom: HTMLElement = getElementOrThrow('.text-channels')
 
 export const getChannelById = (channelId: number | bigint): ChannelInfo | null => {
-  for(const server of connectedServers) {
+  for (const server of connectedServers) {
     return server.channels.find((channel) => channel.id === channelId)
   }
   return null
 }
 
-export const getServerInfoByName = (serverName: string): ServerInfo  | null => {
+export const getServerInfoByName = (serverName: string): ServerInfo | null => {
   return connectedServers.find((server) => server.name === serverName)
 }
 
@@ -95,10 +95,10 @@ export const highlightNewPingInChannel = (channel: string): void => {
 const renderChannelList = (serverName: string): void => {
   textChannelsDom.innerHTML = ''
   const serverInfo = getServerInfoByName(serverName)
-  if(!serverInfo) {
+  if (!serverInfo) {
     throw `Failed to get server info for '${serverName}'`
   }
-  if(serverInfo.channels.length === 0) {
+  if (serverInfo.channels.length === 0) {
     console.warn(`Server '${serverName}' has no channels`)
   }
   serverInfo.channels.forEach((channel: ChannelInfo) => {

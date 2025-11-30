@@ -14,7 +14,7 @@ class SettingsEntry {
   displayName: string
   callback: EventListenerOrEventListenerObject
 
-  constructor(displayName: string, callback: EventListenerOrEventListenerObject) {
+  constructor (displayName: string, callback: EventListenerOrEventListenerObject) {
     this.displayName = displayName
     this.callback = callback
   }
@@ -40,7 +40,7 @@ class ServerSettingsPlugin extends BasePlugin {
   onInit (): void {
     this.messagesContainer = document.querySelector('.message-pane-foreground')
     const listPlugin = getPluginThatImplementsServerDetails()
-    if(!listPlugin) {
+    if (!listPlugin) {
       console.warn(`[${this.pluginName}] Could not register. No active server details plugin found.`)
       return
     }
@@ -78,7 +78,7 @@ class ServerSettingsPlugin extends BasePlugin {
           <div data-curl="${encodeURIComponent(sampleCurl)}" class="btn-secondary" id="copy-webhook-curl-${webhook.id}">Copy sample curl command</div>
         </form>`
       )
-      const copyUrl = document.querySelector(`#copy-webhook-url-${webhook.id}`) as HTMLElement
+      const copyUrl = document.querySelector(`#copy-webhook-url-${webhook.id}`)
       copyUrl.addEventListener('click', () => {
         navigator.clipboard.writeText(copyUrl.dataset.url)
         popupNotice('copied webhook url to clipboard!')
@@ -90,7 +90,7 @@ class ServerSettingsPlugin extends BasePlugin {
           copyUrl.classList.remove('clicked')
         }, 3000)
       })
-      const copyCurl = document.querySelector(`#copy-webhook-curl-${webhook.id}`) as HTMLElement
+      const copyCurl = document.querySelector(`#copy-webhook-curl-${webhook.id}`)
       copyCurl.addEventListener('click', () => {
         navigator.clipboard.writeText(decodeURIComponent(copyCurl.dataset.curl))
         popupNotice('copied sample webhook curl command to clipboard!')
@@ -135,15 +135,15 @@ class ServerSettingsPlugin extends BasePlugin {
 
       console.log('submittin webhook form ..')
 
-      const name = (document.querySelector('#webhook-name-input') as HTMLInputElement).value
-      const channelName = (document.querySelector('#webhook-channel-input') as HTMLInputElement).value
+      const name = (document.querySelector('#webhook-name-input')).value
+      const channelName = (document.querySelector('#webhook-channel-input')).value
       const channel = getChannelInfo(getActiveServer(), channelName)
 
-      if(!channel) {
+      if (!channel) {
         popupAlert('invalid channel')
         return
       }
-      if(!name) {
+      if (!name) {
         popupAlert('invalid name')
         return
       }
@@ -151,7 +151,7 @@ class ServerSettingsPlugin extends BasePlugin {
       getSocket().emit('newWebhookRequest', {
         id: 0, // TODO: this is bullshit
         token: '',
-        name: name,
+        name,
         channel_id: channel.id,
         avatar: '',
         application_id: 0,
@@ -165,7 +165,7 @@ class ServerSettingsPlugin extends BasePlugin {
 
     const activeServerId = getActiveServerId()
     if (!activeServerId) {
-      console.warn(`Could not list webhooks because did not find active server id!`)
+      console.warn('Could not list webhooks because did not find active server id!')
     } else {
       console.log(`requesting webhooks for active server: ${activeServerId}`)
       getSocket().emit('webhooksRequest', activeServerId)
@@ -183,7 +183,7 @@ class ServerSettingsPlugin extends BasePlugin {
     </div> <!-- server-settings-grid -->
     `
     const sideBar: HTMLElement = document.querySelector('.server-settings-side-bar')
-    for(const settingsEntry of this.settingsEntries) {
+    for (const settingsEntry of this.settingsEntries) {
       const entryClass = `server-settings-side-bar-item-${settingsEntry.nameSlug()}`
       sideBar.insertAdjacentHTML('beforeend', `<div class="${entryClass}">${settingsEntry.displayName}</div>`)
       document.querySelector(`.${entryClass}`).addEventListener('click', settingsEntry.callback)

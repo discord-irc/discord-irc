@@ -7,7 +7,7 @@ class EmojiTabCompletePlugin extends EmojiCompletionPluginImplementation {
     super('emoji_tab_complete')
   }
 
-  onKeydownMessageInput(event: KeyboardEvent, messageInp: HTMLInputElement): void {
+  onKeydownMessageInput (event: KeyboardEvent, messageInp: HTMLInputElement): void {
     autoComplete(':', getAllEmoteNames(), event, messageInp, ': ')
   }
 }

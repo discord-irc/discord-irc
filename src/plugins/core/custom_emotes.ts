@@ -6,14 +6,14 @@ class CustomEmotesPlugin extends CustomEmotesPluginImplementation {
     super('custom_emotes')
   }
 
-  getAllCustomEmotes() {
+  getAllCustomEmotes () {
     return [
       'pingsock.png',
-      'ping-sock-angry.gif',
+      'ping-sock-angry.gif'
     ]
   }
 
-  onKeydownMessageInput(event: KeyboardEvent, messageInp: HTMLInputElement): void {
+  onKeydownMessageInput (event: KeyboardEvent, messageInp: HTMLInputElement): void {
     autoComplete(':', this.getAllCustomEmotes(), event, messageInp, ': ')
   }
 }

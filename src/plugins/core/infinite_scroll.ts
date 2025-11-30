@@ -17,7 +17,7 @@ class InfiniteScrollPlugin extends BasePlugin {
     this.pendingLoad = false
   }
 
-  onInit(): void {
+  onInit (): void {
     this.messagesContainer = document.querySelector('.message-pane-foreground')
     this.messagesContainer.addEventListener('scroll', () => {
       if (!this.isActive()) {

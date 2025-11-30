@@ -36,7 +36,6 @@ class AlertPopupPlugin extends AlertPluginImplementation {
   updateAlertList (): void {
     this.alertPopupsList.innerHTML = ''
     this.alerts.forEach((msg) => {
-
       this.alertPopupsList.insertAdjacentHTML(
         'beforeend',
         `<div class="alert-popup-top-left ${msg.success ? 'notice' : 'alert'}">${msg.message}</div>`

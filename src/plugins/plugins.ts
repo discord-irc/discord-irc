@@ -86,13 +86,13 @@ export const activatePlugin = (pluginName: string): void => {
   //       either way page reload is the way to go
   //       to properly reload all plugins
   const plugin = getPluginByName(pluginName, false) || getPluginByName(pluginName, true)
-  if(plugin === null) {
+  if (plugin === null) {
     console.warn(`Activated plugin '${pluginName}' but did not find plugin`)
     return
   }
   for (const implementation of plugin.implementations) {
     const conflictingPlugin = getPluginThatImplements(implementation)
-    if(conflictingPlugin !== null && conflictingPlugin.pluginName !== pluginName) {
+    if (conflictingPlugin !== null && conflictingPlugin.pluginName !== pluginName) {
       popupAlert(`Plugin '${pluginName}' conflicts with '${conflictingPlugin.pluginName}' both implement '${implementation}'`)
     }
   }

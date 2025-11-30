@@ -20,10 +20,9 @@ class TeePetsPlugin extends BasePlugin {
       </div> <!-- tee-pets-world -->
       `
     )
-
   }
 
-  onTick(): void {
+  onTick (): void {
   }
 }
 

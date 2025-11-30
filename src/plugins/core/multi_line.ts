@@ -75,4 +75,3 @@ class MultiLinePlugin extends BasePlugin {
 }
 
 export default MultiLinePlugin
-

@@ -1,7 +1,7 @@
-import { listChannelsOfCurrentServer, requestSwitchChannel, setActiveChannel, setActiveServer } from "./channels"
-import { getElementOrThrow } from "./dom"
-import { ServerInfo } from "./socket.io"
-import { getSocket } from "./ws_connection"
+import { listChannelsOfCurrentServer, requestSwitchChannel, setActiveChannel, setActiveServer } from './channels'
+import { getElementOrThrow } from './dom'
+import { ServerInfo } from './socket.io'
+import { getSocket } from './ws_connection'
 
 export let connectedServers: ServerInfo[] = []
 
@@ -11,11 +11,11 @@ const getServerById = (serverId: number): ServerInfo | null => {
 
 const onClickServerIcon = (server: HTMLElement) => {
   const serverInfo: ServerInfo | null = getServerById(parseInt(server.dataset.serverId, 10))
-  if(!serverInfo) {
+  if (!serverInfo) {
     throw `Clicked on server icon with id=${server.dataset.serverId} but no such server is known`
   }
 
-  console.log("trying to set active server to:")
+  console.log('trying to set active server to:')
   console.log(serverInfo)
 
   // TODO: remember last active channel of every server
@@ -41,7 +41,7 @@ getSocket().on('connectedServerListResponse', (servers: ServerInfo[]) => {
   servers.forEach((server) => {
     const serverNameSlug = server.name.toLowerCase().replaceAll(/[^a-z]/gi, '-')
     let styleBg = `style="background-image: url('${server.iconUrl}');"`
-    if(!server.iconUrl || server.iconUrl.startsWith('..')) {
+    if (!server.iconUrl || server.iconUrl.startsWith('..')) {
       // webpack messes up relative urls anyways
       // so either use https:// image urls
       // or fallback to the class names css kicking in

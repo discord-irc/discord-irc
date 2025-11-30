@@ -37,4 +37,3 @@ export const getHljs = () => {
   registered = true
   return hljs
 }
-
