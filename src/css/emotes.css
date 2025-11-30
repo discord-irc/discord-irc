@@ -168,3 +168,15 @@
 .emote.emote-rocket {
     background-image: url("../img/emotes/rocket.svg");
 }
+
+/*
+    custom emotes
+*/
+
+.emote.custom-emote-pingsock {
+    background-image: url("https://github.com/discord-irc/discord-irc/blob/master/src/img/custom_emotes/pingsock.png?raw=true");
+}
+
+.emote.custom-emote-ping-sock-angry {
+    background-image: url("https://github.com/discord-irc/discord-irc/blob/master/src/img/custom_emotes/ping-sock-angry.gif?raw=true");
+}

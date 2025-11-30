@@ -9,6 +9,11 @@ export type PluginImplementation =
   'server_details' |
   'message_loader'
 
+export interface UrlEmote {
+  name: string
+  url: string
+}
+
 export class MessageLoaderPluginImplementation extends BasePlugin {
   constructor (pluginName: string) {
     super(pluginName)
@@ -39,11 +44,12 @@ export class EmojiCompletionPluginImplementation extends BasePlugin {
 export class CustomEmotesPluginImplementation extends BasePlugin {
   constructor (pluginName: string) {
     super(pluginName)
+    // TODO: should probably rename this to emoji provider?
     this.implementations.push('custom_emotes')
+  }
 
-    // TODO: not sure yet if we want to complete or not
-    //       if we do we should set this to conflict
-    this.implementations.push('emoji_completion')
+  getUrlEmotes (): UrlEmote[] {
+    return []
   }
 }
 

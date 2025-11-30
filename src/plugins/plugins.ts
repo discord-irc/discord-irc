@@ -23,9 +23,9 @@ const plugins: BasePlugin[] = []
 plugins.push(new CrashLoggerPlugin()) // Keep it here! Load crash logger as first plugin!
 plugins.push(new MessageLoaderPlugin())
 plugins.push(new TypingPlugin())
+plugins.push(new CustomEmotesPlugin())
 plugins.push(new EmojiPickerPlugin())
 plugins.push(new TypingEmojiPanelPlugin())
-plugins.push(new CustomEmotesPlugin())
 plugins.push(new InfiniteScrollPlugin())
 plugins.push(new AlertPopupPlugin())
 plugins.push(new TenorPlugin())

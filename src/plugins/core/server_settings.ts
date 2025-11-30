@@ -135,8 +135,8 @@ class ServerSettingsPlugin extends BasePlugin {
 
       console.log('submittin webhook form ..')
 
-      const name = (document.querySelector('#webhook-name-input') as HTMLInputElement).value
-      const channelName = (document.querySelector('#webhook-channel-input') as HTMLInputElement).value
+      const name = (document.querySelector('#webhook-name-input')).value
+      const channelName = (document.querySelector('#webhook-channel-input')).value
       const channel = getChannelInfo(getActiveServer(), channelName)
 
       if (!channel) {

@@ -1,30 +1,28 @@
-import { CustomEmotesPluginImplementation } from '../plugin_implementations'
+import { CustomEmotesPluginImplementation, UrlEmote } from '../plugin_implementations'
 
-interface CustomEmote {
-  name: string
-  url: string
-}
-
+// TODO: rename this to url emoji provider
+//       that implements emoji provider
+//       and depends on emoji picker or emoji complete
 class CustomEmotesPlugin extends CustomEmotesPluginImplementation {
-  customEmotes: Array<CustomEmote>
+  customEmotes: UrlEmote[]
 
   constructor () {
     super('custom_emotes')
 
     this.customEmotes = [
       {
-        name: 'pingsock.png',
+        name: 'pingsock',
         url: 'https://raw.githubusercontent.com/discord-irc/discord-irc/refs/heads/master/src/img/custom_emotes/pingsock.png'
       },
       {
-        name: 'ping-sock-angry.gif',
+        name: 'ping-sock-angry',
         url: 'https://raw.githubusercontent.com/discord-irc/discord-irc/refs/heads/master/src/img/custom_emotes/ping-sock-angry.gif'
-      },
+      }
     ]
   }
 
-  getAllCustomEmoteNames () {
-    return Object.keys(this.customEmotes)
+  getUrlEmotes () {
+    return this.customEmotes
   }
 
   // yea dont do auto complete for these??

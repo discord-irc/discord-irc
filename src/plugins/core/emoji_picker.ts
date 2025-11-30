@@ -2,6 +2,7 @@ import { getDiscordEmoteNames } from '../../emotes'
 import BasePlugin from '../base_plugin'
 
 import '../../css/plugins/emoji_picker.css'
+import { getPluginThatImplementsCustomEmotes } from '../plugin_implementations'
 
 class EmojiPickerPlugin extends BasePlugin {
   /**
@@ -143,14 +144,23 @@ class EmojiPickerPlugin extends BasePlugin {
     }
   }
 
+  addEmojiToInput (emojiDiv: HTMLElement): void {
+    if (emojiDiv.dataset.emojiValue) {
+      this.messageInp.value += emojiDiv.dataset.emojiValue + ' '
+      return
+    }
+
+    const emojiName: string = emojiDiv.dataset.emojiName
+    this.messageInp.value += `:${emojiName}: `
+  }
+
   clickList (event: MouseEvent): void {
     // cast EventTarget to HTMLElement
     const emojiDiv: HTMLElement = event.target as HTMLElement
     if (!emojiDiv.classList.contains('emote')) {
       return
     }
-    const emojiName: string = emojiDiv.dataset.emojiName
-    this.messageInp.value += `:${emojiName}: `
+    this.addEmojiToInput(emojiDiv)
   }
 
   onSearchKey (event: KeyboardEvent): void {
@@ -169,8 +179,7 @@ class EmojiPickerPlugin extends BasePlugin {
       // for example when we search for a term that is not found
       return
     }
-    const emojiName: string = currentSelection.dataset.emojiName
-    this.messageInp.value += `:${emojiName}: `
+    this.addEmojiToInput(currentSelection)
   }
 
   selectFirstEmoji (): void {
@@ -253,6 +262,19 @@ class EmojiPickerPlugin extends BasePlugin {
                 `<div class="emote emote-${emojiName}" data-emoji-name="${emojiName}"></div>`
       )
     })
+
+    if (getPluginThatImplementsCustomEmotes()) {
+      getPluginThatImplementsCustomEmotes().getUrlEmotes().forEach((urlEmote) => {
+        if (!urlEmote.name.toLowerCase().includes(search)) {
+          return
+        }
+        this.emojiListDom.insertAdjacentHTML(
+          'beforeend',
+                  `<div class="emote custom-emote-${urlEmote.name}" data-emoji-name="${urlEmote.name}" data-emoji-value="${urlEmote.url}"></div>`
+        )
+      })
+    }
+
     this.selectFirstEmoji()
   }
 }
